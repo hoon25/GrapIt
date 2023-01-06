@@ -101,4 +101,8 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+
+# custom
+.idea/
+
 # End of https://www.toptal.com/developers/gitignore/api/react,java,macos,windows

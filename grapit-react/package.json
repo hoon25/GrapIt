@@ -3,13 +3,29 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@reduxjs/toolkit": "^1.9.1",
+    "@stomp/stompjs": "^6.1.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.2.2",
+    "bootstrap": "^5.2.3",
+    "fabric": "^5.3.0",
+    "fabric-whiteboard": "^1.0.19",
+    "http-proxy-middleware": "^2.0.6",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.7.0",
     "react-dom": "^18.2.0",
+    "react-redux": "^8.0.5",
+    "react-router-dom": "^6.6.1",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "sockjs-client": "^1.6.1",
+    "stompjs": "^2.3.3",
+    "styled-components": "^5.3.6",
+    "web-vitals": "^2.1.4",
+    "webstomp-client": "^1.2.6",
+    "mafs": "^0.8.0",
+    "mathlive": "^0.86.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -23,6 +39,7 @@
       "react-app/jest"
     ]
   },
+  "proxy": "http://localhost:8080",
   "browserslist": {
     "production": [
       ">0.2%",

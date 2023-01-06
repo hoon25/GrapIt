@@ -7,6 +7,7 @@ import {useSelector} from "react-redux";
 import '../css/chat.css';
 import {TwoDGraph} from "./graph/TwoDGraph"
 
+
 var Stomp = require('stompjs/lib/stomp.js').Stomp;
 
 

@@ -96,5 +96,4 @@ function ChatRoom({chat, i}) {
         </>
     );
 }
-
 export default ChatRoomList;

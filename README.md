@@ -39,9 +39,9 @@ Docker
 - Feature
   - `feature/#issue_number`
 - Development
-  - `develop/#issue_number`
+  - `develop`
 - Master
-  - `master/#issue_number`
+  - `master`
 
 ### ☘️commit 규칙
 

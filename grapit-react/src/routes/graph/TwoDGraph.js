@@ -4,9 +4,9 @@ import React, {useEffect, useState} from "react";
 import {Provider, useDispatch, useSelector} from "react-redux";
 import {Button} from "react-bootstrap";
 
-export function TwoDGraph({graphList}) {
+export function TwoDGraph({drawPoints, roomId, graphList}) {
 
-    let [ratio,setRatio] = useState(1)
+    let [ratio, setRatio] = useState(1)
 
     // const [canvasPoints, setCanvasPoints] = useState(canvasPoint);
 
@@ -18,6 +18,11 @@ export function TwoDGraph({graphList}) {
     //     // const point1 = useMovablePoint([-1, -1])
     // }
 
+    for (let graphListElement of graphList) {
+        console.log(graphListElement[0])
+        console.log(graphListElement[1])
+        console.log(graphListElement[2])
+    }
 
 
     // const a = useMovablePoint([-1, 0], {
@@ -115,30 +120,30 @@ export function TwoDGraph({graphList}) {
     // }
 
     // 스크롤 이벤트 제어. 나중에 쓸수 있음.
-    function removeWindowWheel(){
-        window.addEventListener("wheel",preventWheelEvent,
-            {passive:false}
+    function removeWindowWheel() {
+        window.addEventListener("wheel", preventWheelEvent,
+            {passive: false}
         );
     }
 
-    function addWindowWheel(){
-        window.removeEventListener("wheel",preventWheelEvent,{passive:true})
+    function addWindowWheel() {
+        window.removeEventListener("wheel", preventWheelEvent, {passive: true})
     }
 
-    function preventWheelEvent(e){
+    function preventWheelEvent(e) {
         e.preventDefault();
 
-        console.log("x = " +e.deltaX)
-        console.log("y = " +e.deltaY)
+        console.log("x = " + e.deltaX)
+        console.log("y = " + e.deltaY)
 
-        if(e.deltaY % 1 < 0 && e.deltaX === 0){
+        if (e.deltaY % 1 < 0 && e.deltaX === 0) {
             console.log("축소")
             setRatio(ratio - 1)
-            console.log("현재 비율" +ratio)
-        }else if(e.deltaY % 1 > 0  && e.deltaX === 0){
+            console.log("현재 비율" + ratio)
+        } else if (e.deltaY % 1 > 0 && e.deltaX === 0) {
             console.log("확대")
             setRatio(ratio + 1)
-            console.log("현재 비율" +ratio)
+            console.log("현재 비율" + ratio)
         }
     }
 
@@ -148,21 +153,21 @@ export function TwoDGraph({graphList}) {
         let result = [];
         for (let i = 0; i < graphList.length; i++) {
 
-            if(graphList[i][3] === "Line"){
+            if (graphList[i][3] === "Line") {
                 result.push(
                     <Line.PointAngle
                         key={i}
-                        point={[0,Number(graphList[i][1])]}
+                        point={[0, Number(graphList[i][1])]}
                         color={graphList[i][2]}
                         angle={Math.atan(Number(graphList[i][0]))}
                         weight={4}
                     />
                 );
-            }else if(graphList[i][3] === "Circle"){
+            } else if (graphList[i][3] === "Circle") {
                 result.push(
-                    <Circle center={[0, 0]} radius={3} />
+                    <Circle center={[0, 0]} radius={3}/>
                 );
-            }else if(graphList[i][3] === "2D"){
+            } else if (graphList[i][3] === "2D") {
 
             }
         }
@@ -172,13 +177,13 @@ export function TwoDGraph({graphList}) {
     return (
         <div className='test-parent'>
             <div className='test-child'>
-                <Button onClick={()=>{
-                    setRatio(ratio+0.5)
+                <Button onClick={() => {
+                    setRatio(ratio + 0.5)
                 }}>
                     축소
                 </Button>
-                <Button onClick={()=>{
-                    setRatio(ratio-0.5)
+                <Button onClick={() => {
+                    setRatio(ratio - 0.5)
                 }}>
                     확대
                 </Button>
@@ -186,10 +191,10 @@ export function TwoDGraph({graphList}) {
             <Mafs
                 height={540}
                 width={"auto"}
-                viewBox={{x : [-3,3], y : [-3,3] , padding:ratio}}>
+                viewBox={{x: [-3, 3], y: [-3, 3], padding: ratio}}>
                 <CartesianCoordinates
-                    xAxis={{lines: Math.floor(ratio/5) + 1}}
-                    yAxis={{lines: Math.floor(ratio/5) + 1}}
+                    xAxis={{lines: Math.floor(ratio / 5) + 1}}
+                    yAxis={{lines: Math.floor(ratio / 5) + 1}}
                 />
                 {rendering()}
             </Mafs>

@@ -5,7 +5,8 @@ import styled from 'styled-components'
 import SockJs from 'sockjs-client';
 import {useSelector} from "react-redux";
 import '../css/chat.css';
-import {TwoDGraph} from "./TwoDGraph"
+import {TwoDGraph} from "./graph/TwoDGraph"
+
 
 var Stomp = require('stompjs/lib/stomp.js').Stomp;
 
@@ -129,7 +130,7 @@ function Chat({chat}) {
                 <Col xs={8} className='mt-5'>
                     <div style={{height: '70%', display: 'flex'}}>
                         {
-                            TwoDGraph(chat.roomId, stompClient, canvasPoints)
+                            // TwoDGraph(chat.roomId, stompClient, canvasPoints)
                         }
                     </div>
                     <div style={{height: '30%', overflow: 'auto'}} className="div-shadow">

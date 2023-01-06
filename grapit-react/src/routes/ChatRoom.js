@@ -87,6 +87,8 @@ function ChatRoom({chat, i}) {
                         navigate(`/chat/room/msg/${chat.roomId}`);
                     } else if (chat.chatType === "RTC") {
                         navigate(`/chat/room/rtc/${chat.roomId}`);
+                    }else{
+                        navigate(`/chat/room/both/${chat.roomId}`);
                     }
                 }
                 }>입장하기</Button></td>
@@ -94,5 +96,4 @@ function ChatRoom({chat, i}) {
         </>
     );
 }
-
 export default ChatRoomList;

@@ -1,0 +1,31 @@
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
+.div-shadow{
+    box-shadow: rgb(0 0 0 / 16%) 2px 2px 30px;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.questioncontent{
+    opacity: 1;
+}
+
+.test-child{
+    position:absolute;
+}
+
+.tab_bar{
+    position: absolute;
+    top: 70px;
+}
+
+.tab-content, .tab-pane{
+    height: 100%;
+}
+
+.tab-parent{
+    position:relative;
+}

@@ -7,15 +7,14 @@ assignees: ''
 
 ---
 
-# Title
-제목을 적어주세요
----
+# 제목을 입력해주세요
 
-# Description
+# 상세설명
 설명을 작성해주세요
 
 # TODO
-[ ] todo
+- [ ] todo
+- [ ] todo
 
 # ETC 
-기타사항
+기타사항 작성해주세요

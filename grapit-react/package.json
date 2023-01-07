@@ -25,7 +25,8 @@
     "web-vitals": "^2.1.4",
     "webstomp-client": "^1.2.6",
     "mafs": "^0.8.0",
-    "mathlive": "^0.86.0"
+    "mathlive": "^0.86.0",
+    "openvidu-react": "^2.25.0"
   },
   "scripts": {
     "start": "react-scripts start",

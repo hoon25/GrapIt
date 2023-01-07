@@ -2,122 +2,16 @@ import {CartesianCoordinates, FunctionGraph, Mafs, Line, Transform, useMovablePo
 import "mafs/build/index.css"
 import React, {useEffect, useState} from "react";
 import {Provider, useDispatch, useSelector} from "react-redux";
-import {Button} from "react-bootstrap";
+import {Button,Form} from "react-bootstrap";
 
-export function TwoDGraph({drawPoints, roomId, graphList}) {
+export function TwoDGraph({drawPoints, roomId, graphList,viewPointsX,viewPointsY}) {
 
     let [ratio, setRatio] = useState(1)
 
-    // const [canvasPoints, setCanvasPoints] = useState(canvasPoint);
-
-    // const [model,setModel] = useState(["Points","Lines","circles",""])
-
-    // for (let i = 0; i < graphList.length; i++) {
-    //     // eval("let points" + i + "= [0,graphList[i][1]]");
-    //     eval("const point" + i + "="+ useMovablePoint([0,graphList[i][1]]));
-    //     // const point1 = useMovablePoint([-1, -1])
-    // }
-
-    for (let graphListElement of graphList) {
-        console.log(graphListElement[0])
-        console.log(graphListElement[1])
-        console.log(graphListElement[2])
-    }
-
-
-    // const a = useMovablePoint([-1, 0], {
-    //     constrain: "horizontal", color: "skyblue"
-    // })
-    // const b = useMovablePoint([1, 0], {
-    //     constrain: "horizontal", color: "skyblue"
-    // })
-    //
-    // const k = useMovablePoint([0, -1], {
-    //     constrain: "vertical", color: "skyblue"
-    // })
-    //
-    //
-    // const mid = (a.x + b.x) / 2
-    // const fn = (x: number) => (x - a.x) * (x - b.x)
-
-    // const point1 = useMovablePoint([-1, -1])
-    // const point2 = useMovablePoint([2, 1])
-
     let user = useSelector(state => state.user);
-    // console.log("캠버스")
-    // console.log({drawPoints});
-    //
-    // if(drawPoints != null){
-    //     console.log("hi");
-    //     a.x = (a.x + drawPoints);
-    //     // point1.x = (point1.x + canvasPoints);
-    //     // point1.y = (point1.y + canvasPoints);
-    //     // point1.point = [a.x+drawPoints,point1]
-    // }
+    console.log("캠버스")
+    console.log({drawPoints});
 
-    // console.log("ax = " +a.x);
-    // console.log("포인터들");
-    // console.log(a.x);
-    // console.log(point1.element);
-    // console.log("drawPoints");
-    // console.log(drawPoints);
-    // if (drawPoints != null) {
-    //     console.log("=== 파싱떄 에러??");
-    //     let message = drawPoints;
-    //     console.log("=== 여기서에러?");
-    //     if (message.sender != user.nickName) {
-    //         // 현재 나랑 메세지 보낸 사람이 다름 -> 요청 할필요 없음.
-    //         // 0.02 픽셀 이상만 반응
-    //         let inputInfo = JSON.parse(message.message);
-    //
-    //         if (Math.abs(a.x - inputInfo.ax) > 0.2 || Math.abs(a.y - inputInfo.ay) > 0.2
-    //             || Math.abs(b.y - inputInfo.by) > 0.2 || Math.abs(b.x - inputInfo.bx) > 0.2
-    //             || Math.abs(k.y - inputInfo.ky) > 0.2 || Math.abs(k.x - inputInfo.kx) > 0.2
-    //             || Math.abs(point1.y - inputInfo.point1y) > 0.2 || Math.abs(point1.x - inputInfo.point1x) > 0.2
-    //             || Math.abs(point2.y - inputInfo.point2y) > 0.2 || Math.abs(point2.x - inputInfo.point2x) > 0.2) {
-    //
-    //             a.x = inputInfo.ax;
-    //             a.y = inputInfo.ay;
-    //             b.x = inputInfo.bx;
-    //             b.y = inputInfo.by;
-    //             k.x = inputInfo.kx;
-    //             k.y = inputInfo.ky;
-    //             point1.point = [inputInfo.point1x, inputInfo.point1y];
-    //             point2.point = [inputInfo.point2x, inputInfo.point2y];
-    //         }
-    //
-    //     } else {
-    //         // 내가 메세지를 보냄. -> 요청 해야함.
-    //         let pointInfo = JSON.stringify({
-    //             ax: a.x,
-    //             ay: a.y,
-    //             bx: b.x,
-    //             by: b.y,
-    //             kx: k.x,
-    //             ky: k.y,
-    //             point1x: point1.x,
-    //             point1y: point1.y,
-    //             point2x: point2.x,
-    //             point2y: point2.y
-    //         })
-    //         sendDrawMessage(roomId, user.nickName, pointInfo, 'DRAW');
-    //     }
-    //
-    // }else{
-    //     let pointInfo = JSON.stringify({
-    //         ax: a.x,
-    //         ay: a.y,
-    //         bx: b.x,
-    //         by: b.y,
-    //         kx: k.x,
-    //         ky: k.y,
-    //         point1x: point1.x,
-    //         point1y: point1.y,
-    //         point2x: point2.x,
-    //         point2y: point2.y
-    //     })
-    //     sendDrawMessage(roomId, user.nickName, pointInfo, 'DRAW');
-    // }
 
     // 스크롤 이벤트 제어. 나중에 쓸수 있음.
     function removeWindowWheel() {
@@ -148,27 +42,41 @@ export function TwoDGraph({drawPoints, roomId, graphList}) {
     }
 
 
-    let rendering = () => {
+    let drawGraph = () => {
 
         let result = [];
         for (let i = 0; i < graphList.length; i++) {
 
-            if (graphList[i][3] === "Line") {
+            let color = graphList[i][0];
+            let type = graphList[i][1];
+            let first = Number(graphList[i][2]);
+            let second = Number(graphList[i][3]);
+            let third = Number(graphList[i][4]);
+
+
+            if (type === "Line") {
                 result.push(
                     <Line.PointAngle
                         key={i}
-                        point={[0, Number(graphList[i][1])]}
-                        color={graphList[i][2]}
-                        angle={Math.atan(Number(graphList[i][0]))}
+                        point={[0, second]}
+                        color={color}
+                        angle={Math.atan(first)}
                         weight={4}
                     />
                 );
-            } else if (graphList[i][3] === "Circle") {
-                result.push(
-                    <Circle center={[0, 0]} radius={3}/>
-                );
-            } else if (graphList[i][3] === "2D") {
 
+
+            } else if (type === "Circle") {
+                result.push(
+                    <Circle key={i} center={[first, second]} radius={third} color={color}/>
+                );
+            } else if (type === "TwoD") {
+                result.push(<FunctionGraph.OfX
+                    key={i}
+                    color={color}
+                    y={(x) => {
+                        const _x = x
+                        return first*_x*_x + second*_x + third}}/>)
             }
         }
         return result;
@@ -187,16 +95,31 @@ export function TwoDGraph({drawPoints, roomId, graphList}) {
                 }}>
                     확대
                 </Button>
+                <div>
+                    <Form.Range
+                        value={ratio}
+                        onChange={e => setRatio(Number(e.target.value))}
+                        tooltip='auto'
+                    />
+                </div>
             </div>
             <Mafs
-                height={540}
+                height={490}
                 width={"auto"}
-                viewBox={{x: [-3, 3], y: [-3, 3], padding: ratio}}>
+                viewBox={{x: viewPointsX, y: viewPointsY, padding: ratio}}>
                 <CartesianCoordinates
                     xAxis={{lines: Math.floor(ratio / 5) + 1}}
                     yAxis={{lines: Math.floor(ratio / 5) + 1}}
                 />
-                {rendering()}
+                {drawGraph()}
+
+
+                {/*<FunctionGraph.OfX*/}
+                {/*    color={"red"}*/}
+                {/*    y={(x) => {*/}
+                {/*        const _x = x*/}
+                {/*        return -3*_x*_x*_x -2*x*_x + 2}}/>*/}
+
             </Mafs>
         </div>
 

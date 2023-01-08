@@ -1,12 +1,21 @@
 import {CartesianCoordinates, FunctionGraph, Mafs, Line, Transform, useMovablePoint, vec, Circle} from "mafs"
 import "mafs/build/index.css"
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Provider, useDispatch, useSelector} from "react-redux";
-import {Button,Form} from "react-bootstrap";
+import {Button, Form} from "react-bootstrap";
 
-export function TwoDGraph({drawPoints, roomId, graphList,viewPointsX,viewPointsY}) {
-
-    let [ratio, setRatio] = useState(1)
+export function TwoDGraph({
+                              drawPoints,
+                              roomId,
+                              graphList,
+                              viewPointX,
+                              viewPointY,
+                              setViewPointX,
+                              setViewPointY,
+                              ratio,
+                              setRatio,
+                              sendRatio
+                          }) {
 
     let user = useSelector(state => state.user);
     console.log("캠버스")
@@ -39,6 +48,23 @@ export function TwoDGraph({drawPoints, roomId, graphList,viewPointsX,viewPointsY
             setRatio(ratio + 1)
             console.log("현재 비율" + ratio)
         }
+    }
+
+
+    function mouseMovingHandler(event) {
+        // console.log("viewPointX[0] = "+ viewPointX[0])
+        // console.log("viewPointX[1] = "+ viewPointX[1])
+        // console.log("mousePoint[0] = "+ mousePoint[0])
+        // console.log("mousePoint[1] = "+ mousePoint[1])
+        // console.log("pageX = "+ event.pageX)
+        // console.log((Number(mousePoint[0]) - Number(event.pageX)))
+        // console.log((Number(mousePoint[1]) - Number(event.pageX)))
+        // let firstX = viewPointX[0] + Math.floor((Number(mousePoint[0]) - Number(event.pageX))/100)
+        // let secondX = viewPointX[1] - Math.floor((Number(mousePoint[0]) - Number(event.pageX))/100)
+        // console.log(firstX)
+        // console.log(secondX)
+        // setViewPointX([firstX,secondX])
+        // setMousePoint([event.pageX, event.pageY])
     }
 
 
@@ -76,7 +102,8 @@ export function TwoDGraph({drawPoints, roomId, graphList,viewPointsX,viewPointsY
                     color={color}
                     y={(x) => {
                         const _x = x
-                        return first*_x*_x + second*_x + third}}/>)
+                        return first * _x * _x + second * _x + third
+                    }}/>)
             }
         }
         return result;
@@ -86,41 +113,83 @@ export function TwoDGraph({drawPoints, roomId, graphList,viewPointsX,viewPointsY
         <div className='test-parent'>
             <div className='test-child'>
                 <Button onClick={() => {
-                    setRatio(ratio + 0.5)
-                }}>
-                    축소
-                </Button>
-                <Button onClick={() => {
+                    sendRatio(ratio - 0.5)
                     setRatio(ratio - 0.5)
                 }}>
                     확대
                 </Button>
+                <Button onClick={() => {
+                    sendRatio(ratio + 0.5)
+                    setRatio(ratio + 0.5)
+                }}>
+                    축소
+                </Button>
                 <div>
                     <Form.Range
                         value={ratio}
-                        onChange={e => setRatio(Number(e.target.value))}
+                        onChange={(e) => {
+                            sendRatio(Number(e.target.value))
+                            setRatio(Number(e.target.value))
+                        }}
                         tooltip='auto'
                     />
                 </div>
             </div>
-            <Mafs
-                height={490}
-                width={"auto"}
-                viewBox={{x: viewPointsX, y: viewPointsY, padding: ratio}}>
-                <CartesianCoordinates
-                    xAxis={{lines: Math.floor(ratio / 5) + 1}}
-                    yAxis={{lines: Math.floor(ratio / 5) + 1}}
-                />
-                {drawGraph()}
+            <div
+                // onMouseDown={(event) => {
+                //     // console.log("마우스 다운")
+                //     // console.log("page x = " + event.pageX)
+                //     // console.log("page y = " + event.pageY)
+                //     setMousePoint([event.pageX, event.pageY])
+                //     setMouseMovingEvent(true)
+                //     // console.log(canvasGraph)
+                //     // console.log(canvasGraph.viewBox)
+                //     // console.log(this)
+                // }}
 
 
-                {/*<FunctionGraph.OfX*/}
-                {/*    color={"red"}*/}
-                {/*    y={(x) => {*/}
-                {/*        const _x = x*/}
-                {/*        return -3*_x*_x*_x -2*x*_x + 2}}/>*/}
+                // onMouseMove={(event) => {
+                //     if (mouseMovingEvent) {
+                //         mouseMovingHandler(event)
+                //
+                //     }
+                // }
+                // }
 
-            </Mafs>
+                // onMouseUp={(event) => {
+                //     // console.log("마우스 업")
+                //     // console.log("page x = " + event.pageX)
+                //     // console.log("page y = " + event.pageY)
+                //     setMousePoint([event.pageX, event.pageY])
+                //     setMouseMovingEvent(false)
+                // }}
+            >
+                <Mafs
+                    height={490}
+                    width={"auto"}
+                    viewBox={{x: viewPointX, y: viewPointY, padding: ratio}}>
+                    <CartesianCoordinates
+                        xAxis={{lines: Math.floor(ratio / 5) + 1}}
+                        yAxis={{lines: Math.floor(ratio / 5) + 1}}
+                    />
+                    {drawGraph()}
+
+
+                    {/*<FunctionGraph.OfX*/}
+                    {/*    color={"red"}*/}
+                    {/*    y={(x) => {*/}
+                    {/*        const _x = x*/}
+                    {/*        return -3*_x*_x*_x -2*x*_x + 2}}/>*/}
+
+                    {/*<FunctionGraph.OfX*/}
+                    {/*    color={"red"}*/}
+                    {/*    y={(x) => {*/}
+                    {/*        const _x = x*/}
+                    {/*        return 1/_x}}/>*/}
+
+                </Mafs>
+            </div>
+
         </div>
 
     )

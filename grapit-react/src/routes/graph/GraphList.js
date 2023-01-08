@@ -9,12 +9,10 @@ function GraphList({graphList, setGraphList,sendGraphInfo}) {
     const [deleteIconHover, setDeleteIconHover] = useState(false)
 
     const handleMouseEnter = () => {
-        console.log("enter")
         setDeleteIconHover(true)
     }
 
     const handleMouseLeave = () => {
-        console.log("out")
         setDeleteIconHover(false)
     }
     const deleteIconStyle = {
@@ -38,7 +36,6 @@ function GraphList({graphList, setGraphList,sendGraphInfo}) {
 
         setGraphList(copyGraphList)
         sendGraphInfo(copyGraphList)
-        console.log(value)
     }
 
 

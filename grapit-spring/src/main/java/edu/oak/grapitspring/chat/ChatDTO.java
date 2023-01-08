@@ -7,7 +7,7 @@ import lombok.Data;
 public class ChatDTO {
 
     public enum MessageType {
-        ENTER, LEAVE, TALK, DRAW
+        ENTER, LEAVE, TALK, DRAW, DRAW_RATIO
     }
 
     private MessageType type;

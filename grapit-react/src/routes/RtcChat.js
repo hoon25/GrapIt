@@ -15,14 +15,21 @@ var stompClient = null;
 
 function RtcChat({chat}) {
 
+    let [ratio, setRatio] = useState(1)
+
     let [graphColor, setGraphColor] = useState("#ffffff");
     let [graphType, setGraphType] = useState("Line");
     let [formulaFirst, setFormulaFirst] = useState("");
     let [formulaSecond, setFormulaSecond] = useState("");
     let [formulaThird, setFormulaThird] = useState("");
 
-    let [viewPointX, setViewPointX] = useState([-3,3])
-    let [viewPointY, setViewPointY] = useState([-3,3])
+    let [viewPointX, setViewPointX] = useState([-5, 5])
+    let [viewPointY, setViewPointY] = useState([-5, 5])
+    //  -2 2 -2 2
+    // -187 -222 345 490
+    // -5 5 -5 5
+    // -173 -245 345 490 -> -460 -460
+
 
     let [graphInfo, setGraphInfo] = useState([]);
     let [graphList, setGraphList] = useState([]);
@@ -53,7 +60,8 @@ function RtcChat({chat}) {
         // }
     }, []);
 
-    useEffect(()=>{},[graphList])
+    useEffect(() => {
+    }, [graphList])
 
     function sendGraphInfo(graphList) {
         if (stompClient) {
@@ -67,23 +75,34 @@ function RtcChat({chat}) {
             )
         }
     }
+
+    function sendRatio(ratio) {
+        if (stompClient) {
+            stompClient.send("/pub/chat/sendMessage", {},
+                JSON.stringify({
+                    roomId: chat.roomId,
+                    sender: user.nickName,
+                    message: ratio,
+                    type: 'DRAW_RATIO'
+                })
+            )
+        }
+    }
+
     // sendGraphInfo()
     function rerenderGraph(payload) {
-        console.log("메세지 수신")
         let newMessage = JSON.parse(payload.body);
+        if (newMessage.sender != user.nickName) {
+            if (newMessage.type === "DRAW_RATIO") {
+                setRatio(Number(newMessage.message))
+            } else {
+                if (newMessage.message !== JSON.stringify(graphList)) {
+                    console.log("!!!!!!들어옴")
+                    setGraphList(JSON.parse(newMessage.message))
+                }else if(newMessage.message == null){
+                    setGraphList([]);
+                }
 
-        console.log(newMessage.sender)
-        console.log(user.nickName)
-
-        if(newMessage.sender != user.nickName){
-            console.log("샌더 다름")
-            console.log(newMessage.message)
-            console.log(graphList)
-            console.log(JSON.stringify(graphList))
-
-            if(newMessage.message !== JSON.stringify(graphList)){
-                console.log("리스트 두개 다름")
-                setGraphList(JSON.parse(newMessage.message))
             }
         }
     }
@@ -126,7 +145,8 @@ function RtcChat({chat}) {
                             <h2>그래프 생성기</h2>
 
                             <div>
-                                <GraphTypeButton graphType={graphType} setGraphType={setGraphType} setGraphColor={setGraphColor}/>
+                                <GraphTypeButton graphType={graphType} setGraphType={setGraphType}
+                                                 setGraphColor={setGraphColor}/>
                             </div>
                             <div className='mt-3'>
                                 <GraphInputGroup graphColor={graphColor} setGraphColor={setGraphColor}
@@ -158,13 +178,16 @@ function RtcChat({chat}) {
                                 <Col style={{height: "100%"}}>
                                     <Row style={{height: "70%"}}>
                                         <TwoDGraph roomId={chat.roomId} stompClient={stompClient}
-                                                   graphList={graphList} viewPointsX={viewPointX}
-                                                    viewPointsY={viewPointY}/>
+                                                   graphList={graphList} viewPointX={viewPointX}
+                                                   viewPointY={viewPointY} setViewPointX={setViewPointX}
+                                                   setViewPointY={setViewPointY} ratio={ratio} setRatio={setRatio}
+                                                   sendRatio={sendRatio}/>
                                     </Row>
                                     <Row className='div-shadow' style={{height: "30%", overflowY: "auto"}}>
                                         <div>
                                             <h4>그래프 리스트</h4>
-                                            <GraphList graphList={graphList} setGraphList={setGraphList} sendGraphInfo={sendGraphInfo}/>
+                                            <GraphList graphList={graphList} setGraphList={setGraphList}
+                                                       sendGraphInfo={sendGraphInfo}/>
                                         </div>
                                     </Row>
                                 </Col>

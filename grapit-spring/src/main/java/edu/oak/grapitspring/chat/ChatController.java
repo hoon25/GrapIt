@@ -39,7 +39,7 @@ public class ChatController {
         System.out.println("chat.getSender() = " + chat.getSender());
         System.out.println("chat.getMessage() = " + chat.getMessage());
 
-        chat.setMessage(chat.getSender() + " : " + chat.getMessage());
+        chat.setMessage(chat.getMessage());
         template.convertAndSend("/sub/chat/room/" + chat.getRoomId(), chat);
     }
 

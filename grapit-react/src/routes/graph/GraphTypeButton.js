@@ -4,9 +4,10 @@ import GraphList from "./GraphList";
 
 export function GraphTypeButton({graphType,setGraphType}) {
     const radios = [
-        { name: '직선', value: 'Line' },
+        { name: '일차함수', value: 'Line' },
+        { name: '이차함수', value: 'TwoD' },
         { name: '원', value: 'Circle' },
-        { name: '이차원', value: '2D' },
+        // { name: '삼각함수', value: 'Trigonometric'}
     ];
 
     return(
@@ -16,7 +17,7 @@ export function GraphTypeButton({graphType,setGraphType}) {
                 key={idx}
                 id={`radio-${idx}`}
                 type="radio"
-                variant={idx % 2 ? 'outline-success' : 'outline-danger'}
+                variant={'outline-primary'}
                 name="radio"
                 value={radio.value}
                 checked={graphType === radio.value}

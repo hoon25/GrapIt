@@ -9,16 +9,14 @@ import RTC from "./routes/RTC";
 import NavScroll from './navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LandingPage from './pages/LandingPage'
+import TestRoom from "./routes/testRoom";
 import Canvas from "./routes/Canvas";
-import RtcChat from "./routes/RtcChat";
+import {CollaborationPage} from "./routes/CollaborationPage";
 
 
 function App() {
     let user = useSelector(state => state.user);
     let chat = useSelector(state => state.chat);
-    let canvas = useSelector(state => state.canvas);
-    let dispatch = useDispatch();
-    let navigate = useNavigate();
 
     return (
         <div className="App">
@@ -30,8 +28,9 @@ function App() {
                 <Route path="/chat" element={<ChatRoom/>}/>
                 <Route path="/chat/room/msg/:roomId" element={<Chat chat={chat}/>}/>
                 <Route path="/chat/room/rtc/:roomId" element={<RTC chat={chat}/>}/>
-                <Route path="/chat/room/both/:roomId" element={<RtcChat chat={chat}/>}/>
+                <Route path="/chat/room/both/:roomId" element={<CollaborationPage chat={chat}/>}/>
                 <Route path="/chat/room/:roomId" element={<Chat chat={chat}/>}/>
+                <Route path="/chat/room/testRoom" element={<CollaborationPage/>}/>
                 <Route path="/canvas" element={<Canvas/>}/>
             </Routes>
         </div>

@@ -1,19 +1,20 @@
 import {useEffect, useState, ReactDOM, useRef, useLayoutEffect} from "react";
 import {Button, Col, Container, Form, InputGroup, Row, Tab, Tabs} from 'react-bootstrap';
 
-import styled from 'styled-components'
 import {useSelector} from "react-redux";
-import '../css/Rtcchat.css';
 import {TwoDGraph} from "./graph/TwoDGraph"
-import Canvas from "./Canvas";
 import GraphList from "./graph/GraphList";
 import {GraphTypeButton} from "./graph/GraphTypeButton";
 import {GraphInputGroup} from "./graph/GraphInputGroup";
 import SockJs from "sockjs-client";
+import {Tldraw} from "@tldraw/tldraw";
+import {useOthers, useOthersMapped, useUpdateMyPresence} from "../config/liveblocks.config";
+import Cursor from "../component/Cursor";
+import '../css/Rtcchat.css';
 
 var stompClient = null;
 
-function RtcChat({chat}) {
+function RtcChat({chat, userInfo}) {
 
     let [ratio, setRatio] = useState(1)
 
@@ -25,17 +26,12 @@ function RtcChat({chat}) {
 
     let [viewPointX, setViewPointX] = useState([-5, 5])
     let [viewPointY, setViewPointY] = useState([-5, 5])
-    //  -2 2 -2 2
-    // -187 -222 345 490
-    // -5 5 -5 5
-    // -173 -245 345 490 -> -460 -460
-
 
     let [graphInfo, setGraphInfo] = useState([]);
     let [graphList, setGraphList] = useState([]);
 
-    let [myChange, setMyChange] = useState(false);
-
+    const updateMyPresence = useUpdateMyPresence();
+    const userOther = useOthers();
 
     let user = useSelector(state => state.user);
 
@@ -96,11 +92,12 @@ function RtcChat({chat}) {
             if (newMessage.type === "DRAW_RATIO") {
                 setRatio(Number(newMessage.message))
             } else {
+                console.log(newMessage.message)
+                if (JSON.parse(newMessage.message).length === 0) {
+                    setGraphList([])
+                }
                 if (newMessage.message !== JSON.stringify(graphList)) {
-                    console.log("!!!!!!들어옴")
                     setGraphList(JSON.parse(newMessage.message))
-                }else if(newMessage.message == null){
-                    setGraphList([]);
                 }
 
             }
@@ -126,10 +123,26 @@ function RtcChat({chat}) {
         console.log(event)
     }
 
-
     return (
 
-        <Container style={{height: '100%'}}>
+        <Container style={{height: '100%'}}
+            onPointerMove={(e) =>
+                updateMyPresence({ cursor: { x: e.clientX, y: e.clientY } }
+                )}
+            onPointerLeave={() => updateMyPresence({ cursor: null })}
+        >
+
+            {userOther.map(({ connectionId, presence }) =>
+                presence.cursor ? (
+                    <Cursor
+                        key={connectionId}
+                        name={presence.userInfo.name}
+                        color={presence.userInfo.color}
+                        x={presence.cursor.x}
+                        y={presence.cursor.y}
+                    />
+                ) : null
+            )}
             <Row style={{height: '100%'}}>
                 <Col xs={3} style={{}} className='mt-5'>
                     <Row style={{height: '70%'}} className='div-shadow'>
@@ -174,7 +187,7 @@ function RtcChat({chat}) {
                             id="noanim-tab-example"
                             className="mb-3 tab_bar">
 
-                            <Tab className="" eventKey="home" title="2D그래프">
+                            <Tab className="" eventKey="home" title="2D그래프" style={{}}>
                                 <Col style={{height: "100%"}}>
                                     <Row style={{height: "70%"}}>
                                         <TwoDGraph roomId={chat.roomId} stompClient={stompClient}
@@ -192,8 +205,10 @@ function RtcChat({chat}) {
                                     </Row>
                                 </Col>
                             </Tab>
-                            <Tab className="" eventKey="profile" title="화이트보드">
-                                <Canvas/>
+                            <Tab className="" eventKey="profile" title="화이트보드" style={{position: "relative"}}>
+                                <Tldraw
+                                    disableAssets={false}
+                                />
                             </Tab>
                         </Tabs>
                     </div>

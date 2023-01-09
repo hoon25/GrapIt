@@ -26,7 +26,7 @@ function Chat({chat}) {
 
 
     useEffect(() => {
-        var sock = new SockJs('/ws-stomp');
+        var sock = new SockJs('/api/ws-stomp');
         console.log("new sockjs");
         console.log(sock);
         stompClient = Stomp.over(sock);
@@ -34,7 +34,7 @@ function Chat({chat}) {
         console.log(stompClient);
 
         stompClient.connect({}, () => {
-            stompClient.subscribe('/sub/chat/room/' + chat.roomId, onMessageReceived)
+            stompClient.subscribe('/api/sub/chat/room/' + chat.roomId, onMessageReceived)
         });
 
         console.log(stompClient.connected);
@@ -64,7 +64,7 @@ function Chat({chat}) {
         console.log(stompClient);
         console.log("메세지 전송!!!!")
         if (stompClient) {
-            stompClient.send("/pub/chat/sendMessage", {},
+            stompClient.send("/api/pub/chat/sendMessage", {},
                 JSON.stringify({
                     roomId: chat.roomId,
                     sender: user.nickName,

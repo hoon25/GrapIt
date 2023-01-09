@@ -152,7 +152,8 @@ class Vidu extends Component {
         const response = await axios.post('/api/sessions/' + sessionId + '/connections', {}, {
             headers: { 'Content-Type': 'application/json', },
         });
-        return response.data; // The token
+        let stream =null;
+        stream = await navigator.mediaDevices.getUserMedia({audio:true, video:true});        return response.data; // The token
     }
 }
 

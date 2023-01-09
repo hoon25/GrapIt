@@ -19,7 +19,7 @@ export function LogIn() {
     function login(event) {
         // form으로 submit할 경우 redirect 방지
         event.preventDefault();
-        axios.post("/login", {
+        axios.post("/api/login", {
             email: email,
             passwd: password
         }).then(res => {
@@ -137,7 +137,7 @@ export function LogOut() {
     let dispatch = useDispatch();
     let navigate = useNavigate();
 
-    axios.get("/logout").then(res => {
+    axios.get("/api/logout").then(res => {
         console.log(res.data);
         dispatch(setUser({email: null, nickName: null}));
         navigate("/");

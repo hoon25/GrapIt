@@ -18,7 +18,7 @@ function ChatRoomList() {
     // getAllChatRoom();
 
     function getAllChatRoom() {
-        axios.get("/chat").then(res => {
+        axios.get("/api/chat").then(res => {
             setChatList(res.data);
             console.log(res.data)
         });
@@ -42,7 +42,7 @@ function ChatRoomList() {
                    name='chatRoomType'
                    value='video' onClick={() => setCreateRoomType("BOTH")}/> 텍스트영상채팅
             <Button variant="danger" style={{float: "right"}}
-                    onClick={() => axios.post("/chat/room", {"chatType": createRoomType})
+                    onClick={() => axios.post("/api/chat/room", {"chatType": createRoomType})
                         .then(() => getAllChatRoom())}>
                 채팅방 생성하기
             </Button>

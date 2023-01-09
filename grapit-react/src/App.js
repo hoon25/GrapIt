@@ -11,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import LandingPage from './pages/LandingPage'
 import Canvas from "./routes/Canvas";
 import RtcChat from "./routes/RtcChat";
+import TestVidu from "./routes/TestVidu";
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
                 <Route path="/chat/room/both/:roomId" element={<RtcChat chat={chat}/>}/>
                 <Route path="/chat/room/:roomId" element={<Chat chat={chat}/>}/>
                 <Route path="/canvas" element={<Canvas/>}/>
+                <Route path="/vidu" element={<TestVidu/>}/>
             </Routes>
         </div>
     );

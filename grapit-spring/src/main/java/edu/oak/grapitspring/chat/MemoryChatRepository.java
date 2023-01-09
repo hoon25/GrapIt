@@ -27,12 +27,14 @@ public class MemoryChatRepository implements ChatRepository {
         ChatRoom testChatRoom3 = new ChatRoom().create("윈터 선생님의 영상 채팅방", ChatRoom.ChatType.RTC);
         ChatRoom testChatRoom4 = new ChatRoom().create("김수로 선생님의 영상 채팅방", ChatRoom.ChatType.RTC);
         ChatRoom testChatRoom5 = new ChatRoom().create("장범원 선생님의 문자 채팅방", ChatRoom.ChatType.MSG);
+        ChatRoom testChatRoom6 = new ChatRoom().create("테스터 선생님의 문자 채팅방", ChatRoom.ChatType.BOTH);
 
         chatRoomMap.put(testChatRoom1.getRoomId(), testChatRoom1);
         chatRoomMap.put(testChatRoom2.getRoomId(), testChatRoom2);
         chatRoomMap.put(testChatRoom3.getRoomId(), testChatRoom3);
         chatRoomMap.put(testChatRoom4.getRoomId(), testChatRoom4);
         chatRoomMap.put(testChatRoom5.getRoomId(), testChatRoom5);
+        chatRoomMap.put(testChatRoom6.getRoomId(), testChatRoom6);
     }
 
     @Override

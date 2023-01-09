@@ -33,6 +33,7 @@ function App() {
                 <Route path="/chat/room/both/:roomId" element={<CollaborationPage chat={chat}/>}/>
                 <Route path="/chat/room/:roomId" element={<Chat chat={chat}/>}/>
                 <Route path="/canvas" element={<Canvas/>}/>
+                <Route path="/vidu" element={<Vidu/>}/>
             </Routes>
         </div>
     );

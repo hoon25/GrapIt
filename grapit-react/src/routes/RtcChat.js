@@ -7,14 +7,14 @@ import GraphList from "./graph/GraphList";
 import {GraphTypeButton} from "./graph/GraphTypeButton";
 import {GraphInputGroup} from "./graph/GraphInputGroup";
 import SockJs from "sockjs-client";
-import {Tldraw} from "@tldraw/tldraw";
-import {useOthers, useOthersMapped, useUpdateMyPresence} from "../config/liveblocks.config";
-import Cursor from "../component/Cursor";
 import '../css/Rtcchat.css';
+import Vidu from "./vidu/Vidu";
+import {useOthers, useUpdateMyPresence} from "../config/liveblocks.config";
+import Canvas from "./Canvas";
 
 var stompClient = null;
 
-function RtcChat({chat, userInfo}) {
+function RtcChat({chat}) {
 
     let [ratio, setRatio] = useState(1)
 
@@ -92,12 +92,11 @@ function RtcChat({chat, userInfo}) {
             if (newMessage.type === "DRAW_RATIO") {
                 setRatio(Number(newMessage.message))
             } else {
-                console.log(newMessage.message)
-                if (JSON.parse(newMessage.message).length === 0) {
-                    setGraphList([])
-                }
                 if (newMessage.message !== JSON.stringify(graphList)) {
+                    console.log("!!!!!!들어옴")
                     setGraphList(JSON.parse(newMessage.message))
+                }else if(newMessage.message == null){
+                    setGraphList([]);
                 }
 
             }
@@ -122,6 +121,7 @@ function RtcChat({chat, userInfo}) {
         console.log("스크롤링 ")
         console.log(event)
     }
+
 
     return (
 
@@ -148,6 +148,7 @@ function RtcChat({chat, userInfo}) {
                     <Row style={{height: '70%'}} className='div-shadow'>
                         <div style={{overflowX: "auto"}}>
                             <h4>영상 채팅</h4>
+                            <Vidu user={user} chat={chat}/>
                         </div>
                     </Row>
 
@@ -187,7 +188,7 @@ function RtcChat({chat, userInfo}) {
                             id="noanim-tab-example"
                             className="mb-3 tab_bar">
 
-                            <Tab className="" eventKey="home" title="2D그래프" style={{}}>
+                            <Tab className="" eventKey="home" title="2D그래프">
                                 <Col style={{height: "100%"}}>
                                     <Row style={{height: "70%"}}>
                                         <TwoDGraph roomId={chat.roomId} stompClient={stompClient}
@@ -205,10 +206,8 @@ function RtcChat({chat, userInfo}) {
                                     </Row>
                                 </Col>
                             </Tab>
-                            <Tab className="" eventKey="profile" title="화이트보드" style={{position: "relative"}}>
-                                <Tldraw
-                                    disableAssets={false}
-                                />
+                            <Tab className="" eventKey="profile" title="화이트보드">
+                                <Canvas/>
                             </Tab>
                         </Tabs>
                     </div>

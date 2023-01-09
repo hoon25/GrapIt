@@ -10,6 +10,7 @@ import GraphList from "./graph/GraphList";
 import {GraphTypeButton} from "./graph/GraphTypeButton";
 import {GraphInputGroup} from "./graph/GraphInputGroup";
 import SockJs from "sockjs-client";
+import Vidu from "./Vidu";
 
 var stompClient = null;
 
@@ -135,6 +136,7 @@ function RtcChat({chat}) {
                     <Row style={{height: '70%'}} className='div-shadow'>
                         <div style={{overflowX: "auto"}}>
                             <h4>영상 채팅</h4>
+                            <Vidu user={user} chat={chat}/>
                         </div>
                     </Row>
 

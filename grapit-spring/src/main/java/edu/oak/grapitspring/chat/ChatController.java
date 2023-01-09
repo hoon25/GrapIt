@@ -30,7 +30,7 @@ public class ChatController {
         headerAccessor.getSessionAttributes().put("roomId", chat.getRoomId());
 
         chat.setMessage(chat.getSender() + " 님 입장!!");
-        template.convertAndSend("/sub/chat/room/" + chat.getRoomId(), chat);
+        template.convertAndSend("/api/sub/chat/room/" + chat.getRoomId(), chat);
     }
 
     @MessageMapping("/chat/sendMessage")
@@ -40,7 +40,7 @@ public class ChatController {
         System.out.println("chat.getMessage() = " + chat.getMessage());
 
         chat.setMessage(chat.getMessage());
-        template.convertAndSend("/sub/chat/room/" + chat.getRoomId(), chat);
+        template.convertAndSend("/api/sub/chat/room/" + chat.getRoomId(), chat);
     }
 
     @EventListener
@@ -56,7 +56,7 @@ public class ChatController {
             ChatDTO chat = ChatDTO.builder().roomId(roomId).sender(userNickName)
                     .message(userNickName + " 님이 퇴장하셨습니다.")
                     .build();
-            template.convertAndSend("/sub/chat/room/" + roomId, chat);
+            template.convertAndSend("/api/sub/chat/room/" + roomId, chat);
         }
     }
 

@@ -1,20 +1,21 @@
 import {useEffect, useState, ReactDOM, useRef, useLayoutEffect} from "react";
 import {Button, Col, Container, Form, InputGroup, Row, Tab, Tabs} from 'react-bootstrap';
 
-import { useSelector } from 'react-redux';
-import { TwoDGraph } from './graph/TwoDGraph';
-import Canvas from './Canvas';
-import GraphList from './graph/GraphList';
-import { GraphTypeButton } from './graph/GraphTypeButton';
-import { GraphInputGroup } from './graph/GraphInputGroup';
-import SockJs from 'sockjs-client';
-import Vidu from './vidu/Vidu';
+import {useSelector} from "react-redux";
+import {TwoDGraph} from "./graph/TwoDGraph"
+import GraphList from "./graph/GraphList";
+import {GraphTypeButton} from "./graph/GraphTypeButton";
+import {GraphInputGroup} from "./graph/GraphInputGroup";
+import SockJs from "sockjs-client";
+import Vidu from "./Vidu";
+import {Tldraw} from "@tldraw/tldraw";
+import {useOthers, useOthersMapped, useUpdateMyPresence} from "../config/liveblocks.config";
+import Cursor from "../component/Cursor";
 import '../css/Rtcchat.css';
-import {useOthers, useUpdateMyPresence} from "../config/liveblocks.config";
 
 var stompClient = null;
 
-function RtcChat({chat}) {
+function RtcChat({chat, userInfo}) {
 
     let [ratio, setRatio] = useState(1)
 
@@ -38,54 +39,52 @@ function RtcChat({chat}) {
   // 동기화 소켓 통신
   var Stomp = require('stompjs/lib/stomp.js').Stomp;
 
-  useEffect(() => {
-    var sock = new SockJs('/sock/ws-stomp');
-    stompClient = Stomp.over(sock);
-    stompClient.connect({}, () => {
-      stompClient.subscribe('/sock/sub/chat/room/' + chat.roomId, rerenderGraph);
-    });
-    // if(stompClient.connected) {
-    //     console.log("stompClient connected!!!");
-    //     stompClient.send("/pub/chat/enterUser", {},
-    //         JSON.stringify({
-    //             roomId: chat.roomId,
-    //             sender: user.nickName,
-    //             type: 'ENTER'
-    //         })
-    //     )
-    // }
-  }, []);
+    useEffect(() => {
+        var sock = new SockJs('/api/ws-stomp');
+        stompClient = Stomp.over(sock);
+        stompClient.connect({}, () => {
+            stompClient.subscribe('/api/sub/chat/room/' + chat.roomId, rerenderGraph)
+        });
+        // if(stompClient.connected) {
+        //     console.log("stompClient connected!!!");
+        //     stompClient.send("/pub/chat/enterUser", {},
+        //         JSON.stringify({
+        //             roomId: chat.roomId,
+        //             sender: user.nickName,
+        //             type: 'ENTER'
+        //         })
+        //     )
+        // }
+    }, []);
 
+    useEffect(() => {
+    }, [graphList])
 
-  function sendGraphInfo(graphList) {
-    if (stompClient) {
-      stompClient.send(
-        '/sock/pub/chat/sendMessage',
-        {},
-        JSON.stringify({
-          roomId: chat.roomId,
-          sender: user.nickName,
-          message: JSON.stringify(graphList),
-          type: 'DRAW',
-        }),
-      );
+    function sendGraphInfo(graphList) {
+        if (stompClient) {
+            stompClient.send("/api/pub/chat/sendMessage", {},
+                JSON.stringify({
+                    roomId: chat.roomId,
+                    sender: user.nickName,
+                    message: JSON.stringify(graphList),
+                    type: 'DRAW'
+                })
+            )
+        }
     }
-  }
 
-  function sendRatio(ratio) {
-    if (stompClient) {
-      stompClient.send(
-        '/sock/pub/chat/sendMessage',
-        {},
-        JSON.stringify({
-          roomId: chat.roomId,
-          sender: user.nickName,
-          message: ratio,
-          type: 'DRAW_RATIO',
-        }),
-      );
+    function sendRatio(ratio) {
+        if (stompClient) {
+            stompClient.send("/api/pub/chat/sendMessage", {},
+                JSON.stringify({
+                    roomId: chat.roomId,
+                    sender: user.nickName,
+                    message: ratio,
+                    type: 'DRAW_RATIO'
+                })
+            )
+        }
     }
-  }
 
     // sendGraphInfo()
     function rerenderGraph(payload) {
@@ -108,15 +107,16 @@ function RtcChat({chat}) {
 
     //=====================================================
 
-  const handleKeyDown = event => {
-    if (event.key === 'Enter') {
-      // Do something when the Enter key is pressed
-    }
-  };
 
-  const handler = event => {
-    event.preventDefault();
-  };
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            // Do something when the Enter key is pressed
+        }
+    };
+
+    const handler = (event) => {
+        event.preventDefault();
+    };
 
     const scrollHandler = (event) => {
         event.preventDefault();
@@ -153,9 +153,11 @@ function RtcChat({chat}) {
                         </div>
                     </Row>
 
-          <Row style={{ height: '30%' }}>
-            <div style={{ display: '' }} className="div-shadow">
-              <h2>그래프 생성기</h2>
+                    <Row style={{height: "30%"}}>
+
+                        <div style={{display: ""}} className='div-shadow'>
+
+                            <h2>그래프 생성기</h2>
 
                             <div>
                                 <GraphTypeButton graphType={graphType} setGraphType={setGraphType}

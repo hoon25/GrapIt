@@ -10,6 +10,8 @@ export default class UserVideoComponent extends Component {
     }
 
     render() {
+        console.log("비디오 화면 리 랜더링");
+        console.log(this.props.streamManager);
         return (
             <>
             <div><p>{this.getNicknameTag()}</p></div>

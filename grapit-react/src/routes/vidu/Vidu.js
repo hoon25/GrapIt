@@ -12,12 +12,14 @@ function Vidu({user, chat}) {
     let chatRoomName = chat.roomName;
     let OV = undefined;
 
-    let [session, setSession] = useState(undefined);
-    let [mainStreamManager, setMainStreamManager] = useState(undefined);
-    let [publisher, setPublisher] = useState(undefined);
-    let [currentVideoDevice, setCurrentVideoDevice] = useState(undefined);
-    let [token, setToken] = useState(undefined);
-    let [subscribers, setSubscribers] = useState([]);
+    const [session, setSession] = useState(undefined);
+    const [mainStreamManager, setMainStreamManager] = useState(undefined);
+    const [publisher, setPublisher] = useState(undefined);
+    const [currentVideoDevice, setCurrentVideoDevice] = useState(undefined);
+    const [token, setToken] = useState(undefined);
+    const [subscribers, setSubscribers] = useState([]);
+    const [date, setDate] = useState(new Date());
+
 
 
     function handleMainVideoStream(stream) {
@@ -30,12 +32,15 @@ function Vidu({user, chat}) {
         console.log("deleteSubscriber!!");
         console.log(streamManager);
         console.log(subscribers);
-        let subscribersCopy = subscribers;
+        let subscribersCopy = [...subscribers];
         let index = subscribersCopy.indexOf(streamManager, 0);
+        console.log(index+"번째 삭제");
         if (index > -1) {
+            console.log("실제 삭제!!")
             subscribersCopy.splice(index, 1);
             setSubscribers(subscribersCopy);
         }
+
     }
 
     function onbeforeunload(event) {
@@ -45,6 +50,7 @@ function Vidu({user, chat}) {
 
 
     async function joinSession() {
+        console.log("JOINSESSION start!")
         // --- 1) Get an OpenVidu object ---
         OV = new OpenVidu();
 
@@ -56,13 +62,22 @@ function Vidu({user, chat}) {
         // --- 3) Specify the actions when events take place in the session ---
         // On every new Stream received...
         mySession.on('streamCreated', (event) => {
-            var subscriber = mySession.subscribe(event.stream, undefined);
+            console.log("stream 들어옴");
+            let subscriber = mySession.subscribe(event.stream, undefined);
+
             setSubscribers(subscribers => [...subscribers, subscriber]);
+
+            console.log("INPUT 시 subscribersCopy")
+
         });
 
         // On every Stream destroyed...
         mySession.on('streamDestroyed', (event) => {
-            deleteSubscriber(event.stream.streamManager);
+            console.log(date);
+            console.log(subscribers);
+            setSubscribers(subscribers => subscribers.filter(subscriber => subscriber.stream !== event.stream));
+
+            // deleteSubscriber(event.stream.streamManager);
         });
 
         // On every asynchronous exception...
@@ -144,47 +159,24 @@ function Vidu({user, chat}) {
         <div className="container">
             {chatRoomId !== undefined ? (
                 <div id="session">
-
-                    {/*<div id="session-header">*/}
-                    {/*    <h1 id="session-title">{chatRoomName}</h1>*/}
-                    {/*    <input*/}
-                    {/*        className="btn btn-large btn-danger"*/}
-                    {/*        type="button"*/}
-                    {/*        id="buttonLeaveSession"*/}
-                    {/*        onClick={leaveSession}*/}
-                    {/*        value="Leave session"*/}
-                    {/*    />*/}
-                    {/*</div>*/}
-
-                    {/*{mainStreamManager !== undefined ? (*/}
-                    {/*    <div id="main-video" className="col-md-6">*/}
-                    {/*        <UserVideoComponent streamManager={mainStreamManager} />*/}
-                    {/*        <input*/}
-                    {/*            className="btn btn-large btn-success"*/}
-                    {/*            type="button"*/}
-                    {/*            id="buttonSwitchCamera"*/}
-                    {/*            onClick={this.switchCamera}*/}
-                    {/*            value="Switch Camera"*/}
-                    {/*        />*/}
-                    {/*    </div>*/}
-                    {/*) : null}*/}
                     <div id="video-container" className="col-md-12">
                         {publisher !== undefined ? (
-                            <div className="stream-container col-md-6 col-xs-6"
+                            <div className="stream-container col-md-12 col-xs-6"
                                  // onClick={() => handleMainVideoStream(publisher)}
                             >
                                 <UserVideoComponent
                                     streamManager={publisher}/>
                             </div>
                         ) : null}
-                        <br></br>
-                        <br></br>
                         {subscribers.map((sub, i) => (
-                            <div key={i} className="stream-container col-md-6 col-xs-6"
+                            <>
+                            <>{sub.stream.connection.data}</>
+                            <div key={i} className="stream-container col-md-12 col-xs-6"
                                  // onClick={() => handleMainVideoStream(sub)}
                             >
                                 <UserVideoComponent streamManager={sub}/>
                             </div>
+                            </>
                         ))}
                     </div>
                 </div>

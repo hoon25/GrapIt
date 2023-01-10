@@ -1,7 +1,7 @@
 import { OpenVidu } from 'openvidu-browser';
 
 import React, { Component } from 'react';
-import './App.css';
+import './Vidu.css';
 import UserVideoComponent from './UserVideoComponent';
 import axios from 'axios';
 

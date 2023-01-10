@@ -1,16 +1,17 @@
 import {useEffect, useState, ReactDOM, useRef, useLayoutEffect} from "react";
 import {Button, Col, Container, Form, InputGroup, Row, Tab, Tabs} from 'react-bootstrap';
 
+import styled from 'styled-components'
 import {useSelector} from "react-redux";
+import '../css/Rtcchat.css';
 import {TwoDGraph} from "./graph/TwoDGraph"
+import Canvas from "./Canvas";
 import GraphList from "./graph/GraphList";
 import {GraphTypeButton} from "./graph/GraphTypeButton";
 import {GraphInputGroup} from "./graph/GraphInputGroup";
 import SockJs from "sockjs-client";
 import '../css/Rtcchat.css';
 import Vidu from "./vidu/Vidu";
-import {useOthers, useUpdateMyPresence} from "../config/liveblocks.config";
-import Canvas from "./Canvas";
 
 var stompClient = null;
 
@@ -26,6 +27,11 @@ function RtcChat({chat}) {
 
     let [viewPointX, setViewPointX] = useState([-5, 5])
     let [viewPointY, setViewPointY] = useState([-5, 5])
+    //  -2 2 -2 2
+    // -187 -222 345 490
+    // -5 5 -5 5
+    // -173 -245 345 490 -> -460 -460
+
 
     let [graphInfo, setGraphInfo] = useState([]);
     let [graphList, setGraphList] = useState([]);

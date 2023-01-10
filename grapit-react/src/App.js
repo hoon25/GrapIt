@@ -11,6 +11,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import LandingPage from './pages/LandingPage'
 import Canvas from "./routes/Canvas";
 import {CollaborationPage} from "./routes/CollaborationPage";
+import RtcChat from "./routes/RtcChat";
+import Vidu from "./routes/vidu/Vidu";
 
 
 function App() {

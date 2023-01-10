@@ -11,7 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import LandingPage from './pages/LandingPage'
 import Canvas from "./routes/Canvas";
 import RtcChat from "./routes/RtcChat";
-import TestVidu from "./routes/TestVidu";
+import TestVidu from "./routes/vidu/TestVidu";
 
 
 function App() {

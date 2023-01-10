@@ -10,7 +10,7 @@ import GraphList from "./graph/GraphList";
 import {GraphTypeButton} from "./graph/GraphTypeButton";
 import {GraphInputGroup} from "./graph/GraphInputGroup";
 import SockJs from "sockjs-client";
-import Vidu from "./Vidu";
+import Vidu from "./vidu/Vidu";
 
 var stompClient = null;
 

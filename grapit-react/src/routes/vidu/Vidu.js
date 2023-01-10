@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {OpenVidu} from 'openvidu-browser';
-import './App.css';
+import './Vidu.css';
 import UserVideoComponent from "./UserVideoComponent";
 import axios from "axios";
 
@@ -16,10 +16,7 @@ function Vidu({user, chat}) {
     const [mainStreamManager, setMainStreamManager] = useState(undefined);
     const [publisher, setPublisher] = useState(undefined);
     const [currentVideoDevice, setCurrentVideoDevice] = useState(undefined);
-    const [token, setToken] = useState(undefined);
     const [subscribers, setSubscribers] = useState([]);
-    const [date, setDate] = useState(new Date());
-
 
 
     function handleMainVideoStream(stream) {
@@ -28,29 +25,11 @@ function Vidu({user, chat}) {
         }
     }
 
-    function deleteSubscriber(streamManager) {
-        console.log("deleteSubscriber!!");
-        console.log(streamManager);
-        console.log(subscribers);
-        let subscribersCopy = [...subscribers];
-        let index = subscribersCopy.indexOf(streamManager, 0);
-        console.log(index+"번째 삭제");
-        if (index > -1) {
-            console.log("실제 삭제!!")
-            subscribersCopy.splice(index, 1);
-            setSubscribers(subscribersCopy);
-        }
-
-    }
-
     function onbeforeunload(event) {
         leaveSession();
     }
 
-
-
     async function joinSession() {
-        console.log("JOINSESSION start!")
         // --- 1) Get an OpenVidu object ---
         OV = new OpenVidu();
 
@@ -62,22 +41,14 @@ function Vidu({user, chat}) {
         // --- 3) Specify the actions when events take place in the session ---
         // On every new Stream received...
         mySession.on('streamCreated', (event) => {
-            console.log("stream 들어옴");
             let subscriber = mySession.subscribe(event.stream, undefined);
 
             setSubscribers(subscribers => [...subscribers, subscriber]);
-
-            console.log("INPUT 시 subscribersCopy")
-
         });
 
         // On every Stream destroyed...
         mySession.on('streamDestroyed', (event) => {
-            console.log(date);
-            console.log(subscribers);
             setSubscribers(subscribers => subscribers.filter(subscriber => subscriber.stream !== event.stream));
-
-            // deleteSubscriber(event.stream.streamManager);
         });
 
         // On every asynchronous exception...
@@ -145,7 +116,6 @@ function Vidu({user, chat}) {
     }
 
     useEffect(() => {
-        console.log("useEFFECT");
         window.addEventListener('beforeunload', onbeforeunload);
         joinSession();
 
@@ -169,23 +139,17 @@ function Vidu({user, chat}) {
                             </div>
                         ) : null}
                         {subscribers.map((sub, i) => (
-                            <>
-                            <>{sub.stream.connection.data}</>
                             <div key={i} className="stream-container col-md-12 col-xs-6"
                                  // onClick={() => handleMainVideoStream(sub)}
                             >
                                 <UserVideoComponent streamManager={sub}/>
                             </div>
-                            </>
                         ))}
                     </div>
                 </div>
             ) : null}
         </div>
     )
-
-
-
 
     async function getToken(chatRoomId) {
         const sessionId = await createSession(chatRoomId);

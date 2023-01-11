@@ -37,7 +37,7 @@ Docker
 **GitLab-Flow**
 
 - Feature
-  - `feature/#issue_number`
+  - `feature/#issue_number/user_name`
 - Development
   - `develop`
 - Master

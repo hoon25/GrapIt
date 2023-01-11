@@ -13,7 +13,7 @@ function NavScroll() {
     let navigate = useNavigate();
     return (
         // <Navbar bg="dark" expand="lg" variant="dark">
-        <Navbar bg="light" expand="lg">
+        <Navbar bg="white" expand="lg">
             <Container fluid>
                 <Navbar.Brand href="/">PytaGrapIt</Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbarScroll"/>
@@ -22,12 +22,13 @@ function NavScroll() {
                         className="me-auto my-2 my-lg-0"
                         style={{maxHeight: '100px'}}
                         navbarScroll>
-                        <Nav.Link onClick={() => navigate("/")}>Home</Nav.Link>
-                        <Nav.Link href="#action2">Graph</Nav.Link>
+
+                        
                         <Nav.Link onClick={() => navigate("/chat")}>Chatting</Nav.Link>
-                        <Nav.Link href="#action4">영상</Nav.Link>
+                       
                         <Nav.Link onClick={() => navigate("/canvas")}>Canvas</Nav.Link>
                         <Nav.Link onClick={() => navigate("/vidu")}>Vidu</Nav.Link>
+                        <Nav.Link onClick={() => navigate("/")}>Find teacher</Nav.Link>
                         <NavDropdown title="3D" id="navbarScrollingDropdown">
                             <NavDropdown.Item href="#action5">2D</NavDropdown.Item>
                             <NavDropdown.Item href="#action6">
@@ -41,15 +42,11 @@ function NavScroll() {
 
 
                     </Nav>
-                    <Form className="d-flex">
-                        <Form.Control
-                            type="search"
-                            placeholder="Search"
-                            className="me-2"
-                            aria-label="Search"
-                        />
-                        <Button variant="outline-success">Search</Button>
-                    </Form>
+                    
+                   
+
+                    
+                    
 
                     <Nav>
                         {

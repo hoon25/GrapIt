@@ -1,4 +1,4 @@
-package edu.oak.grapitspring.chat;
+package edu.oak.grapitsocket.textchat;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,6 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 public class ChatController {
 
     private final SimpMessageSendingOperations template;
-    private final ChatService chatService;
 
     //Client가 SEND할 수 있는 경로
     //stompConfig에서 설정한 applicationDestinationPrefixes와 @MessageMapping 경로가 병합됨
@@ -40,7 +39,7 @@ public class ChatController {
         System.out.println("chat.getMessage() = " + chat.getMessage());
 
         chat.setMessage(chat.getMessage());
-        template.convertAndSend("/api/sub/chat/room/" + chat.getRoomId(), chat);
+        template.convertAndSend("/sock/sub/chat/room/" + chat.getRoomId(), chat);
     }
 
     @EventListener
@@ -54,9 +53,9 @@ public class ChatController {
         if (userNickName != null) {
             log.info("User Disconnected : " + userNickName);
             ChatDTO chat = ChatDTO.builder().roomId(roomId).sender(userNickName)
-                    .message(userNickName + " 님이 퇴장하셨습니다.")
-                    .build();
-            template.convertAndSend("/api/sub/chat/room/" + roomId, chat);
+                .message(userNickName + " 님이 퇴장하셨습니다.")
+                .build();
+            template.convertAndSend("/sock/sub/chat/room/" + roomId, chat);
         }
     }
 

@@ -1,4 +1,4 @@
-package edu.oak.grapitspring.chat;
+package edu.oak.grapitsocket.textchat;
 
 import lombok.Builder;
 import lombok.Data;

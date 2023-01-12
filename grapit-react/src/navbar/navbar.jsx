@@ -45,8 +45,6 @@ function NavScroll() {
                 {user.nickName} 로그아웃
               </Nav.Link>
             )}
-            {/*<Nav.Link href="/login">로그인</Nav.Link>*/}
-            {/*<Nav.Link href="/logout">로그아웃</Nav.Link>*/}
           </Nav>
         </Navbar.Collapse>
       </Container>

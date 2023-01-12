@@ -1,32 +1,35 @@
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
 }
 
-.div-shadow{
-    box-shadow: rgb(0 0 0 / 16%) 2px 2px 30px;
-    border-radius: 8px;
-    background-color: white;
+.div-shadow {
+  box-shadow: rgb(0 0 0 / 16%) 2px 2px 30px;
+  border-radius: 8px;
+  background-color: white;
 }
 
-.questioncontent{
-    opacity: 1;
+.questioncontent {
+  opacity: 1;
+  width: 100%;
+  height: 100%;
 }
 
-.test-child{
-    position:absolute;
+.test-child {
+  position: absolute;
 }
 
-.tab_bar{
-    position: absolute;
-    top: 70px;
-    z-index: 0;
-    border: none;
+.tab_bar {
+  position: absolute;
+  top: 70px;
+  z-index: 0;
+  border: none;
 }
 
-.tab-content, .tab-pane{
-    height: 100%;
-    z-index: 1;
+.tab-content,
+.tab-pane {
+  height: 100%;
+  z-index: 1;
 }
 
 .tab-parent{
@@ -42,10 +45,9 @@ input[type=number]::-webkit-outer-spin-button {
 /*    stroke: gray;*/
 /*}*/
 
-
-.MafsView{
-    /*--mafs-bg: #ffd;*/
-    /*--mafs-fg: black;*/
-    /*--mafs-line-color: #555;*/
-    /*--grid-line-subdivision-color: #222;*/
+.MafsView {
+  /*--mafs-bg: #ffd;*/
+  /*--mafs-fg: black;*/
+  /*--mafs-line-color: #555;*/
+  /*--grid-line-subdivision-color: #222;*/
 }

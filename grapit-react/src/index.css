@@ -1,8 +1,5 @@
-html,
-body,
-#app,
-#app > div {
-  height: 100%;
+html, body, #app, #app>div {
+    height: 100%
 }
 
 body > #root > div {
@@ -21,4 +18,33 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/*for vidu /*/
+.React-logo {
+  height: 50px;
+  position: absolute;
+  right: 0;
+}
+
+.App-logo {
+  height: 25px;
+  position: absolute;
+  left: 0;
+  padding: 10px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 50px;
+  color: white;
+}
+
+.mainLogo {
+  width: 450px;
+}
+
+#title {
+  text-align: center;
+  height: 100%;
 }

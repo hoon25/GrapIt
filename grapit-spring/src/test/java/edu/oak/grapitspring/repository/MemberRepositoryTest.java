@@ -15,7 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @WebAppConfiguration
 @SpringBootTest
-@Transactional
 class MemberRepositoryTest {
 
     @Autowired
@@ -29,6 +28,7 @@ class MemberRepositoryTest {
     }
 
     @Test
+    @Transactional
     public void insertMember_AutoIncrementId() {
         //given
         //when
@@ -38,6 +38,7 @@ class MemberRepositoryTest {
     }
 
     @Test
+    @Transactional
     public void insertMember_Save() {
         //given
         //when

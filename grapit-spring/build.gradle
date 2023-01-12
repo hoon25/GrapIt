@@ -20,15 +20,31 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-
+	// jpa
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	// validation
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	// WebSocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+	// mysql
+	implementation 'mysql:mysql-connector-java'
+
+	// jaspyt 암복호화
+//	implementation 'org.jasypt:jasypt-spring-boot-starter:3.0.3'
+	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:1.16'
+
 	// sockjs
 	implementation 'org.webjars:sockjs-client:1.5.1'
 	// stomp
 	implementation 'org.webjars:stomp-websocket:2.3.4'
 	// gson
 	implementation 'com.google.code.gson:gson:2.9.0'
+
+	// openvidu
+//	implementation 'io.openvidu:openvidu-basic-java:2.25.0'
+	implementation 'io.openvidu:openvidu-java-client:2.25.0'
+
 
 
 	compileOnly 'org.projectlombok:lombok'

@@ -20,7 +20,7 @@ export function LogIn() {
     axios
       .post('/api/login', {
         email: email,
-        passwd: password,
+        password: password,
       })
       .then(res => {
         console.log(res.data);

@@ -42,13 +42,12 @@ dependencies {
 	implementation 'com.google.code.gson:gson:2.9.0'
 
 	// openvidu
-//	implementation 'io.openvidu:openvidu-basic-java:2.25.0'
 	implementation 'io.openvidu:openvidu-java-client:2.25.0'
 
-
-
+	//lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

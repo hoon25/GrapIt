@@ -1,8 +1,7 @@
 package edu.oak.grapitspring.chat;
 
 
-import edu.oak.grapitspring.user.UserEntity;
-import edu.oak.grapitspring.user.UserService;
+import edu.oak.grapitspring.domain.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +18,6 @@ import java.util.Random;
 public class ChatRoomController {
 
     private final ChatService chatService;
-    private final UserService userService;
 
     /*
     채팅방 전체 목록
@@ -57,11 +55,11 @@ public class ChatRoomController {
             }
 
         } else {
-            UserEntity userEntity = (UserEntity) session.getAttribute("user");
+            Member member = (Member) session.getAttribute("member");
             if (chatRoom.getChatType() == ChatRoom.ChatType.MSG) {
-                chatService.createRoom(userEntity.getNickName() + "의 문자 채팅방", chatRoom.getChatType());
+                chatService.createRoom(member.getNickName() + "의 문자 채팅방", chatRoom.getChatType());
             } else {
-                chatService.createRoom(userEntity.getNickName() + "의 영상 채팅방", chatRoom.getChatType());
+                chatService.createRoom(member.getNickName() + "의 영상 채팅방", chatRoom.getChatType());
             }
         }
         return ResponseEntity.ok().build();

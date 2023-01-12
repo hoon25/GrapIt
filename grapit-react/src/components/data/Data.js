@@ -23,16 +23,16 @@ export const nav = [
 
     path: '/teacher',
   },
-  {
-    text: 'Login',
-
-    path: '/Login',
-  },
-  {
-    text: 'Logout',
-
-    path: '/Logout',
-  },
+  // {
+  //   text: 'Login',
+  //
+  //   path: '/login',
+  // },
+  // {
+  //   text: 'Logout',
+  //
+  //   path: '/logout',
+  // },
 ];
 export const featured = [
   {

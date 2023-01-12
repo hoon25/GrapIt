@@ -50,10 +50,10 @@ function RtcChat({ chat }) {
   var Stomp = require('stompjs/lib/stomp.js').Stomp;
 
   useEffect(() => {
-    var sock = new SockJs('/api/ws-stomp');
+    var sock = new SockJs('/sock/ws-stomp');
     stompClient = Stomp.over(sock);
     stompClient.connect({}, () => {
-      stompClient.subscribe('/api/sub/chat/room/' + chat.roomId, rerenderGraph);
+      stompClient.subscribe('/sock/sub/chat/room/' + chat.roomId, rerenderGraph);
     });
     // if(stompClient.connected) {
     //     console.log("stompClient connected!!!");
@@ -72,7 +72,7 @@ function RtcChat({ chat }) {
   function sendGraphInfo(graphList) {
     if (stompClient) {
       stompClient.send(
-        '/api/pub/chat/sendMessage',
+        '/sock/pub/chat/sendMessage',
         {},
         JSON.stringify({
           roomId: chat.roomId,
@@ -87,7 +87,7 @@ function RtcChat({ chat }) {
   function sendRatio(ratio) {
     if (stompClient) {
       stompClient.send(
-        '/api/pub/chat/sendMessage',
+        '/sock/pub/chat/sendMessage',
         {},
         JSON.stringify({
           roomId: chat.roomId,

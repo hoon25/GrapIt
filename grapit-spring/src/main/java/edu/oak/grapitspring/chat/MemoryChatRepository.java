@@ -1,7 +1,7 @@
 package edu.oak.grapitspring.chat;
 
-import edu.oak.grapitspring.user.UserEntity;
-import edu.oak.grapitspring.user.UserRepository;
+import edu.oak.grapitspring.domain.Member;
+import edu.oak.grapitspring.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -15,7 +15,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class MemoryChatRepository implements ChatRepository {
 
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
 
     private Map<String, ChatRoom> chatRoomMap;
 
@@ -63,13 +63,13 @@ public class MemoryChatRepository implements ChatRepository {
 
     @Override
     public void addRoomUser(String roomId, Long userId) {
-        UserEntity userEntity = userRepository.findByUserId(userId);
-        chatRoomMap.get(roomId).getUserList().put(userEntity.getNickName(), userEntity);
+        Optional<Member> member = memberRepository.findByMemberId(userId);
+        chatRoomMap.get(roomId).getUserList().put(member.get().getNickName(), member.get());
     }
 
     @Override
     public void delRoomUser(String roomId, Long userId) {
-        chatRoomMap.get(roomId).getUserList().remove(userRepository.findByUserId(userId).getNickName());
+        chatRoomMap.get(roomId).getUserList().remove(memberRepository.findByMemberId(userId).get().getNickName());
     }
 
     @Override

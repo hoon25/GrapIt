@@ -33,8 +33,8 @@ function WhiteBoard(props) {
           fontSize={props.fontSize}
           brushColor={props.brushColor}
           brushThickness={props.brushThickness}
-          // sendPaintInfo={this.props.sendPaintInfo}
-          // drawInfo={this.props.drawInfo}
+          sendPaintInfo={props.sendPaintInfo}
+          drawInfo={props.drawInfo}
         />
 
         <ToolBar

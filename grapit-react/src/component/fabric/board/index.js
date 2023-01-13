@@ -1,5 +1,4 @@
 import React, { Component, useEffect, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
 import { fabric } from 'fabric';
 
 import * as drawer from './drawer';
@@ -47,6 +46,10 @@ function Board(props) {
     fabricCanvas.current.on('selection:updated', handleCanvasSelectionUpdated);
     fabricCanvas.current.on('selection:cleared', handleCanvasSelectionCleared);
     fabricCanvas.current.on('object:modified', handleCanvasObjectsModified);
+
+    fabricCanvas.current.on('object:moving', handleCanvasObjectsMoving);
+    fabricCanvas.current.on('object:added', handleCanvasObjectsAdded);
+    fabricCanvas.current.on('object:removed', handleCanvasObjectsRemoved);
 
     fabricCanvas.current.zoom = window.zoom ? window.zoom : 1;
   }, []);
@@ -123,6 +126,7 @@ function Board(props) {
     fabricCanvas.current.off('selection:updated');
     fabricCanvas.current.off('selection:cleared');
     fabricCanvas.current.off('object:modified');
+
     fabricCanvas.current.on('mouse:down', handleCanvasMouseDown);
     fabricCanvas.current.on('mouse:up', handleCanvasMouseUp);
     fabricCanvas.current.on('mouse:move', handleCanvasMouseMove);
@@ -141,6 +145,23 @@ function Board(props) {
     },
     [moveCount, posTo],
   );
+
+  useEffect(() => {
+    // const object = JSON.parse(props.drawInfo.target);
+    console.log('useEffect');
+    console.log(props.drawInfo);
+
+    fabric.util.enlivenObjects([props.drawInfo], function (enlivenedObjects) {
+      enlivenedObjects.forEach(function (enlivenedObject) {
+        fabricCanvas.current.add(enlivenedObject);
+      });
+    });
+  }, [props.drawInfo]);
+
+  // if (props.drawInfo.type === 'add') {
+  // } else if (props.drawInfo.type === 'remove') {
+  // } else if (props.drawInfo.type === 'move') {
+  // }
 
   if (props.visible === false) return <div></div>;
   return (
@@ -360,7 +381,9 @@ function Board(props) {
     }
 
     if (drawerObj !== undefined) {
+      console.log('오븍젝트 애드');
       fabricCanvas.current.add(drawerObj);
+      console.log('오븍젝트 애드 끝');
     }
     setPreDrawerObj(drawerObj);
     setPreTextObj(textObj);
@@ -535,23 +558,23 @@ function Board(props) {
       fabricCanvas.current.renderAll();
     }
   }
-}
 
-Board.propTypes = {
-  visible: PropTypes.bool.isRequired,
-  enabled: PropTypes.bool.isRequired,
-  mode: PropTypes.oneOf(modes).isRequired,
-  width: PropTypes.string,
-  height: PropTypes.string,
-  fontSize: PropTypes.number,
-  brushColor: PropTypes.string.isRequired,
-  brushThickness: PropTypes.number.isRequired,
-  onObjectAdded: PropTypes.func,
-  onObjectsModified: PropTypes.func,
-  onObjectsRemoved: PropTypes.func,
-  onSelectionCreated: PropTypes.func,
-  onSelectionUpdated: PropTypes.func,
-  onSelectionCleared: PropTypes.func,
-};
+  function handleCanvasObjectsAdded(options) {
+    props.sendPaintInfo(
+      JSON.stringify({ action: 'add', target: options.target }),
+    );
+  }
+  function handleCanvasObjectsRemoved(options) {
+    props.sendPaintInfo(
+      JSON.stringify({ action: 'remove', target: options.target }),
+    );
+  }
+
+  function handleCanvasObjectsMoving(options) {
+    props.sendPaintInfo(
+      JSON.stringify({ action: 'move', target: options.target }),
+    );
+  }
+}
 
 export default Board;

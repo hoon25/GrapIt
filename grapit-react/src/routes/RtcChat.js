@@ -1,42 +1,35 @@
-import {useEffect, useState, ReactDOM, useRef, useLayoutEffect} from "react";
-import {Button, Col, Container, Form, InputGroup, Row, Tab, Tabs} from 'react-bootstrap';
-
-import {useSelector} from "react-redux";
-import {TwoDGraph} from "./graph/TwoDGraph"
-import GraphList from "./graph/GraphList";
-import {GraphTypeButton} from "./graph/GraphTypeButton";
-import {GraphInputGroup} from "./graph/GraphInputGroup";
-import SockJs from "sockjs-client";
-import Vidu from "./Vidu";
-import {Tldraw} from "@tldraw/tldraw";
-import {useOthers, useOthersMapped, useUpdateMyPresence} from "../config/liveblocks.config";
-import Cursor from "../component/Cursor";
+import { useEffect, useState, ReactDOM, useRef, useLayoutEffect } from 'react';
+import { Button, Col, Container, Row } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { TwoDGraph } from './graph/TwoDGraph';
+import { GraphTypeButton } from './graph/GraphTypeButton';
+import { GraphInputGroup } from './graph/GraphInputGroup';
+import SockJs from 'sockjs-client';
+import { useOthers, useUpdateMyPresence } from '../config/liveblocks.config';
+import Cursor from '../component/Cursor';
 import '../css/Rtcchat.css';
 import '../css/Canvas.css';
-import WhiteBoard from '../routes/Canvas';
 import Canvas from '../routes/Canvas';
-import { FloatingButton } from '../component/FloatingButton';
 import { setIsWhiteBoard } from '../store/isWhiteBoardSlice';
 
 var stompClient = null;
 
-function RtcChat({chat, userInfo}) {
+function RtcChat({ chat, userInfo }) {
+  let [ratio, setRatio] = useState(1);
 
-    let [ratio, setRatio] = useState(1)
+  let [graphColor, setGraphColor] = useState('#ffffff');
+  let [graphType, setGraphType] = useState('Line');
+  let [formulaFirst, setFormulaFirst] = useState('');
+  let [formulaSecond, setFormulaSecond] = useState('');
+  let [formulaThird, setFormulaThird] = useState('');
 
-    let [graphColor, setGraphColor] = useState("#ffffff");
-    let [graphType, setGraphType] = useState("Line");
-    let [formulaFirst, setFormulaFirst] = useState("");
-    let [formulaSecond, setFormulaSecond] = useState("");
-    let [formulaThird, setFormulaThird] = useState("");
+  let [viewPointX, setViewPointX] = useState([-5, 5]);
+  let [viewPointY, setViewPointY] = useState([-5, 5]);
 
-    let [viewPointX, setViewPointX] = useState([-5, 5])
-    let [viewPointY, setViewPointY] = useState([-5, 5])
+  let [graphInfo, setGraphInfo] = useState([]);
+  let [graphList, setGraphList] = useState([]);
 
-    let [graphInfo, setGraphInfo] = useState([]);
-    let [graphList, setGraphList] = useState([]);
-
-  let [drawInfo, setDrawInfo] = useState([]);
+  let [drawInfo, setDrawInfo] = useState();
 
   const dispatch = useDispatch();
   let isWhiteBoard = useSelector(state => state.isWhiteBoard);
@@ -75,40 +68,46 @@ function RtcChat({chat, userInfo}) {
   const updateMyPresence = useUpdateMyPresence();
   const userOther = useOthers();
 
-    let user = useSelector(state => state.user);
+  let user = useSelector(state => state.user);
 
+  window.addEventListener('resize', () => {
+    setContainerInfo([window.innerWidth, window.innerHeight]);
+  });
+  window.addEventListener('resize', () => {
+    console.log(window);
+  });
+  window.addEventListener('orientationchange', () => {
+    setContainerInfo([window.innerWidth, window.innerHeight]);
+  });
 
-    window.addEventListener("resize", ()=>{setContainerInfo([window.innerWidth,window.innerHeight])});
-    window.addEventListener("resize", ()=>{console.log(window)});
-    window.addEventListener("orientationchange", ()=>{setContainerInfo([window.innerWidth,window.innerHeight])});
+  // 동기화 소켓 통신
+  var Stomp = require('stompjs/lib/stomp.js').Stomp;
 
-
-
-    // 동기화 소켓 통신
-    var Stomp = require('stompjs/lib/stomp.js').Stomp;
-
-    useEffect(() => {
-        var sock = new SockJs('/api/ws-stomp');
-        stompClient = Stomp.over(sock);
-        stompClient.connect({}, () => {
-            stompClient.subscribe('/api/sub/chat/room/' + chat.roomId, rerenderGraph)
-        });
-        // if(stompClient.connected) {
-        //     console.log("stompClient connected!!!");
-        //     stompClient.send("/pub/chat/enterUser", {},
-        //         JSON.stringify({
-        //             roomId: chat.roomId,
-        //             sender: user.nickName,
-        //             type: 'ENTER'
-        //         })
-        //     )
-        // }
-    }, []);
+  useEffect(() => {
+    var sock = new SockJs('/sock/ws-stomp');
+    stompClient = Stomp.over(sock);
+    stompClient.connect({}, () => {
+      stompClient.subscribe(
+        '/sock/sub/chat/room/' + chat.roomId,
+        rerenderGraph,
+      );
+    });
+    // if(stompClient.connected) {
+    //     console.log("stompClient connected!!!");
+    //     stompClient.send("/pub/chat/enterUser", {},
+    //         JSON.stringify({
+    //             roomId: chat.roomId,
+    //             sender: user.nickName,
+    //             type: 'ENTER'
+    //         })
+    //     )
+    // }
+  }, []);
 
   function sendGraphInfo(graph) {
     if (stompClient) {
       stompClient.send(
-        '/api/pub/chat/sendMessage',
+        '/sock/pub/chat/sendMessage',
         {},
         JSON.stringify({
           roomId: chat.roomId,
@@ -123,13 +122,13 @@ function RtcChat({chat, userInfo}) {
   function sendPaintInfo(paint) {
     if (stompClient) {
       stompClient.send(
-        '/api/pub/chat/sendMessage',
+        '/sock/pub/chat/sendMessage',
         {},
         JSON.stringify({
           roomId: chat.roomId,
           sender: user.nickName,
           message: JSON.stringify(paint),
-          type: 'DRAW_PAINT',
+          type: 'DRAW',
         }),
       );
     }
@@ -138,7 +137,7 @@ function RtcChat({chat, userInfo}) {
   function sendRatio(ratio) {
     if (stompClient) {
       stompClient.send(
-        '/api/pub/chat/sendMessage',
+        '/sock/pub/chat/sendMessage',
         {},
         JSON.stringify({
           roomId: chat.roomId,
@@ -158,7 +157,25 @@ function RtcChat({chat, userInfo}) {
       if (newMessage.type === 'DRAW_RATIO') {
         setRatio(Number(newMessage.message));
       } else if (newMessage.type === 'DRAW') {
-        console.log(newMessage.message);
+        console.log('👻👻👻👻👻👻👻👻👻👻👻👻');
+
+        let message = JSON.parse(newMessage.message);
+        message = JSON.parse(message);
+
+        console.log(message.action === 'remove');
+        if (message.action === 'move') {
+          console.log('in move');
+          setDrawInfo(message.target);
+          return;
+        } else if (message.action === 'add') {
+          console.log('in add');
+          setDrawInfo(message.target);
+          return;
+        } else if (message.action === 'remove') {
+          setDrawInfo(message.target);
+          return;
+        }
+        console.log('✊✊✊!!!오지마!!!!✊✊✊');
         if (JSON.parse(newMessage.message).length === 0) {
           setGraphList([]);
         }
@@ -166,14 +183,13 @@ function RtcChat({chat, userInfo}) {
           setGraphList(JSON.parse(newMessage.message));
         }
       } else if (newMessage.type === 'DRAW_PAINT') {
-        setDrawInfo(newMessage.message);
-        console.log('askdlfjasldfjasdfl');
-        console.log(drawInfo);
+        // setDrawInfo(newMessage.message);
+        // console.log(drawInfo);
       }
     }
   }
 
-    //=====================================================
+  //=====================================================
 
   const handleKeyDown = event => {
     if (event.key === 'Enter') {
@@ -224,13 +240,12 @@ function RtcChat({chat, userInfo}) {
       )}
       <Row style={{ height: '100%' }}>
         <Col xs={3} style={{}} className="mt-5">
-            <Row style={{height: '70%'}} className='div-shadow'>
-                <div style={{overflowX: "auto"}}>
-                    <h4>영상 채팅</h4>
-                    <Vidu user={user} chat={chat}/>
-                </div>
-            </Row>
-
+          <Row style={{ height: '70%' }} className="div-shadow">
+            <div style={{ overflowX: 'auto' }}>
+              <h4>영상 채팅</h4>
+              {/*<Vidu user={user} chat={chat} />*/}
+            </div>
+          </Row>
 
           <Row style={{ height: '30%' }}>
             <div style={{ display: '' }} className="div-shadow">
@@ -323,6 +338,5 @@ function RtcChat({chat, userInfo}) {
     </Container>
   );
 }
-
 
 export default RtcChat;

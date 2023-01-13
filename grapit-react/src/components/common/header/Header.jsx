@@ -18,7 +18,7 @@ const Header = () => {
           <div className="logo">
             <h5>GrapIt</h5>
           </div>
-          <nav class="stroke">
+          <nav className="stroke">
             <ul className={navList ? 'small' : 'flex'}>
               {nav.map((list, index) => (
                 <li key={index}>

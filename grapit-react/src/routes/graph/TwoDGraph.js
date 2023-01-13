@@ -12,22 +12,19 @@ import 'mafs/build/index.css';
 import React, { useEffect, useRef, useState } from 'react';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { Button, Form } from 'react-bootstrap';
+import { setIsWhiteBoard } from '../../store/isWhiteBoardSlice';
 
 export function TwoDGraph({
-  drawPoints,
-  roomId,
   graphList,
   viewPointX,
   viewPointY,
-  setViewPointX,
-  setViewPointY,
   ratio,
   setRatio,
   sendRatio,
+  childWidth,
+  childHeight,
 }) {
-  let user = useSelector(state => state.user);
-  console.log('캠버스');
-  console.log({ drawPoints });
+  console.log('in graph');
 
   // 스크롤 이벤트 제어. 나중에 쓸수 있음.
   function removeWindowWheel() {
@@ -174,13 +171,16 @@ export function TwoDGraph({
       // }}
       >
         <Mafs
-          height={490}
-          width={'auto'}
+          width={childWidth}
+          height={childHeight}
           viewBox={{ x: viewPointX, y: viewPointY, padding: ratio }}
         >
           <CartesianCoordinates
             xAxis={{ lines: Math.floor(ratio / 5) + 1 }}
             yAxis={{ lines: Math.floor(ratio / 5) + 1 }}
+            subdivisions={
+              Math.floor(ratio / 5) + 1 > 5 ? 5 : Math.floor(ratio / 5) + 1
+            }
           />
           {drawGraph()}
 
@@ -200,3 +200,4 @@ export function TwoDGraph({
     </div>
   );
 }
+

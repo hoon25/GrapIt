@@ -1,0 +1,14 @@
+.fabric-whiteboard {
+  min-width: 100%;
+  min-height: 100%;
+
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: transparent;
+
+  border: lightgray solid 1px;
+}

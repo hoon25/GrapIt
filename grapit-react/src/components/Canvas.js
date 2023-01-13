@@ -56,7 +56,7 @@ function Canvas(props) {
           brushThickness={brushThickness}
           setBrushThickness={setBrushThickness}
           setBrushColor={setBrushColor}
-          sendPaintInfo={props.sendPaintInfo}
+          // sendPaintInfo={props.sendPaintInfo}
           drawInfo={props.drawInfo}
         />
       </div>

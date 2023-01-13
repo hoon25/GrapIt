@@ -11,6 +11,7 @@ import { GraphTypeButton } from './graph/GraphTypeButton';
 import { GraphInputGroup } from './graph/GraphInputGroup';
 import SockJs from 'sockjs-client';
 import Vidu from './vidu/Vidu';
+import Cursor from '../components/Cursor';
 import {useOthers, useUpdateMyPresence} from "../config/liveblocks.config";
 
 var stompClient = null;
@@ -233,7 +234,7 @@ function RtcChat({chat}) {
           <Row style={{ height: '70%' }} className="div-shadow">
             <div style={{ overflowX: 'auto' }}>
               <h4>영상 채팅</h4>
-              {/*<Vidu user={user} chat={chat} />*/}
+              <Vidu user={user} chat={chat} />
             </div>
           </Row>
 
@@ -315,7 +316,7 @@ function RtcChat({chat}) {
                   childWidth={childWidth}
                   childHeight={childHeight}
                   isWhiteBoard={isWhiteBoard}
-                  sendPaintInfo={sendPaintInfo}
+                  // sendPaintInfo={sendPaintInfo}
                   drawInfo={drawInfo}
                 />
               ) : (

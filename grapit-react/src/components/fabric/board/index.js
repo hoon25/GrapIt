@@ -588,20 +588,20 @@ function Board(props) {
   }
 
   function handleCanvasObjectsAdded(options) {
-    props.sendPaintInfo(
-      JSON.stringify({ action: 'add', target: options.target }),
-    );
+    // props.sendPaintInfo(
+    //   JSON.stringify({ action: 'add', target: options.target }),
+    // );
   }
   function handleCanvasObjectsRemoved(options) {
-    props.sendPaintInfo(
-      JSON.stringify({ action: 'remove', target: options.target }),
-    );
+    // props.sendPaintInfo(
+    //   JSON.stringify({ action: 'remove', target: options.target }),
+    // );
   }
 
   function handleCanvasObjectsMoving(options) {
-    props.sendPaintInfo(
-      JSON.stringify({ action: 'move', target: options.target }),
-    );
+    // props.sendPaintInfo(
+    //   JSON.stringify({ action: 'move', target: options.target }),
+    // );
   }
 }
 

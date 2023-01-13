@@ -158,11 +158,9 @@ function RtcChat({chat}) {
                         </div>
                     </Row>
 
-                    <Row style={{height: "30%"}}>
-
-                        <div style={{display: ""}} className='div-shadow'>
-
-                            <h2>그래프 생성기</h2>
+          <Row style={{ height: '30%' }}>
+            <div style={{ display: '' }} className="div-shadow">
+              <h2>그래프 생성기</h2>
 
                             <div>
                                 <GraphTypeButton graphType={graphType} setGraphType={setGraphType}

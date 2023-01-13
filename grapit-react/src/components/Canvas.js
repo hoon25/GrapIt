@@ -6,7 +6,7 @@ import WhiteBoard, {
   modifyWhiteBoardObjects,
   removeWhiteBoardObjects,
   updateWhiteBoardSelection,
-} from '../component/fabric/index';
+} from './fabric/index';
 
 let tempRoom;
 

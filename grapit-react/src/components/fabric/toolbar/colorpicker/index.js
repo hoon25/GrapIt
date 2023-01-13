@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import classNames from 'class-names';
-import PropTypes from 'prop-types';
 
 import { TwitterPicker, CirclePicker } from 'react-color';
 
@@ -27,18 +26,5 @@ function ColorPicker(props) {
     </div>
   );
 }
-
-ColorPicker.propTypes = {
-  visible: PropTypes.bool,
-  color: PropTypes.string,
-  colors: PropTypes.arrayOf(PropTypes.string),
-  pos: PropTypes.objectOf(
-    PropTypes.shape({
-      x: PropTypes.oneOf([PropTypes.string, PropTypes.number]),
-      y: PropTypes.oneOf([PropTypes.string, PropTypes.number]),
-    }),
-  ),
-  onChange: PropTypes.func,
-};
 
 export default ColorPicker;

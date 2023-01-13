@@ -19,11 +19,10 @@ input[type='number']::-webkit-outer-spin-button {
   position: absolute;
 }
 
-.tab_bar {
-  position: absolute;
-  top: 70px;
-  z-index: 0;
-  border: none;
+.tab_bar{
+    position: absolute;
+    top: 70px;
+    z-index: -1;
 }
 
 .tab-content,
@@ -32,9 +31,9 @@ input[type='number']::-webkit-outer-spin-button {
   z-index: 1;
 }
 
-.tab-parent{
-    position:relative;
-    height: 100%;
+.tab-parent {
+  position: relative;
+  height: 100%;
 }
 
 /*.MafsView{*/

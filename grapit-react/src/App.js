@@ -9,11 +9,11 @@ import RTC from "./routes/RTC";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {CollaborationPage} from "./routes/CollaborationPage";
 import Home from './components/home/Home';
-import Canvas from './routes/Canvas';
+import Canvas from './components/Canvas';
 import Header from './components/common/header/Header';
+import Vidu from "./routes/vidu/Vidu";
 
 function App() {
-    let user = useSelector(state => state.user);
     let chat = useSelector(state => state.chat);
 
   return (

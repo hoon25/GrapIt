@@ -1,21 +1,23 @@
 import { useEffect, useState, ReactDOM, useRef, useLayoutEffect } from 'react';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import '../css/Rtcchat.css';
+import '../css/Canvas.css';
+import Canvas from '../components/Canvas';
+import { setIsWhiteBoard } from '../store/isWhiteBoardSlice';
 import { TwoDGraph } from './graph/TwoDGraph';
+import GraphList from './graph/GraphList';
 import { GraphTypeButton } from './graph/GraphTypeButton';
 import { GraphInputGroup } from './graph/GraphInputGroup';
 import SockJs from 'sockjs-client';
-import { useOthers, useUpdateMyPresence } from '../config/liveblocks.config';
-import Cursor from '../component/Cursor';
-import '../css/Rtcchat.css';
-import '../css/Canvas.css';
-import Canvas from '../routes/Canvas';
-import { setIsWhiteBoard } from '../store/isWhiteBoardSlice';
+import Vidu from './vidu/Vidu';
+import {useOthers, useUpdateMyPresence} from "../config/liveblocks.config";
 
 var stompClient = null;
 
-function RtcChat({ chat, userInfo }) {
-  let [ratio, setRatio] = useState(1);
+function RtcChat({chat}) {
+
+    let [ratio, setRatio] = useState(1)
 
   let [graphColor, setGraphColor] = useState('#ffffff');
   let [graphType, setGraphType] = useState('Line');
@@ -104,22 +106,10 @@ function RtcChat({ chat, userInfo }) {
     // }
   }, []);
 
-  function sendGraphInfo(graph) {
-    if (stompClient) {
-      stompClient.send(
-        '/sock/pub/chat/sendMessage',
-        {},
-        JSON.stringify({
-          roomId: chat.roomId,
-          sender: user.nickName,
-          message: JSON.stringify(graph),
-          type: 'DRAW',
-        }),
-      );
-    }
-  }
+    useEffect(() => {
+    }, [graphList])
 
-  function sendPaintInfo(paint) {
+  function sendGraphInfo(graphList) {
     if (stompClient) {
       stompClient.send(
         '/sock/pub/chat/sendMessage',
@@ -127,7 +117,7 @@ function RtcChat({ chat, userInfo }) {
         JSON.stringify({
           roomId: chat.roomId,
           sender: user.nickName,
-          message: JSON.stringify(paint),
+          message: JSON.stringify(graphList),
           type: 'DRAW',
         }),
       );
@@ -338,5 +328,6 @@ function RtcChat({ chat, userInfo }) {
     </Container>
   );
 }
+
 
 export default RtcChat;

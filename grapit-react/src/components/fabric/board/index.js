@@ -146,17 +146,45 @@ function Board(props) {
     [moveCount, posTo],
   );
 
-  useEffect(() => {
-    // const object = JSON.parse(props.drawInfo.target);
-    console.log('useEffect');
-    console.log(props.drawInfo);
+  const getWhiteBoardObjectById = (canvas, id) => {
+    const objs = canvas.getObjects();
+    for (let i = 0, len = objs.length; i < len; i++) {
+      if (objs[i].id === id) {
+        return objs[i];
+      }
+    }
+    return null;
+  };
 
-    fabric.util.enlivenObjects([props.drawInfo], function (enlivenedObjects) {
-      enlivenedObjects.forEach(function (enlivenedObject) {
-        fabricCanvas.current.add(enlivenedObject);
-      });
-    });
-  }, [props.drawInfo]);
+  // useEffect(() => {
+  //   // const object = JSON.parse(props.drawInfo.target);
+  //   console.log('useEffect');
+  //   console.log(props.drawInfo);
+  //
+  //   if (props.drawInfo !== undefined) {
+  //     const objectById = getWhiteBoardObjectById(
+  //       fabricCanvas.current,
+  //       props.drawInfo.target.id,
+  //     );
+  //     if (props.drawInfo.action === 'add') {
+  //       if (objectById === null) {
+  //         fabric.util.enlivenObjects(
+  //           [props.drawInfo.target],
+  //           function (enlivenedObjects) {
+  //             enlivenedObjects.forEach(function (enlivenedObject) {
+  //               fabricCanvas.current.add(enlivenedObject);
+  //             });
+  //           },
+  //         );
+  //       }
+  //     } else if (props.drawInfo.action === 'remove') {
+  //       if (objectById !== null) {
+  //         fabricCanvas.current.remove(objectById);
+  //       }
+  //     } else if (props.drawInfo.action === 'move') {
+  //     }
+  //   }
+  // }, [props.drawInfo]);
 
   // if (props.drawInfo.type === 'add') {
   // } else if (props.drawInfo.type === 'remove') {

@@ -27,15 +27,20 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private MemberType memberType;
 
+    @Enumerated(EnumType.STRING)
+    private RoleType roleType;
+
     @Builder
-    public Member(Long memberId, String email, String password, String name, String nickName, MemberType memberType) {
+    public Member(Long memberId, String email, String password, String name, String nickName, MemberType memberType, RoleType roleType) {
         this.memberId = memberId;
         this.email = email;
         this.password = password;
         this.name = name;
         this.nickName = nickName;
         this.memberType = memberType;
+        this.roleType = roleType;
     }
+
 
     @Builder
     public static Member joinMember(String email, String password, String name, String nickName, MemberType memberType) {

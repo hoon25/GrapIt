@@ -1,6 +1,7 @@
 package edu.oak.grapitspring.repository;
 
 import edu.oak.grapitspring.domain.Member;
+import edu.oak.grapitspring.domain.MemberRefreshToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -35,6 +36,19 @@ public class MemberRepositoryJPA implements MemberRepository {
             return Optional.empty();
         }
 
+    }
+
+    public Optional<MemberRefreshToken> findByEmailAndRefreshToken(String email, String refreshToken){
+
+        try {
+            return Optional.ofNullable(
+                    em.createQuery("select m from MemberRefreshToken m where m.email =:email and m.refreshToken =:refreshToken", MemberRefreshToken.class)
+                            .setParameter("email", email)
+                            .setParameter("refreshToken", refreshToken)
+                            .getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
 

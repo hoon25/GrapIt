@@ -26,9 +26,12 @@ public class TutorEntity {
     @Enumerated(EnumType.STRING)
     private rankingType ranking;
 
+    @Enumerated(EnumType.STRING)
+    private studyType study;
+
     @Builder
     public TutorEntity(Long tutorId, String nickName, String email, String passwd, genderType gender,
-                       gradeType grade, rankingType ranking) {
+                       gradeType grade, rankingType ranking, studyType study) {
         this.tutorId = tutorId;
         this.nickName = nickName;
         this.email = email;
@@ -36,6 +39,6 @@ public class TutorEntity {
         this.gender = gender;
         this.grade = grade;
         this.ranking = ranking;
+        this.study =study;
     }
-
 }

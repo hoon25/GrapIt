@@ -38,14 +38,15 @@ function Board(props) {
         action = 'remove';
       }
 
-      console.log(sendObj);
-      props.sendPaintInfo(
-        'PAINT',
-        JSON.stringify({
-          action: action,
-          target: sendObj.toJSON(['id']),
-        }),
-      );
+      if (props.mode !== 'select') {
+        props.sendPaintInfo(
+          'PAINT',
+          JSON.stringify({
+            action: action,
+            target: sendObj.toJSON(['id']),
+          }),
+        );
+      }
     }
   }, [sendObj, temp]);
 
@@ -144,6 +145,7 @@ function Board(props) {
     fabricCanvas.current.off('selection:updated');
     fabricCanvas.current.off('selection:cleared');
     fabricCanvas.current.off('object:modified');
+    fabricCanvas.current.off('object:moving');
 
     fabricCanvas.current.on('mouse:down', handleCanvasMouseDown);
     fabricCanvas.current.on('mouse:up', handleCanvasMouseUp);
@@ -153,7 +155,7 @@ function Board(props) {
     fabricCanvas.current.on('selection:updated', handleCanvasSelectionUpdated);
     fabricCanvas.current.on('selection:cleared', handleCanvasSelectionCleared);
     fabricCanvas.current.on('object:modified', handleCanvasObjectsModified);
-
+    fabricCanvas.current.on('object:moving', handleCanvasObjectsMoving);
     setNowProps(props);
   }, [props]);
 
@@ -206,6 +208,13 @@ function Board(props) {
           fabricCanvas.current.remove(objectById);
         }
       } else if (props.drawInfo.action === 'move') {
+        if (objectById !== null) {
+          objectById.set({
+            left: props.drawInfo.target.left,
+            top: props.drawInfo.target.top,
+          });
+          fabricCanvas.current.renderAll();
+        }
       }
     }
   }, [props.drawInfo]);
@@ -614,31 +623,15 @@ function Board(props) {
     }
   }
 
-  // function handleCanvasObjectsAdded(options) {
-  //   console.log(options.target);
-  //   props.sendPaintInfo(
-  //     'PAINT',
-  //     JSON.stringify({
-  //       action: 'add',
-  //       target: options.target.toJSON(['id']),
-  //     }),
-  //   );
-  // }
-  function handleCanvasObjectsRemoved(options) {
+  function handleCanvasObjectsMoving(options) {
+    console.log('handleCanvasObjectsMoving');
     props.sendPaintInfo(
       'PAINT',
       JSON.stringify({
-        action: 'remove',
+        action: 'move',
         target: options.target.toJSON(['id']),
       }),
     );
-  }
-
-  function handleCanvasObjectsMoving(options) {
-    props.sendPaintInfo('PAINT', {
-      action: 'move',
-      target: options.target.toJSON(['id']),
-    });
   }
 }
 

@@ -10,7 +10,7 @@ export default function (from, to, color, width) {
     left: left,
     top: top,
     stroke: color,
-    fill: 'rgba(255, 255, 100, 1)',
+    fill: 'rgba(255, 255, 255, 0)',
     radius: radius,
     strokeWidth: width,
     id: id,

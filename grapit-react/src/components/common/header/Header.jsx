@@ -14,22 +14,19 @@ const Header = () => {
             <h5>GrapIt</h5>
           </div>
 
-          <nav class="stroke">
+          <nav class="fill">
             <ul className={navList ? 'small' : 'flex'}>
               {nav.map((list, index) => (
                 <li key={index}>
                   <Link to={list.path}>{list.text}</Link>
                 </li>
               ))}
-              {/* <button className='btn3'>
-              <i className='fa fa-sign-out'></i> 로그인
-            </button> */}
             </ul>
           </nav>
 
           <div className="button-flex">
-            {/* <button className='btn3'>
-              <i className='fa fa-sign-out'></i> 로그인
+            {/* <button className="btn1">
+              <i className="fa fa-sign-out"></i> 로그인
             </button> */}
           </div>
 

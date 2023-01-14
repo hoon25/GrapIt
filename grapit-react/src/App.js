@@ -14,11 +14,13 @@ import RtcChat from './routes/RtcChat';
 import TestVidu from './routes/vidu/TestVidu';
 import home from './components/home/Home';
 import Header from './components/common/header/Header';
+import SurveyComponent from './components/survey/survey';
 
 function App() {
   let user = useSelector(state => state.user);
   let chat = useSelector(state => state.chat);
   let canvas = useSelector(state => state.canvas);
+
   let dispatch = useDispatch();
   let navigate = useNavigate();
 
@@ -26,6 +28,7 @@ function App() {
     <div className="App">
       {/* <NavScroll/> */}
       <Header />
+
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route path="/login" element={<LogIn />} />
@@ -40,6 +43,7 @@ function App() {
         <Route path="/chat/room/:roomId" element={<Chat chat={chat} />} />
         <Route path="/canvas" element={<Canvas />} />
         <Route path="/vidu" element={<TestVidu />} />
+        <Route path="/survey" element={<SurveyComponent />} />
       </Routes>
     </div>
   );

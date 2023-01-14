@@ -58,9 +58,6 @@ function Board(props) {
     const { mode, enabled } = props;
     const { beforeMode, beforeEnabled } = nowProps;
 
-    console.log(props);
-    console.log(nowProps);
-
     if (mode !== beforeMode || enabled !== beforeEnabled) {
       if (preTextObj !== undefined) {
         preTextObj.exitEditing();
@@ -156,35 +153,35 @@ function Board(props) {
     return null;
   };
 
-  // useEffect(() => {
-  //   // const object = JSON.parse(props.drawInfo.target);
-  //   console.log('useEffect');
-  //   console.log(props.drawInfo);
-  //
-  //   if (props.drawInfo !== undefined) {
-  //     const objectById = getWhiteBoardObjectById(
-  //       fabricCanvas.current,
-  //       props.drawInfo.target.id,
-  //     );
-  //     if (props.drawInfo.action === 'add') {
-  //       if (objectById === null) {
-  //         fabric.util.enlivenObjects(
-  //           [props.drawInfo.target],
-  //           function (enlivenedObjects) {
-  //             enlivenedObjects.forEach(function (enlivenedObject) {
-  //               fabricCanvas.current.add(enlivenedObject);
-  //             });
-  //           },
-  //         );
-  //       }
-  //     } else if (props.drawInfo.action === 'remove') {
-  //       if (objectById !== null) {
-  //         fabricCanvas.current.remove(objectById);
-  //       }
-  //     } else if (props.drawInfo.action === 'move') {
-  //     }
-  //   }
-  // }, [props.drawInfo]);
+  useEffect(() => {
+    // const object = JSON.parse(props.drawInfo.target);
+    console.log('useEffect');
+    console.log(props.drawInfo);
+
+    if (props.drawInfo !== undefined) {
+      const objectById = getWhiteBoardObjectById(
+        fabricCanvas.current,
+        props.drawInfo.target.id,
+      );
+      if (props.drawInfo.action === 'add') {
+        if (objectById === null) {
+          fabric.util.enlivenObjects(
+            [props.drawInfo.target],
+            function (enlivenedObjects) {
+              enlivenedObjects.forEach(function (enlivenedObject) {
+                fabricCanvas.current.add(enlivenedObject);
+              });
+            },
+          );
+        }
+      } else if (props.drawInfo.action === 'remove') {
+        if (objectById !== null) {
+          fabricCanvas.current.remove(objectById);
+        }
+      } else if (props.drawInfo.action === 'move') {
+      }
+    }
+  }, [props.drawInfo]);
 
   // if (props.drawInfo.type === 'add') {
   // } else if (props.drawInfo.type === 'remove') {
@@ -588,20 +585,14 @@ function Board(props) {
   }
 
   function handleCanvasObjectsAdded(options) {
-    // props.sendPaintInfo(
-    //   JSON.stringify({ action: 'add', target: options.target }),
-    // );
+    props.sendPaintInfo({ action: 'add', target: options.target });
   }
   function handleCanvasObjectsRemoved(options) {
-    // props.sendPaintInfo(
-    //   JSON.stringify({ action: 'remove', target: options.target }),
-    // );
+    props.sendPaintInfo({ action: 'remove', target: options.target });
   }
 
   function handleCanvasObjectsMoving(options) {
-    // props.sendPaintInfo(
-    //   JSON.stringify({ action: 'move', target: options.target }),
-    // );
+    props.sendPaintInfo({ action: 'move', target: options.target });
   }
 }
 

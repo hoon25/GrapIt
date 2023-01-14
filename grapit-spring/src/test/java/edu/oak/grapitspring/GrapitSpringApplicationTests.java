@@ -8,8 +8,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration
 class GrapitSpringApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void contextLoads() {
+    }
 
 }

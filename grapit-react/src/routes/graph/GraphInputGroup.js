@@ -1,4 +1,6 @@
 import { Button, Form, InputGroup } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import { setGraph } from "../../store/graphSlice";
 
 export function GraphInputGroup({
   formulaFirst,
@@ -21,26 +23,30 @@ export function GraphInputGroup({
   setViewPointY,
   sendGraphInfo,
 }) {
-  let firstPlaceHolder = {
+
+  const dispatch = useDispatch();
+
+  const firstPlaceHolder = {
     Line: 'X',
     Circle: '중심X',
     TwoD: 'x^2',
     Trigonometric: 'x계수?',
   };
 
-  let secondPlaceHolder = {
+  const secondPlaceHolder = {
     Line: '상수',
     Circle: '중심y',
     TwoD: 'x',
     Trigonometric: 'x평행?',
   };
 
-  let thirdPlaceHolder = {
+  const thirdPlaceHolder = {
     Line: '',
     Circle: '반지름',
     TwoD: '상수',
     Trigonometric: '상수',
   };
+
 
   return (
     <InputGroup className="mb-3">
@@ -61,12 +67,12 @@ export function GraphInputGroup({
           graphType === 'Line'
             ? firstPlaceHolder.Line
             : graphType === 'Circle'
-            ? firstPlaceHolder.Circle
-            : graphType === 'TwoD'
-            ? firstPlaceHolder.TwoD
-            : graphType === 'Trigonometric'
-            ? firstPlaceHolder.Trigonometric
-            : ''
+              ? firstPlaceHolder.Circle
+              : graphType === 'TwoD'
+                ? firstPlaceHolder.TwoD
+                : graphType === 'Trigonometric'
+                  ? firstPlaceHolder.Trigonometric
+                  : ''
         }
         aria-label="Recipient's username"
         aria-describedby="basic-addon2"
@@ -83,12 +89,12 @@ export function GraphInputGroup({
           graphType === 'Line'
             ? secondPlaceHolder.Line
             : graphType === 'Circle'
-            ? secondPlaceHolder.Circle
-            : graphType === 'TwoD'
-            ? secondPlaceHolder.TwoD
-            : graphType === 'Trigonometric'
-            ? secondPlaceHolder.Trigonometric
-            : ''
+              ? secondPlaceHolder.Circle
+              : graphType === 'TwoD'
+                ? secondPlaceHolder.TwoD
+                : graphType === 'Trigonometric'
+                  ? secondPlaceHolder.Trigonometric
+                  : ''
         }
         aria-label="Recipient's username"
         aria-describedby="basic-addon2"
@@ -105,12 +111,12 @@ export function GraphInputGroup({
           graphType === 'Line'
             ? thirdPlaceHolder.Line
             : graphType === 'Circle'
-            ? thirdPlaceHolder.Circle
-            : graphType === 'TwoD'
-            ? thirdPlaceHolder.TwoD
-            : graphType === 'Trigonometric'
-            ? thirdPlaceHolder.Trigonometric
-            : ''
+              ? thirdPlaceHolder.Circle
+              : graphType === 'TwoD'
+                ? thirdPlaceHolder.TwoD
+                : graphType === 'Trigonometric'
+                  ? thirdPlaceHolder.Trigonometric
+                  : ''
         }
         hidden={graphType === 'Line'}
         aria-label="Recipient's username"
@@ -125,8 +131,15 @@ export function GraphInputGroup({
 
       <Button
         onClick={() => {
-          let copyGraphInfo = [...graphInfo];
-          copyGraphInfo = [
+          dispatch(setGraph.addGraph({
+            graphColor,
+            graphType,
+            formulaFirst,
+            formulaSecond,
+            formulaThird,
+          }));
+
+          const copyGraphInfo = [
             graphColor,
             graphType,
             formulaFirst,
@@ -134,19 +147,17 @@ export function GraphInputGroup({
             formulaThird,
           ];
           setGraphInfo(copyGraphInfo);
-          let copyGraphList = [...graphList, copyGraphInfo];
+          const copyGraphList = [...graphList, copyGraphInfo];
           setGraphList(copyGraphList);
 
-          let copyViewPointX = [...viewPointX];
-          let copyViewPointY = [...viewPointY];
-          copyViewPointX = [Number(formulaFirst) - 3, Number(formulaFirst) + 3];
-          copyViewPointY = [
+          const copyViewPointX = [Number(formulaFirst) - 3, Number(formulaFirst) + 3];
+          const copyViewPointY = [
             Number(formulaSecond) - 3,
             Number(formulaSecond) + 3,
           ];
           setViewPointX(copyViewPointX);
           setViewPointY(copyViewPointY);
-          sendGraphInfo(copyGraphList);
+          sendGraphInfo('GRAPH', copyGraphList);
           setFormulaSecond('');
           setFormulaFirst('');
           setFormulaThird('');

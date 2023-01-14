@@ -11,21 +11,24 @@ input[type='number']::-webkit-outer-spin-button {
 
 .questioncontent {
   opacity: 1;
+  width: 100%;
+  height: 100%;
 }
 
 .test-child {
   position: absolute;
 }
 
-.tab_bar {
-  position: absolute;
-  top: 70px;
-  z-index: -1;
+.tab_bar{
+    position: absolute;
+    top: 70px;
+    z-index: -1;
 }
 
 .tab-content,
 .tab-pane {
   height: 100%;
+  z-index: 1;
 }
 
 .tab-parent {

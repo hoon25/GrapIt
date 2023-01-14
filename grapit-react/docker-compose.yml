@@ -1,0 +1,10 @@
+version: "3"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: grapit-web
+    ports:
+      - 443:443
+      - 80:80

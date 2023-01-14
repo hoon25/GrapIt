@@ -8,6 +8,7 @@ import {
 import 'mafs/build/index.css';
 import React, { } from 'react';
 import { Button, Form } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 
 export function TwoDGraph({
   graphList,
@@ -19,6 +20,11 @@ export function TwoDGraph({
   childWidth,
   childHeight,
 }) {
+
+  const store = useSelector((state) => state.graph);
+
+  // todo store 기반으로 변경
+  console.log(store)
   // 스크롤 이벤트 제어. 나중에 쓸수 있음.
   function removeWindowWheel() {
     window.addEventListener('wheel', preventWheelEvent, { passive: false });
@@ -60,6 +66,7 @@ export function TwoDGraph({
     // setViewPointX([firstX,secondX])
     // setMousePoint([event.pageX, event.pageY])
   }
+
 
 
   return (

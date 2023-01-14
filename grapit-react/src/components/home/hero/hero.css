@@ -1,198 +1,68 @@
-.hero {
-  background-image: url('../../../../public/images/banner.png');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  height: 90vh;
-  width: 100%;
-}
-
-.hero .container {
-  padding-top: 15%;
-}
-
-.hero h1 {
-  color: #fff;
-  font-size: 60px;
-}
-
-.hero p {
-  color: #fff;
-  opacity: 0.8;
-}
-
-form {
-  background-color: #fff;
-  border-radius: 5px;
-  margin-top: 50px;
-  padding: 0 20px;
-  width: 70%;
-  position: absolute;
-}
-
-form input {
-  padding: 10px;
-  width: 100%;
-  border: 1px solid rgba(128, 128, 128, 0.2);
-  margin-top: 5px;
-  border-radius: 5px;
-}
-
-form span {
-  font-size: 14px;
-  color: grey;
-}
-
-input::placeholder {
-  font-size: 17px;
-  color: black;
-}
-
-form .box {
-  padding: 15px;
-  border-left: 1px solid rgba(81, 72, 72, 0.2);
-  text-align: center;
-}
-
-form .box:nth-child(1) {
-  border-left: none;
-}
-
-form h4 {
-  font-weight: 500;
-}
-
-@media screen and (max-width: 800px) {
-  .hero .container {
-    padding-top: 30%;
-  }
-  form {
-    display: auto;
-    flex-wrap: wrap;
-  }
-  form .box {
-    border-left: none;
-    text-align: center;
-  }
-  form input {
+video {
+    object-fit: cover;
     width: 100%;
-  }
+    height: 100%;
+    position: fixed;
+    z-index: -1;
 }
 
-/* button */
-
-.frame {
-  width: 90%;
-  margin: 40px auto;
-  text-align: center;
+.hero-container {
+    /* background: url('/images/img-home.jpg') center center/cover no-repeat; */
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
+    object-fit: contain;
 }
 
-/* button {
-    margin: 20px;
-} */
-
-.custom-btn {
-  width: 130px;
-  height: 40px;
-  color: #fff;
-  border-radius: 5px;
-  padding: 10px 25px;
-  /* font-family: 'Lato', sans-serif; */
-  font-weight: 500;
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  display: inline-block;
-  box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
-    7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
-  outline: none;
+.hero-container>h1 {
+    color: #fff;
+    font-size: 100px;
+    margin-top: -100px;
 }
 
-/* 3 */
-
-.btn-3 {
-  background: rgb(0, 172, 238);
-  background: linear-gradient(
-    0deg,
-    rgba(0, 172, 238, 1) 0%,
-    rgba(2, 126, 251, 1) 100%
-  );
-  width: 300px;
-  height: 40px;
-  line-height: 42px;
-  padding: 0;
-  border: none;
+.hero-container>p {
+    margin-top: 8px;
+    color: #fff;
+    font-size: 32px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-.btn-3 span {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: 100%;
+.hero-btns {
+    margin-top: 32px;
 }
 
-.btn-3:before,
-.btn-3:after {
-  position: absolute;
-  content: '';
-  right: 0;
-  top: 0;
-  background: rgba(2, 126, 251, 1);
-  transition: all 0.3s ease;
+.hero-btns .btn {
+    margin: 6px;
 }
 
-.btn-3:before {
-  height: 0%;
-  width: 2px;
+.fa-play-circle {
+    margin-left: 4px;
 }
 
-.btn-3:after {
-  width: 0%;
-  height: 2px;
+@media screen and (max-width: 960px) {
+    .hero-container>h1 {
+        font-size: 70px;
+        margin-top: -150px;
+    }
 }
 
-.btn-3:hover {
-  background: transparent;
-  box-shadow: none;
-}
-
-.btn-3:hover:before {
-  height: 100%;
-}
-
-.btn-3:hover:after {
-  width: 100%;
-}
-
-.btn-3 span:hover {
-  color: rgba(2, 126, 251, 1);
-}
-
-.btn-3 span:before,
-.btn-3 span:after {
-  position: absolute;
-  content: '';
-  left: 0;
-  bottom: 0;
-  background: rgba(2, 126, 251, 1);
-  transition: all 0.3s ease;
-}
-
-.btn-3 span:before {
-  width: 2px;
-  height: 0%;
-}
-
-.btn-3 span:after {
-  width: 0%;
-  height: 2px;
-}
-
-.btn-3 span:hover:before {
-  height: 100%;
-}
-
-.btn-3 span:hover:after {
-  width: 100%;
+@media screen and (max-width: 768px) {
+    .hero-container>h1 {
+        font-size: 50px;
+        margin-top: -100px;
+    }
+    .hero-container>p {
+        font-size: 30px;
+    }
+    .btn-mobile {
+        display: block;
+        text-decoration: none;
+    }
+    .btn {
+        width: 100%;
+    }
 }

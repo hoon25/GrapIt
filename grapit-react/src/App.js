@@ -2,19 +2,20 @@ import './App.css';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {LogIn, LogOut} from './routes/LogIn';
-import ChatRoom from "./routes/ChatRoom";
-import Chat from "./routes/Chat";
-import RTC from "./routes/RTC";
+import { LogIn, LogOut } from './routes/LogIn';
+import ChatRoom from './routes/ChatRoom';
+import Chat from './routes/Chat';
+import RTC from './routes/RTC';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {CollaborationPage} from "./routes/CollaborationPage";
+import { CollaborationPage } from './routes/CollaborationPage';
 import Home from './components/home/Home';
 import Canvas from './components/Canvas';
 import Header from './components/common/header/Header';
-import Vidu from "./routes/vidu/Vidu";
+import Vidu from './routes/vidu/Vidu';
+import SurveyComponent from './components/home/survey/survey';
 
 function App() {
-    let chat = useSelector(state => state.chat);
+  let chat = useSelector(state => state.chat);
 
   return (
     <div className="App">
@@ -29,10 +30,12 @@ function App() {
         <Route path="/chat/room/rtc/:roomId" element={<RTC chat={chat} />} />
         <Route
           path="/chat/room/both/:roomId"
-          element={<CollaborationPage chat={chat}/>}/>
+          element={<CollaborationPage chat={chat} />}
+        />
         <Route path="/chat/room/:roomId" element={<Chat chat={chat} />} />
         <Route path="/canvas" element={<Canvas />} />
         <Route path="/vidu" element={<Vidu />} />
+        <Route path="/survey" element={<SurveyComponent />} />
       </Routes>
     </div>
   );

@@ -1,5 +1,5 @@
 import { fabric } from 'fabric';
-
+import uuid from 'node-uuid';
 export default function (from, to, color, width) {
   var path =
     'M ' +
@@ -30,5 +30,6 @@ export default function (from, to, color, width) {
     stroke: color,
     strokeWidth: width,
     fill: 'rgba(255, 255, 255, 0)',
+    id: uuid.v4(),
   });
 }

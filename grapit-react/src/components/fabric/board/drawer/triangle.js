@@ -1,5 +1,5 @@
 import { fabric } from 'fabric';
-
+import uuid from 'node-uuid';
 //all 60 degree
 const drawEquilateral = (from, to, color, width) => {
   var height = to.y - from.y;
@@ -36,6 +36,7 @@ const drawRightangle = (from, to, color, width) => {
     stroke: color,
     strokeWidth: width,
     fill: 'rgba(255, 255, 255, 0)',
+    id: uuid.v4(),
   });
 };
 

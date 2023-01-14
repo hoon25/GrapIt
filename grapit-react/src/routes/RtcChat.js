@@ -87,6 +87,7 @@ function RtcChat({ chat }) {
     var sock = new SockJs('/sock/ws-stomp');
     console.log('☠️');
     stompClient = Stomp.over(sock);
+    stompClient.debug = null;
     stompClient.connect({}, () => {
       stompClient.subscribe(
         '/sock/sub/chat/room/' + chat.roomId,
@@ -107,16 +108,15 @@ function RtcChat({ chat }) {
   }, []);
 
   function sendObjectInfo(objectType, object) {
-    console.log(object);
-    console.log(objectType);
     if (stompClient) {
+      stompClient.debug = null;
       stompClient.send(
         '/sock/pub/chat/sendMessage',
         {},
         JSON.stringify({
           roomId: chat.roomId,
           sender: user.nickName,
-          message: JSON.stringify(object),
+          message: object,
           type: objectType,
         }),
       );
@@ -145,7 +145,10 @@ function RtcChat({ chat }) {
     if (newMessage.sender !== user.nickName) {
       if (newMessage.type === 'RATIO') {
         setRatio(Number(newMessage.message));
-      } else if (newMessage.type === 'DRAW') {
+      } else if (newMessage.type === 'PAINT') {
+        console.log('🖌🖌🖌🖌🖌🖌🖌🖌');
+        console.log(JSON.parse(newMessage.message));
+        setDrawInfo(JSON.parse(newMessage.message));
       } else if (newMessage.type === 'GRAPH') {
         const receivedGraphInfo = JSON.parse(newMessage.message);
 

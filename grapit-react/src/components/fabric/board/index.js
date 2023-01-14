@@ -2,7 +2,6 @@ import React, { Component, useEffect, useRef, useState } from 'react';
 import { fabric } from 'fabric';
 
 import * as drawer from './drawer';
-import modes from '../utils/mode';
 import uuid from 'node-uuid';
 
 import './style.scss';
@@ -14,8 +13,10 @@ function Board(props) {
 
   const [nowProps, setNowProps] = useState(props);
   const [isDrawing, setIsDrawing] = useState(false);
+  const [temp, setTemp] = useState(false);
   const [moveCount, setMoveCount] = useState(1);
   const [preDrawerObj, setPreDrawerObj] = useState(undefined);
+  const [sendObj, setSendObj] = useState(undefined);
   const [preTextObj, setPreTextObj] = useState(undefined);
   const [posFrom, setPosFrom] = useState({ x: 0, y: 0 });
   const [posTo, setPosTo] = useState({ x: 0, y: 0 });
@@ -27,6 +28,26 @@ function Board(props) {
   });
   const [currentGroupId, setCurrentGroupId] = useState('');
   const fabricCanvas = useRef(null);
+
+  useEffect(() => {
+    if (sendObj !== undefined && temp === true) {
+      let action = undefined;
+      if (props.mode !== 'eraser' && props.mode !== 'select') {
+        action = 'add';
+      } else if (props.mode === 'eraser') {
+        action = 'remove';
+      }
+
+      console.log(sendObj);
+      props.sendPaintInfo(
+        'PAINT',
+        JSON.stringify({
+          action: action,
+          target: sendObj.toJSON(['id']),
+        }),
+      );
+    }
+  }, [sendObj, temp]);
 
   useEffect(() => {
     fabricCanvas.current = new fabric.Canvas(canvasId, {
@@ -48,8 +69,8 @@ function Board(props) {
     fabricCanvas.current.on('object:modified', handleCanvasObjectsModified);
 
     fabricCanvas.current.on('object:moving', handleCanvasObjectsMoving);
-    fabricCanvas.current.on('object:added', handleCanvasObjectsAdded);
-    fabricCanvas.current.on('object:removed', handleCanvasObjectsRemoved);
+    // fabricCanvas.current.on('object:added', handleCanvasObjectsAdded);
+    // fabricCanvas.current.on('object:removed', handleCanvasObjectsRemoved);
 
     fabricCanvas.current.zoom = window.zoom ? window.zoom : 1;
   }, []);
@@ -60,7 +81,7 @@ function Board(props) {
 
     if (mode !== beforeMode || enabled !== beforeEnabled) {
       if (preTextObj !== undefined) {
-        preTextObj.exitEditing();
+        // preTextObj.exitEditing();
         setPreTextObj(undefined);
       }
       if (enabled === false) {
@@ -155,20 +176,26 @@ function Board(props) {
 
   useEffect(() => {
     // const object = JSON.parse(props.drawInfo.target);
-    console.log('useEffect');
-    console.log(props.drawInfo);
-
     if (props.drawInfo !== undefined) {
+      console.log(props.drawInfo);
+      console.log(props.drawInfo.target.id);
       const objectById = getWhiteBoardObjectById(
         fabricCanvas.current,
         props.drawInfo.target.id,
       );
+
+      console.log(objectById);
+
       if (props.drawInfo.action === 'add') {
         if (objectById === null) {
           fabric.util.enlivenObjects(
             [props.drawInfo.target],
             function (enlivenedObjects) {
               enlivenedObjects.forEach(function (enlivenedObject) {
+                // enlivenedObject.id = props.drawInfo.target.id;
+                enlivenedObject.set('id', props.drawInfo.target.id);
+                console.log('아이디 체크');
+                console.log(enlivenedObject.id);
                 fabricCanvas.current.add(enlivenedObject);
               });
             },
@@ -218,6 +245,7 @@ function Board(props) {
     const { enabled } = props;
     if (enabled === false) return;
     setIsDrawing(true);
+    setTemp(false);
     setPosFrom({ x: options.e.offsetX, y: options.e.offsetY });
     setPosTo({ x: options.e.offsetX, y: options.e.offsetY });
 
@@ -228,18 +256,19 @@ function Board(props) {
 
   function handleCanvasMouseUp(options) {
     const { mode } = props;
+    console.log('mouseup');
+    console.log(sendObj);
     if (mode !== 'text' && preDrawerObj !== undefined) {
-      setPreTextObj(uuid.v4());
+      // preDrawerObj.set('id', uuid.v4());
     }
 
     if (mode !== 'polygon') {
       setIsDrawing(false);
+      setTemp(true);
       setMoveCount(1);
       setPreDrawerObj(undefined);
       setPosTo({ x: options.e.offsetX, y: options.e.offsetY });
     }
-
-    // this.props.sendPaintInfo(JSON.stringify(canvas._objects));
   }
 
   function handleCanvasMouseMove(options) {
@@ -250,11 +279,13 @@ function Board(props) {
   function handleCanvasPathCreated(e) {
     const { enabled } = props;
     if (enabled === false || e.path === undefined) return;
-
+    console.log('handleCanvasPathCreated');
     e.path.set('id', uuid.v4());
   }
 
   function handleCanvasSelectionCreated(e) {
+    console.log(fabricCanvas.current.getActiveObject());
+
     const { mode, enabled } = props;
     if (enabled === false || e.e === undefined) return;
     const selected = [];
@@ -406,9 +437,8 @@ function Board(props) {
     }
 
     if (drawerObj !== undefined) {
-      console.log('오븍젝트 애드');
       fabricCanvas.current.add(drawerObj);
-      console.log('오븍젝트 애드 끝');
+      setSendObj(drawerObj);
     }
     setPreDrawerObj(drawerObj);
     setPreTextObj(textObj);
@@ -584,15 +614,31 @@ function Board(props) {
     }
   }
 
-  function handleCanvasObjectsAdded(options) {
-    props.sendPaintInfo({ action: 'add', target: options.target });
-  }
+  // function handleCanvasObjectsAdded(options) {
+  //   console.log(options.target);
+  //   props.sendPaintInfo(
+  //     'PAINT',
+  //     JSON.stringify({
+  //       action: 'add',
+  //       target: options.target.toJSON(['id']),
+  //     }),
+  //   );
+  // }
   function handleCanvasObjectsRemoved(options) {
-    props.sendPaintInfo({ action: 'remove', target: options.target });
+    props.sendPaintInfo(
+      'PAINT',
+      JSON.stringify({
+        action: 'remove',
+        target: options.target.toJSON(['id']),
+      }),
+    );
   }
 
   function handleCanvasObjectsMoving(options) {
-    props.sendPaintInfo({ action: 'move', target: options.target });
+    props.sendPaintInfo('PAINT', {
+      action: 'move',
+      target: options.target.toJSON(['id']),
+    });
   }
 }
 

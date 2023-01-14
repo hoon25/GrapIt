@@ -174,10 +174,12 @@ export function TwoDGraph({
           viewBox={{ x: viewPointX, y: viewPointY, padding: ratio }}
         >
           <CartesianCoordinates
-            xAxis={{ lines: Math.floor(ratio / 5) + 1 }}
-            yAxis={{ lines: Math.floor(ratio / 5) + 1 }}
+            xAxis={{ lines: Math.floor(Math.abs(ratio) / 5) + 1 }}
+            yAxis={{ lines: Math.floor(Math.abs(ratio) / 5) + 1 }}
             subdivisions={
-              Math.floor(ratio / 5) + 1 > 5 ? 5 : Math.floor(ratio / 5) + 1
+              Math.floor(Math.abs(ratio) / 5) + 1 > 5
+                ? 5
+                : Math.floor(Math.abs(ratio) / 5) + 1
             }
           />
           {drawGraph()}

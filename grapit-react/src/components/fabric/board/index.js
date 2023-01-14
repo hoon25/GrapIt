@@ -81,7 +81,7 @@ function Board(props) {
 
     if (mode !== beforeMode || enabled !== beforeEnabled) {
       if (preTextObj !== undefined) {
-        // preTextObj.exitEditing();
+        preTextObj.exitEditing();
         setPreTextObj(undefined);
       }
       if (enabled === false) {
@@ -257,7 +257,6 @@ function Board(props) {
   function handleCanvasMouseUp(options) {
     const { mode } = props;
     console.log('mouseup');
-    console.log(sendObj);
     if (mode !== 'text' && preDrawerObj !== undefined) {
       // preDrawerObj.set('id', uuid.v4());
     }
@@ -291,6 +290,7 @@ function Board(props) {
     const selected = [];
     e.selected.forEach(obj => {
       selected.push({ id: obj.id });
+      setSendObj(obj);
       if (mode === 'eraser') fabricCanvas.current.remove(obj);
     });
     if (mode === 'eraser') {

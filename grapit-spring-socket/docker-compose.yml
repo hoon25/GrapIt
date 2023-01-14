@@ -6,4 +6,4 @@ services:
             dockerfile: Dockerfile
         container_name: grapit-socket
         ports:
-            - 9001:9091
+            - 9001:9001

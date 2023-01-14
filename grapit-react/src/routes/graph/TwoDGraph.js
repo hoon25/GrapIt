@@ -24,8 +24,6 @@ export function TwoDGraph({
   childWidth,
   childHeight,
 }) {
-  console.log('in graph');
-
   // 스크롤 이벤트 제어. 나중에 쓸수 있음.
   function removeWindowWheel() {
     window.addEventListener('wheel', preventWheelEvent, { passive: false });
@@ -200,4 +198,3 @@ export function TwoDGraph({
     </div>
   );
 }
-

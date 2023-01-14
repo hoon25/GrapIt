@@ -7,10 +7,8 @@ import { map } from 'react-bootstrap/ElementChildren';
 
 function Thickness(props) {
   const [index, setIndex] = useState(0);
-  console.log('thickness in');
   useEffect(() => {
     map(props.brushThicknessRange, (range, index) => {
-      console.log('in map');
       if (range === props.brushThickness) {
         setIndex(props.index);
       }

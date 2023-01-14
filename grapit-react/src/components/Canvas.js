@@ -18,10 +18,6 @@ function Canvas(props) {
   const [mode, setMode] = useState();
   const [brushColor, setBrushColor] = useState('#f44336');
   const [brushThickness, setBrushThickness] = useState(2);
-  console.log('canvas start');
-  console.log(mode);
-  console.log(buttonMode);
-  console.log('canvas end');
 
   useEffect(() => {
     setMode(buttonMode);

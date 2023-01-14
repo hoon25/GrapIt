@@ -3,16 +3,11 @@ import {
   FunctionGraph,
   Mafs,
   Line,
-  Transform,
-  useMovablePoint,
-  vec,
   Circle,
 } from 'mafs';
 import 'mafs/build/index.css';
-import React, { useEffect, useRef, useState } from 'react';
-import { Provider, useDispatch, useSelector } from 'react-redux';
+import React, { } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { setIsWhiteBoard } from '../../store/isWhiteBoardSlice';
 
 export function TwoDGraph({
   graphList,
@@ -20,7 +15,7 @@ export function TwoDGraph({
   viewPointY,
   ratio,
   setRatio,
-  sendRatio,
+  sendObjectInfo,
   childWidth,
   childHeight,
 }) {
@@ -66,56 +61,13 @@ export function TwoDGraph({
     // setMousePoint([event.pageX, event.pageY])
   }
 
-  let drawGraph = () => {
-    let result = [];
-    for (let i = 0; i < graphList.length; i++) {
-      let color = graphList[i][0];
-      let type = graphList[i][1];
-      let first = Number(graphList[i][2]);
-      let second = Number(graphList[i][3]);
-      let third = Number(graphList[i][4]);
-
-      if (type === 'Line') {
-        result.push(
-          <Line.PointAngle
-            key={i}
-            point={[0, second]}
-            color={color}
-            angle={Math.atan(first)}
-            weight={4}
-          />,
-        );
-      } else if (type === 'Circle') {
-        result.push(
-          <Circle
-            key={i}
-            center={[first, second]}
-            radius={third}
-            color={color}
-          />,
-        );
-      } else if (type === 'TwoD') {
-        result.push(
-          <FunctionGraph.OfX
-            key={i}
-            color={color}
-            y={x => {
-              const _x = x;
-              return first * _x * _x + second * _x + third;
-            }}
-          />,
-        );
-      }
-    }
-    return result;
-  };
 
   return (
     <div className="test-parent">
       <div className="test-child">
         <Button
           onClick={() => {
-            sendRatio(ratio - 0.5);
+            sendObjectInfo('RATIO', ratio - 0.5);
             setRatio(ratio - 0.5);
           }}
         >
@@ -123,7 +75,7 @@ export function TwoDGraph({
         </Button>
         <Button
           onClick={() => {
-            sendRatio(ratio + 0.5);
+            sendObjectInfo('RATIO', ratio + 0.5);
             setRatio(ratio + 0.5);
           }}
         >
@@ -133,7 +85,7 @@ export function TwoDGraph({
           <Form.Range
             value={ratio}
             onChange={e => {
-              sendRatio(Number(e.target.value));
+              sendObjectInfo('RATIO', Number(e.target.value));
               setRatio(Number(e.target.value));
             }}
             tooltip="auto"
@@ -182,21 +134,48 @@ export function TwoDGraph({
                 : Math.floor(Math.abs(ratio) / 5) + 1
             }
           />
-          {drawGraph()}
-
-          {/*<FunctionGraph.OfX*/}
-          {/*    color={"red"}*/}
-          {/*    y={(x) => {*/}
-          {/*        const _x = x*/}
-          {/*        return -3*_x*_x*_x -2*x*_x + 2}}/>*/}
-
-          {/*<FunctionGraph.OfX*/}
-          {/*    color={"red"}*/}
-          {/*    y={(x) => {*/}
-          {/*        const _x = x*/}
-          {/*        return 1/_x}}/>*/}
+          {graphList.map((graph, index) => resolveGraph(graph, index))}
         </Mafs>
       </div>
     </div>
   );
+}
+
+
+function resolveGraph(graph, index) {
+  const [color, type] = graph;
+  const [first, second, third] = graph.slice(2, 5).map(Number);
+
+  if (type === 'Line') {
+    return (
+      <Line.PointAngle
+        key={index}
+        point={[0, second]}
+        color={color}
+        angle={Math.atan(first)}
+        weight={4}
+      />
+    );
+  }
+  else if (type === 'Circle') {
+    return (
+      <Circle
+        key={index}
+        center={[first, second]}
+        radius={third}
+        color={color}
+      />
+    );
+  }
+  else if (type === 'TwoD') {
+    return (
+      <FunctionGraph.OfX
+        key={index}
+        color={color}
+        y={x => {
+          const _x = x;
+          return first * _x * _x + second * _x + third;
+        }} />
+    );
+  }
 }

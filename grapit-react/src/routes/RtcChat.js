@@ -15,41 +15,49 @@ import Cursor from '../components/Cursor';
 var stompClient = null;
 
 function RtcChat({ chat }) {
-  let [ratio, setRatio] = useState(1);
+  const [ratio, setRatio] = useState(1);
 
-  let [graphColor, setGraphColor] = useState('#ffffff');
-  let [graphType, setGraphType] = useState('Line');
-  let [formulaFirst, setFormulaFirst] = useState('');
-  let [formulaSecond, setFormulaSecond] = useState('');
-  let [formulaThird, setFormulaThird] = useState('');
+  const [graphColor, setGraphColor] = useState('#ffffff');
+  const [graphType, setGraphType] = useState('Line');
 
-  let [viewPointX, setViewPointX] = useState([-5, 5]);
-  let [viewPointY, setViewPointY] = useState([-5, 5]);
+  // todo 변수명 변경
+  const [formulaFirst, setFormulaFirst] = useState('');
+  const [formulaSecond, setFormulaSecond] = useState('');
+  const [formulaThird, setFormulaThird] = useState('');
 
-  let [graphInfo, setGraphInfo] = useState([]);
-  let [graphList, setGraphList] = useState([]);
+  // viewPoint 초기값 
+  const [viewPointX, setViewPointX] = useState([-5, 5]);
+  const [viewPointY, setViewPointY] = useState([-5, 5]);
 
-  let [drawInfo, setDrawInfo] = useState();
+  // graphInfo : 그래프 정보(graphColor, graphType, ...)를 담는 배열
+  // graphList : graphInfo를 담는 배열
+  const [graphInfo, setGraphInfo] = useState([]);
+  const [graphList, setGraphList] = useState([]);
+
+  const [drawInfo, setDrawInfo] = useState();
 
   const dispatch = useDispatch();
-  let isWhiteBoard = useSelector(state => state.isWhiteBoard);
+  const isWhiteBoard = useSelector(state => state.isWhiteBoard);
 
-  let graphStyle = {
+  const commonCanvasStyle = {
     height: '100%',
     width: '100%',
     position: 'absolute',
+  }
+
+  const graphStyle = {
+    ...commonCanvasStyle,
     pointerEvents: isWhiteBoard.isSelected ? 'none' : 'auto',
   };
-  let whiteBoardStyle = {
-    height: '100%',
-    width: '100%',
-    position: 'absolute',
+
+  const whiteBoardStyle = {
+    ...commonCanvasStyle,
     pointerEvents: isWhiteBoard.isSelected ? 'auto' : 'none',
   };
 
-  let mainParent = useRef();
-  let [childWidth, setChildWidth] = useState();
-  let [childHeight, setChildHeight] = useState();
+  const mainParent = useRef();
+  const [childWidth, setChildWidth] = useState();
+  const [childHeight, setChildHeight] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
 
@@ -60,8 +68,8 @@ function RtcChat({ chat }) {
     // canvasParent.current.appendChild(canvas);
   }, []);
 
-  let tempRef = useRef();
-  let [containerInfo, setContainerInfo] = useState([
+  const tempRef = useRef();
+  const [containerInfo, setContainerInfo] = useState([
     window.innerWidth,
     window.innerHeight,
   ]);
@@ -69,7 +77,7 @@ function RtcChat({ chat }) {
   const updateMyPresence = useUpdateMyPresence();
   const userOther = useOthers();
 
-  let user = useSelector(state => state.user);
+  const user = useSelector(state => state.user);
 
   window.addEventListener('resize', () => {
     setContainerInfo([window.innerWidth, window.innerHeight]);
@@ -81,10 +89,10 @@ function RtcChat({ chat }) {
   });
 
   // 동기화 소켓 통신
-  var Stomp = require('stompjs/lib/stomp.js').Stomp;
+  const Stomp = require('stompjs/lib/stomp.js').Stomp;
 
   useEffect(() => {
-    var sock = new SockJs('/sock/ws-stomp');
+    const sock = new SockJs('/sock/ws-stomp');
     console.log('☠️');
     stompClient = Stomp.over(sock);
     stompClient.debug = null;
@@ -94,17 +102,6 @@ function RtcChat({ chat }) {
         rerenderGraph,
       );
     });
-
-    // if(stompClient.connected) {
-    //     console.log("stompClient connected!!!");
-    //     stompClient.send("/pub/chat/enterUser", {},
-    //         JSON.stringify({
-    //             roomId: chat.roomId,
-    //             sender: user.nickName,
-    //             type: 'ENTER'
-    //         })
-    //     )
-    // }
   }, []);
 
   function sendObjectInfo(objectType, object) {
@@ -118,21 +115,6 @@ function RtcChat({ chat }) {
           sender: user.nickName,
           message: object,
           type: objectType,
-        }),
-      );
-    }
-  }
-
-  function sendRatio(ratio) {
-    if (stompClient) {
-      stompClient.send(
-        '/sock/pub/chat/sendMessage',
-        {},
-        JSON.stringify({
-          roomId: chat.roomId,
-          sender: user.nickName,
-          message: ratio,
-          type: 'RATIO',
         }),
       );
     }
@@ -284,7 +266,7 @@ function RtcChat({ chat }) {
                   viewPointY={viewPointY}
                   ratio={ratio}
                   setRatio={setRatio}
-                  sendRatio={sendRatio}
+                  sendObjectInfo={sendObjectInfo}
                   childWidth={childWidth}
                   childHeight={childHeight}
                 />

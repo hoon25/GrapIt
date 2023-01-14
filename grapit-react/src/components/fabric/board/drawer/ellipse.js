@@ -1,5 +1,5 @@
 import { fabric } from 'fabric';
-
+import uuid from 'node-uuid';
 export default function (from, to, color, width) {
   var left = from.x;
   var top = from.y;
@@ -13,5 +13,6 @@ export default function (from, to, color, width) {
     rx: Math.abs(left - to.x),
     ry: Math.abs(top - to.y),
     strokeWidth: width,
+    id: uuid.v4(),
   });
 }

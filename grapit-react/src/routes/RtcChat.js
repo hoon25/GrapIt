@@ -6,19 +6,16 @@ import '../css/Canvas.css';
 import Canvas from '../components/Canvas';
 import { setIsWhiteBoard } from '../store/isWhiteBoardSlice';
 import { TwoDGraph } from './graph/TwoDGraph';
-import GraphList from './graph/GraphList';
 import { GraphTypeButton } from './graph/GraphTypeButton';
 import { GraphInputGroup } from './graph/GraphInputGroup';
 import SockJs from 'sockjs-client';
-import Vidu from './vidu/Vidu';
+import { useOthers, useUpdateMyPresence } from '../config/liveblocks.config';
 import Cursor from '../components/Cursor';
-import {useOthers, useUpdateMyPresence} from "../config/liveblocks.config";
 
 var stompClient = null;
 
-function RtcChat({chat}) {
-
-    let [ratio, setRatio] = useState(1)
+function RtcChat({ chat }) {
+  let [ratio, setRatio] = useState(1);
 
   let [graphColor, setGraphColor] = useState('#ffffff');
   let [graphType, setGraphType] = useState('Line');
@@ -54,6 +51,7 @@ function RtcChat({chat}) {
   let [childWidth, setChildWidth] = useState();
   let [childHeight, setChildHeight] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
     setChildWidth(mainParent.current.clientWidth);
@@ -75,9 +73,8 @@ function RtcChat({chat}) {
 
   window.addEventListener('resize', () => {
     setContainerInfo([window.innerWidth, window.innerHeight]);
-  });
-  window.addEventListener('resize', () => {
-    console.log(window);
+    // setChildWidth(mainParent.current.clientWidth);
+    // setChildHeight(mainParent.current.clientHeight);
   });
   window.addEventListener('orientationchange', () => {
     setContainerInfo([window.innerWidth, window.innerHeight]);
@@ -88,13 +85,16 @@ function RtcChat({chat}) {
 
   useEffect(() => {
     var sock = new SockJs('/sock/ws-stomp');
+    console.log('☠️');
     stompClient = Stomp.over(sock);
+    stompClient.debug = null;
     stompClient.connect({}, () => {
       stompClient.subscribe(
         '/sock/sub/chat/room/' + chat.roomId,
         rerenderGraph,
       );
     });
+
     // if(stompClient.connected) {
     //     console.log("stompClient connected!!!");
     //     stompClient.send("/pub/chat/enterUser", {},
@@ -107,19 +107,17 @@ function RtcChat({chat}) {
     // }
   }, []);
 
-    useEffect(() => {
-    }, [graphList])
-
-  function sendGraphInfo(graphList) {
+  function sendObjectInfo(objectType, object) {
     if (stompClient) {
+      stompClient.debug = null;
       stompClient.send(
         '/sock/pub/chat/sendMessage',
         {},
         JSON.stringify({
           roomId: chat.roomId,
           sender: user.nickName,
-          message: JSON.stringify(graphList),
-          type: 'DRAW',
+          message: object,
+          type: objectType,
         }),
       );
     }
@@ -134,7 +132,7 @@ function RtcChat({chat}) {
           roomId: chat.roomId,
           sender: user.nickName,
           message: ratio,
-          type: 'DRAW_RATIO',
+          type: 'RATIO',
         }),
       );
     }
@@ -144,38 +142,22 @@ function RtcChat({chat}) {
   function rerenderGraph(payload) {
     const newMessage = JSON.parse(payload.body);
 
-    if (newMessage.sender != user.nickName) {
-      if (newMessage.type === 'DRAW_RATIO') {
+    if (newMessage.sender !== user.nickName) {
+      if (newMessage.type === 'RATIO') {
         setRatio(Number(newMessage.message));
-      } else if (newMessage.type === 'DRAW') {
-        console.log('👻👻👻👻👻👻👻👻👻👻👻👻');
+      } else if (newMessage.type === 'PAINT') {
+        console.log('🖌🖌🖌🖌🖌🖌🖌🖌');
+        console.log(JSON.parse(newMessage.message));
+        setDrawInfo(JSON.parse(newMessage.message));
+      } else if (newMessage.type === 'GRAPH') {
+        const receivedGraphInfo = JSON.parse(newMessage.message);
 
-        let message = JSON.parse(newMessage.message);
-        message = JSON.parse(message);
-
-        console.log(message.action === 'remove');
-        if (message.action === 'move') {
-          console.log('in move');
-          setDrawInfo(message.target);
-          return;
-        } else if (message.action === 'add') {
-          console.log('in add');
-          setDrawInfo(message.target);
-          return;
-        } else if (message.action === 'remove') {
-          setDrawInfo(message.target);
-          return;
-        }
-        console.log('✊✊✊!!!오지마!!!!✊✊✊');
-        if (JSON.parse(newMessage.message).length === 0) {
+        if (receivedGraphInfo.length === 0) {
           setGraphList([]);
         }
         if (newMessage.message !== JSON.stringify(graphList)) {
-          setGraphList(JSON.parse(newMessage.message));
+          setGraphList(receivedGraphInfo);
         }
-      } else if (newMessage.type === 'DRAW_PAINT') {
-        // setDrawInfo(newMessage.message);
-        // console.log(drawInfo);
       }
     }
   }
@@ -234,7 +216,7 @@ function RtcChat({chat}) {
           <Row style={{ height: '70%' }} className="div-shadow">
             <div style={{ overflowX: 'auto' }}>
               <h4>영상 채팅</h4>
-              <Vidu user={user} chat={chat} />
+              {/*<Vidu user={user} chat={chat} />*/}
             </div>
           </Row>
 
@@ -269,7 +251,7 @@ function RtcChat({chat}) {
                   setViewPointX={setViewPointX}
                   viewPointY={viewPointY}
                   setViewPointY={setViewPointY}
-                  sendGraphInfo={sendGraphInfo}
+                  sendGraphInfo={sendObjectInfo}
                 />
               </div>
             </div>
@@ -316,7 +298,7 @@ function RtcChat({chat}) {
                   childWidth={childWidth}
                   childHeight={childHeight}
                   isWhiteBoard={isWhiteBoard}
-                  // sendPaintInfo={sendPaintInfo}
+                  sendPaintInfo={sendObjectInfo}
                   drawInfo={drawInfo}
                 />
               ) : (
@@ -329,6 +311,5 @@ function RtcChat({chat}) {
     </Container>
   );
 }
-
 
 export default RtcChat;

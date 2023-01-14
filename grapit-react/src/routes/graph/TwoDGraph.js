@@ -24,8 +24,6 @@ export function TwoDGraph({
   childWidth,
   childHeight,
 }) {
-  console.log('in graph');
-
   // 스크롤 이벤트 제어. 나중에 쓸수 있음.
   function removeWindowWheel() {
     window.addEventListener('wheel', preventWheelEvent, { passive: false });
@@ -176,10 +174,12 @@ export function TwoDGraph({
           viewBox={{ x: viewPointX, y: viewPointY, padding: ratio }}
         >
           <CartesianCoordinates
-            xAxis={{ lines: Math.floor(ratio / 5) + 1 }}
-            yAxis={{ lines: Math.floor(ratio / 5) + 1 }}
+            xAxis={{ lines: Math.floor(Math.abs(ratio) / 5) + 1 }}
+            yAxis={{ lines: Math.floor(Math.abs(ratio) / 5) + 1 }}
             subdivisions={
-              Math.floor(ratio / 5) + 1 > 5 ? 5 : Math.floor(ratio / 5) + 1
+              Math.floor(Math.abs(ratio) / 5) + 1 > 5
+                ? 5
+                : Math.floor(Math.abs(ratio) / 5) + 1
             }
           />
           {drawGraph()}
@@ -200,4 +200,3 @@ export function TwoDGraph({
     </div>
   );
 }
-

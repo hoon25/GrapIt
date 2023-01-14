@@ -146,7 +146,7 @@ export function GraphInputGroup({
           ];
           setViewPointX(copyViewPointX);
           setViewPointY(copyViewPointY);
-          sendGraphInfo(copyGraphList);
+          sendGraphInfo('GRAPH', copyGraphList);
           setFormulaSecond('');
           setFormulaFirst('');
           setFormulaThird('');

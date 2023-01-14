@@ -1,5 +1,5 @@
 import { fabric } from 'fabric';
-
+import uuid from 'node-uuid';
 export default function (from, fontSize, color) {
   return new fabric.Textbox('', {
     left: from.x - 10,
@@ -10,5 +10,6 @@ export default function (from, fontSize, color) {
     fill: color,
     hasControls: true,
     editingBorderColor: '#000000',
+    id: uuid.v4(),
   });
 }

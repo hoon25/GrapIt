@@ -1,4 +1,5 @@
 import { fabric } from 'fabric';
+import uuid from 'node-uuid';
 
 export default function (points, color, width) {
   return new fabric.Polygon(points, {
@@ -8,5 +9,6 @@ export default function (points, color, width) {
     opacity: 1,
     hasBorders: true,
     hasControls: false,
+    id: uuid.v4(),
   });
 }

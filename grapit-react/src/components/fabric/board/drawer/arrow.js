@@ -1,4 +1,5 @@
 import { fabric } from 'fabric';
+import uuid from 'node-uuid';
 
 function drawArrow(fromX, fromY, toX, toY, theta, headlen) {
   theta = typeof theta != 'undefined' ? theta : 30;
@@ -29,5 +30,6 @@ export default function (from, to, color, fill, width) {
     stroke: color,
     fill: fill,
     strokeWidth: width,
+    id: uuid.v4(),
   });
 }

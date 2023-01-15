@@ -1,6 +1,6 @@
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { setGraph } from "../../store/graphSlice";
+import { setGraph } from '../../store/graphSlice';
 
 export function GraphInputGroup({
   formulaFirst,
@@ -23,7 +23,6 @@ export function GraphInputGroup({
   setViewPointY,
   sendGraphInfo,
 }) {
-
   const dispatch = useDispatch();
 
   const firstPlaceHolder = {
@@ -47,7 +46,6 @@ export function GraphInputGroup({
     Trigonometric: '상수',
   };
 
-
   return (
     <InputGroup className="mb-3">
       <Form.Control
@@ -67,12 +65,12 @@ export function GraphInputGroup({
           graphType === 'Line'
             ? firstPlaceHolder.Line
             : graphType === 'Circle'
-              ? firstPlaceHolder.Circle
-              : graphType === 'TwoD'
-                ? firstPlaceHolder.TwoD
-                : graphType === 'Trigonometric'
-                  ? firstPlaceHolder.Trigonometric
-                  : ''
+            ? firstPlaceHolder.Circle
+            : graphType === 'TwoD'
+            ? firstPlaceHolder.TwoD
+            : graphType === 'Trigonometric'
+            ? firstPlaceHolder.Trigonometric
+            : ''
         }
         aria-label="Recipient's username"
         aria-describedby="basic-addon2"
@@ -89,12 +87,12 @@ export function GraphInputGroup({
           graphType === 'Line'
             ? secondPlaceHolder.Line
             : graphType === 'Circle'
-              ? secondPlaceHolder.Circle
-              : graphType === 'TwoD'
-                ? secondPlaceHolder.TwoD
-                : graphType === 'Trigonometric'
-                  ? secondPlaceHolder.Trigonometric
-                  : ''
+            ? secondPlaceHolder.Circle
+            : graphType === 'TwoD'
+            ? secondPlaceHolder.TwoD
+            : graphType === 'Trigonometric'
+            ? secondPlaceHolder.Trigonometric
+            : ''
         }
         aria-label="Recipient's username"
         aria-describedby="basic-addon2"
@@ -111,12 +109,12 @@ export function GraphInputGroup({
           graphType === 'Line'
             ? thirdPlaceHolder.Line
             : graphType === 'Circle'
-              ? thirdPlaceHolder.Circle
-              : graphType === 'TwoD'
-                ? thirdPlaceHolder.TwoD
-                : graphType === 'Trigonometric'
-                  ? thirdPlaceHolder.Trigonometric
-                  : ''
+            ? thirdPlaceHolder.Circle
+            : graphType === 'TwoD'
+            ? thirdPlaceHolder.TwoD
+            : graphType === 'Trigonometric'
+            ? thirdPlaceHolder.Trigonometric
+            : ''
         }
         hidden={graphType === 'Line'}
         aria-label="Recipient's username"
@@ -131,13 +129,15 @@ export function GraphInputGroup({
 
       <Button
         onClick={() => {
-          dispatch(setGraph.addGraph({
-            graphColor,
-            graphType,
-            formulaFirst,
-            formulaSecond,
-            formulaThird,
-          }));
+          dispatch(
+            setGraph.addGraph({
+              graphColor,
+              graphType,
+              formulaFirst,
+              formulaSecond,
+              formulaThird,
+            }),
+          );
 
           const copyGraphInfo = [
             graphColor,
@@ -150,19 +150,21 @@ export function GraphInputGroup({
           const copyGraphList = [...graphList, copyGraphInfo];
           setGraphList(copyGraphList);
 
-          const copyViewPointX = [Number(formulaFirst) - 3, Number(formulaFirst) + 3];
+          const copyViewPointX = [
+            Number(formulaFirst) - 3,
+            Number(formulaFirst) + 3,
+          ];
           const copyViewPointY = [
             Number(formulaSecond) - 3,
             Number(formulaSecond) + 3,
           ];
           setViewPointX(copyViewPointX);
           setViewPointY(copyViewPointY);
-          sendGraphInfo('GRAPH', copyGraphList);
+          sendGraphInfo('GRAPH', JSON.stringify(copyGraphList));
           setFormulaSecond('');
           setFormulaFirst('');
           setFormulaThird('');
         }}
-        variant="outline-secondary"
         id="button-addon2"
       >
         생성

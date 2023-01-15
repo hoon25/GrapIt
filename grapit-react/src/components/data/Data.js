@@ -13,9 +13,9 @@ export const nav = [{
         path: '/vidu',
     },
     {
-        text: 'chatting',
+        text: 'ocr',
 
-        path: '/chat',
+        path: '/ocr',
     },
     {
         text: '선생님찾기',

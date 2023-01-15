@@ -25,7 +25,7 @@ function RtcChat({ chat }) {
   const [formulaSecond, setFormulaSecond] = useState('');
   const [formulaThird, setFormulaThird] = useState('');
 
-  // viewPoint 초기값 
+  // viewPoint 초기값
   const [viewPointX, setViewPointX] = useState([-5, 5]);
   const [viewPointY, setViewPointY] = useState([-5, 5]);
 
@@ -43,12 +43,14 @@ function RtcChat({ chat }) {
     height: '100%',
     width: '100%',
     position: 'absolute',
-  }
+  };
 
   const graphStyle = {
     ...commonCanvasStyle,
     pointerEvents: isWhiteBoard.isSelected ? 'none' : 'auto',
+    zIndex: 10,
   };
+  console.log(graphStyle);
 
   const whiteBoardStyle = {
     ...commonCanvasStyle,
@@ -79,11 +81,11 @@ function RtcChat({ chat }) {
 
   const user = useSelector(state => state.user);
 
-  window.addEventListener('resize', () => {
-    setContainerInfo([window.innerWidth, window.innerHeight]);
-    // setChildWidth(mainParent.current.clientWidth);
-    // setChildHeight(mainParent.current.clientHeight);
-  });
+  // window.addEventListener('resize', () => {
+  //   setContainerInfo([window.innerWidth, window.innerHeight]);
+  //   // setChildWidth(mainParent.current.clientWidth);
+  //   // setChildHeight(mainParent.current.clientHeight);
+  // });
   window.addEventListener('orientationchange', () => {
     setContainerInfo([window.innerWidth, window.innerHeight]);
   });
@@ -245,19 +247,6 @@ function RtcChat({ chat }) {
             ref={mainParent}
             style={{ height: '100%', width: '100%', position: 'relative' }}
           >
-            <div style={{ position: 'absolute', bottom: '0px', zIndex: '995' }}>
-              <Button
-                onClick={() => {
-                  if (isWhiteBoard.isSelected) {
-                    dispatch(setIsWhiteBoard(false));
-                  } else {
-                    dispatch(setIsWhiteBoard(true));
-                  }
-                }}
-              >
-                모드전환
-              </Button>
-            </div>
             <div style={graphStyle}>
               {isLoaded ? (
                 <TwoDGraph
@@ -274,7 +263,7 @@ function RtcChat({ chat }) {
                 ''
               )}
             </div>
-            <div style={whiteBoardStyle}>
+            <div>
               {isLoaded ? (
                 <Canvas
                   childWidth={childWidth}

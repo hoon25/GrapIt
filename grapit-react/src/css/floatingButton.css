@@ -29,14 +29,14 @@ h1 {
 .menu-item,
 .menu-open-button {
   background: #0d6efd;
-  border-radius: 100%;
-  width: 40px;
-  height: 40px;
-  margin-top: 10px;
-  margin-left: -40px;
+  /*border-radius: 100%;*/
+  /*width: 40px;*/
+  /*height: 40px;*/
+  /*margin-top: 10px;*/
+  /*margin-left: -40px;*/
   position: absolute;
-  top: 20px;
-  color: white;
+  /*top: 20px;*/
+  /*color: white;*/
   text-align: center;
   line-height: 80px;
   transform: translate3d(0, 0, 0);
@@ -90,16 +90,16 @@ h1 {
   position: absolute;
   top: 6vh;
   left: 50px;
-  width: 30px;
-  height: auto;
+  width: 50px;
+  height: 50px;
   box-sizing: border-box;
   font-size: 20px;
   text-align: left;
 }
 
 .menu-item:hover {
-  background: white;
-  color: #0d6efd;
+  /*background: white;*/
+  /*color: #0d6efd;*/
 }
 .menu-item:nth-child(3) {
   transition-duration: 90ms;
@@ -142,64 +142,40 @@ h1 {
 }
 .menu-open:checked ~ .menu-item:nth-child(4) {
   transition-duration: 290ms;
-  transform: translate3d(0, 100px, 0);
+  transform: translate3d(0, 120px, 0);
 }
 .menu-open:checked ~ .menu-item:nth-child(5) {
   transition-duration: 390ms;
-  transform: translate3d(0, 150px, 0);
+  transform: translate3d(0, 190px, 0);
 }
 .menu-open:checked ~ .menu-item:nth-child(6) {
   transition-duration: 490ms;
-  transform: translate3d(0, 200px, 0);
+  transform: translate3d(0, 260px, 0);
 }
 .menu-open:checked ~ .menu-item:nth-child(7) {
   transition-duration: 590ms;
-  transform: translate3d(0, 250px, 0);
+  transform: translate3d(0, 330px, 0);
 }
 .menu-open:checked ~ .menu-item:nth-child(8) {
   transition-duration: 690ms;
-  transform: translate3d(0, 300px, 0);
+  transform: translate3d(0, 400px, 0);
 }
 .menu-open:checked ~ .menu-item:nth-child(9) {
   transition-duration: 790ms;
-  transform: translate3d(0, 350px, 0);
+  transform: translate3d(0, 470px, 0);
 }
+
 .menu-open:checked ~ .menu-item:nth-child(10) {
   transition-duration: 890ms;
-  transform: translate3d(0, 400px, 0);
+  transform: translate3d(0, 540px, 0);
 }
 
 .menu-open:checked ~ .menu-item:nth-child(11) {
   transition-duration: 990ms;
-  transform: translate3d(0, 450px, 0);
+  transform: translate3d(0, 610px, 0);
 }
 
 .menu-open:checked ~ .menu-item:nth-child(12) {
-  transition-duration: 1090ms;
-  transform: translate3d(0, 500px, 0);
-}
-
-.menu-open:checked ~ .menu-item:nth-child(13) {
-  transition-duration: 1190ms;
-  transform: translate3d(0, 550px, 0);
-}
-
-.menu-open:checked ~ .menu-item:nth-child(14) {
-  transition-duration: 1290ms;
-  transform: translate3d(0, 600px, 0);
-}
-
-.menu-open:checked ~ .menu-item:nth-child(15) {
-  transition-duration: 1390ms;
-  transform: translate3d(0, 650px, 0);
-}
-
-.menu-open:checked ~ .menu-item:nth-child(16) {
-  transition-duration: 1490ms;
-  transform: translate3d(0, 700px, 0);
-}
-
-.menu-open:checked ~ .menu-item:nth-child(17) {
-  transition-duration: 1190ms;
-  transform: translate3d(0, 750px, 0);
+  transition-duration: 1010ms;
+  transform: translate3d(0, 680px, 0);
 }

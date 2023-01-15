@@ -1,6 +1,6 @@
 import { CartesianCoordinates, FunctionGraph, Mafs, Line, Circle } from 'mafs';
 import 'mafs/build/index.css';
-import './TwoDGraph.css';
+import '../../css/Button3D.css';
 import React from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Inboxes, ZoomIn, ZoomOut } from 'react-bootstrap-icons';
@@ -59,11 +59,12 @@ export function TwoDGraph({
   }
 
   return (
-    <div className style={{ position: 'relative' }}>
-      <div className="" style={{ position: 'absolute', display: 'flex' }}>
+    <div style={{ position: 'relative' }}>
+      <div style={{ position: 'absolute', display: 'flex' }}>
         <div>
           <div
             className="button-3d"
+            style={{ position: 'relative' }}
             onClick={() => {
               sendObjectInfo('RATIO', ratio === 0 ? 0 : ratio - 0.5);
               setRatio(ratio === 0 ? 0 : ratio - 0.5);

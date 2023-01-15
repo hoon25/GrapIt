@@ -1,12 +1,6 @@
-import {
-  CartesianCoordinates,
-  FunctionGraph,
-  Mafs,
-  Line,
-  Circle,
-} from 'mafs';
+import { CartesianCoordinates, FunctionGraph, Mafs, Line, Circle } from 'mafs';
 import 'mafs/build/index.css';
-import React, { } from 'react';
+import React from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 
@@ -20,11 +14,7 @@ export function TwoDGraph({
   childWidth,
   childHeight,
 }) {
-
-  const store = useSelector((state) => state.graph);
-
   // todo store 기반으로 변경
-  console.log(store)
   // 스크롤 이벤트 제어. 나중에 쓸수 있음.
   function removeWindowWheel() {
     window.addEventListener('wheel', preventWheelEvent, { passive: false });
@@ -66,8 +56,6 @@ export function TwoDGraph({
     // setViewPointX([firstX,secondX])
     // setMousePoint([event.pageX, event.pageY])
   }
-
-
 
   return (
     <div className="test-parent">
@@ -148,7 +136,6 @@ export function TwoDGraph({
   );
 }
 
-
 function resolveGraph(graph, index) {
   const [color, type] = graph;
   const [first, second, third] = graph.slice(2, 5).map(Number);
@@ -163,8 +150,7 @@ function resolveGraph(graph, index) {
         weight={4}
       />
     );
-  }
-  else if (type === 'Circle') {
+  } else if (type === 'Circle') {
     return (
       <Circle
         key={index}
@@ -173,8 +159,7 @@ function resolveGraph(graph, index) {
         color={color}
       />
     );
-  }
-  else if (type === 'TwoD') {
+  } else if (type === 'TwoD') {
     return (
       <FunctionGraph.OfX
         key={index}
@@ -182,7 +167,8 @@ function resolveGraph(graph, index) {
         y={x => {
           const _x = x;
           return first * _x * _x + second * _x + third;
-        }} />
+        }}
+      />
     );
   }
 }

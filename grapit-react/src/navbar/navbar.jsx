@@ -23,13 +23,8 @@ function NavScroll() {
             navbarScroll
           >
             <Nav.Link onClick={() => navigate('/chat')}>Chatting</Nav.Link>
-
-            <Nav.Link onClick={() => navigate('/canvas')}>Canvas</Nav.Link>
-            <Nav.Link onClick={() => navigate('/vidu')}>Vidu</Nav.Link>
             <Nav.Link onClick={() => navigate('/')}>Find teacher</Nav.Link>
             <NavDropdown title="3D" id="navbarScrollingDropdown">
-              <NavDropdown.Item href="#action5">2D</NavDropdown.Item>
-              <NavDropdown.Item href="#action6">3D with Graph</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="#action7">
                 Something else here

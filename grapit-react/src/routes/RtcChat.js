@@ -11,6 +11,7 @@ import { GraphInputGroup } from './graph/GraphInputGroup';
 import SockJs from 'sockjs-client';
 import { useOthers, useUpdateMyPresence } from '../config/liveblocks.config';
 import Cursor from '../components/Cursor';
+import { EquationHandBoard } from './equationBoard/EquationHandBoard';
 
 var stompClient = null;
 
@@ -25,7 +26,7 @@ function RtcChat({ chat }) {
   const [formulaSecond, setFormulaSecond] = useState('');
   const [formulaThird, setFormulaThird] = useState('');
 
-  // viewPoint 초기값 
+  // viewPoint 초기값
   const [viewPointX, setViewPointX] = useState([-5, 5]);
   const [viewPointY, setViewPointY] = useState([-5, 5]);
 
@@ -43,7 +44,7 @@ function RtcChat({ chat }) {
     height: '100%',
     width: '100%',
     position: 'absolute',
-  }
+  };
 
   const graphStyle = {
     ...commonCanvasStyle,
@@ -199,6 +200,28 @@ function RtcChat({ chat }) {
             <div style={{ overflowX: 'auto' }}>
               <h4>영상 채팅</h4>
               {/*<Vidu user={user} chat={chat} />*/}
+              <EquationHandBoard
+                graphColor={'#ffffff'}
+                // graphColor={graphColor}
+                setGraphColor={setGraphColor}
+                graphType={graphType}
+                setGraphType={setGraphType}
+                formulaFirst={formulaFirst}
+                setFormulaFirst={setFormulaFirst}
+                formulaSecond={formulaSecond}
+                setFormulaSecond={setFormulaSecond}
+                formulaThird={formulaThird}
+                setFormulaThird={setFormulaThird}
+                graphInfo={graphInfo}
+                setGraphInfo={setGraphInfo}
+                graphList={graphList}
+                setGraphList={setGraphList}
+                viewPointX={viewPointX}
+                setViewPointX={setViewPointX}
+                viewPointY={viewPointY}
+                setViewPointY={setViewPointY}
+                sendGraphInfo={sendObjectInfo}
+              />
             </div>
           </Row>
 

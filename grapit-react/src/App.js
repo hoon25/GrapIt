@@ -11,7 +11,7 @@ import { CollaborationPage } from './routes/CollaborationPage';
 import Home from './components/home/Home';
 import Canvas from './components/Canvas';
 import Header from './components/common/header/Header';
-import Vidu from './routes/vidu/Vidu';
+import OCR from './routes/ocr/OCR';
 import SurveyComponent from './components/home/survey/survey';
 
 function App() {
@@ -34,7 +34,7 @@ function App() {
         />
         <Route path="/chat/room/:roomId" element={<Chat chat={chat} />} />
         <Route path="/canvas" element={<Canvas />} />
-        <Route path="/vidu" element={<Vidu />} />
+        <Route path="/ocr" element={<OCR />} />
         <Route path="/survey" element={<SurveyComponent />} />
       </Routes>
     </div>

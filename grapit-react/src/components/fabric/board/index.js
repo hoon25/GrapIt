@@ -46,7 +46,20 @@ function Board(props) {
     }
   }, [sendObj, mouseUp, selectedCount]);
 
-  function handleCanvasObjectsAdded() {
+  function handleCanvasObjectsAdded(options) {
+    console.log('handleCanvasObjectsAdded', options);
+    console.log(props.mode);
+    if (props.mode === 'pen') {
+      options.target.id = uuid.v4();
+      props.sendPaintInfo(
+        'PAINT',
+        JSON.stringify({
+          action: 'pen',
+          target: options.target.toJSON(['id']),
+        }),
+      );
+    }
+
     setSendObj(undefined);
   }
 
@@ -146,6 +159,7 @@ function Board(props) {
     fabricCanvas.current.off('selection:cleared');
     fabricCanvas.current.off('object:modified');
     fabricCanvas.current.off('object:moving');
+    fabricCanvas.current.off('object:added');
 
     fabricCanvas.current.on('mouse:down', handleCanvasMouseDown);
     fabricCanvas.current.on('mouse:up', handleCanvasMouseUp);
@@ -156,6 +170,7 @@ function Board(props) {
     fabricCanvas.current.on('selection:cleared', handleCanvasSelectionCleared);
     fabricCanvas.current.on('object:modified', handleCanvasObjectsModified);
     fabricCanvas.current.on('object:moving', handleCanvasObjectsMoving);
+    fabricCanvas.current.on('object:added', handleCanvasObjectsAdded);
     setNowProps(props);
   }, [props]);
 
@@ -223,6 +238,10 @@ function Board(props) {
           fabricCanvas.current.remove(objectById);
         }
       });
+    } else if (props.drawInfo.action === 'pen') {
+      if (objectById === null) {
+        jsonToObject();
+      }
     }
 
     // if (props.drawInfo !== undefined && props.drawInfo.count < 2) {
@@ -350,24 +369,11 @@ function Board(props) {
   function handleCanvasMouseMove(options) {
     setMoveCount(moveCount + 1);
     setPosTo({ x: options.e.offsetX, y: options.e.offsetY });
-
-    if (props.mode === 'pen') {
-      props.sendPaintInfo(
-        'PAINT',
-        JSON.stringify({
-          action: 'pen',
-          target: fabricCanvas.current.getPointer(options.e),
-        }),
-      );
-    }
   }
 
   function handleCanvasPathCreated(e) {
     const { enabled } = props;
     if (enabled === false || e.path === undefined) return;
-    console.log('handleCanvasPathCreated');
-    e.path.set('id', uuid.v4());
-    console.log(e);
   }
 
   function handleCanvasSelectionCreated(e) {

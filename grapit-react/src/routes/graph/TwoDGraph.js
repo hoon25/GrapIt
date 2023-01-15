@@ -1,8 +1,9 @@
 import { CartesianCoordinates, FunctionGraph, Mafs, Line, Circle } from 'mafs';
 import 'mafs/build/index.css';
+import './TwoDGraph.css';
 import React from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { Inboxes, ZoomIn, ZoomOut } from 'react-bootstrap-icons';
 
 export function TwoDGraph({
   graphList,
@@ -58,26 +59,31 @@ export function TwoDGraph({
   }
 
   return (
-    <div className="test-parent">
-      <div className="test-child">
-        <Button
-          onClick={() => {
-            sendObjectInfo('RATIO', ratio - 0.5);
-            setRatio(ratio - 0.5);
-          }}
-        >
-          확대
-        </Button>
-        <Button
-          onClick={() => {
-            sendObjectInfo('RATIO', ratio + 0.5);
-            setRatio(ratio + 0.5);
-          }}
-        >
-          축소
-        </Button>
+    <div className style={{ position: 'relative' }}>
+      <div className="" style={{ position: 'absolute', display: 'flex' }}>
         <div>
+          <div
+            className="button-3d"
+            onClick={() => {
+              sendObjectInfo('RATIO', ratio === 0 ? 0 : ratio - 0.5);
+              setRatio(ratio === 0 ? 0 : ratio - 0.5);
+            }}
+          >
+            <ZoomIn />
+          </div>
+          <div
+            className="button-3d"
+            onClick={() => {
+              sendObjectInfo('RATIO', ratio + 0.5);
+              setRatio(ratio + 0.5);
+            }}
+          >
+            <ZoomOut />
+          </div>
+        </div>
+        <div className="ratio-slider-container">
           <Form.Range
+            className="ratio-slider"
             value={ratio}
             onChange={e => {
               sendObjectInfo('RATIO', Number(e.target.value));

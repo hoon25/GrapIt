@@ -1,0 +1,59 @@
+
+.button-3d {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    position:relative;
+    width: 50px;
+    height: 50px;
+
+
+    /*display:inline-block;*/
+    color:#ecf0f1;
+    text-decoration:none;
+    border-radius: 50%;
+    border:solid 1px #0a58ca;
+    background:#0d6efd;
+    text-align:center;
+    font-size: 28px;
+    /*padding:16px 18px 14px;*/
+    margin: 12px;
+
+    -webkit-transition: all 0.1s;
+    -moz-transition: all 0.1s;
+    transition: all 0.1s;
+
+    -webkit-box-shadow: 0px 6px 0px #0b5ed7;
+    -moz-box-shadow: 0px 6px 0px #0b5ed7;
+    box-shadow: 0px 6px 0px #0b5ed7;
+}
+
+.button-3d:active{
+    -webkit-box-shadow: 0px 2px 0px #0a53be;
+    -moz-box-shadow: 0px 2px 0px #0a53be;
+    box-shadow: 0px 2px 0px #0a53be;
+    position:relative;
+    top:4px;
+}
+
+.button-3d:hover{
+    background:#0b5ed7;
+    /*filter: grayscale(40%);*/
+}
+
+.ratio-slider{
+    position: absolute;
+    right: -70px;
+    width: 110px;
+    transform: rotate(90deg);
+}
+
+.ratio-slider-container{
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    align-content: start;
+}

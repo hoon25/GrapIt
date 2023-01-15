@@ -15,9 +15,6 @@ input[type='number']::-webkit-outer-spin-button {
   height: 100%;
 }
 
-.test-child {
-  position: absolute;
-}
 
 .tab_bar{
     position: absolute;

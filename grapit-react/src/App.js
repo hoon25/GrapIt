@@ -13,6 +13,7 @@ import Canvas from './components/Canvas';
 import Header from './components/common/header/Header';
 import Vidu from './routes/vidu/Vidu';
 import SurveyComponent from './components/home/survey/survey';
+import ThreeCanvas from './components/ThreeCanvas';
 
 function App() {
   let chat = useSelector(state => state.chat);
@@ -36,6 +37,7 @@ function App() {
         <Route path="/canvas" element={<Canvas />} />
         <Route path="/vidu" element={<Vidu />} />
         <Route path="/survey" element={<SurveyComponent />} />
+        <Route path="/three" element={<ThreeCanvas />} />
       </Routes>
     </div>
   );

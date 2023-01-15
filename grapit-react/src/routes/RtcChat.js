@@ -200,7 +200,28 @@ function RtcChat({ chat }) {
             <div style={{ overflowX: 'auto' }}>
               <h4>영상 채팅</h4>
               {/*<Vidu user={user} chat={chat} />*/}
-              <EquationHandBoard />
+              <EquationHandBoard
+                graphColor={'#ffffff'}
+                // graphColor={graphColor}
+                setGraphColor={setGraphColor}
+                graphType={graphType}
+                setGraphType={setGraphType}
+                formulaFirst={formulaFirst}
+                setFormulaFirst={setFormulaFirst}
+                formulaSecond={formulaSecond}
+                setFormulaSecond={setFormulaSecond}
+                formulaThird={formulaThird}
+                setFormulaThird={setFormulaThird}
+                graphInfo={graphInfo}
+                setGraphInfo={setGraphInfo}
+                graphList={graphList}
+                setGraphList={setGraphList}
+                viewPointX={viewPointX}
+                setViewPointX={setViewPointX}
+                viewPointY={viewPointY}
+                setViewPointY={setViewPointY}
+                sendGraphInfo={sendObjectInfo}
+              />
             </div>
           </Row>
 

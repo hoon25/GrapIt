@@ -38,7 +38,7 @@ public class MemberRepositoryJPA implements MemberRepository {
 
     }
 
-    public Optional<MemberRefreshToken> findByEmailAndRefreshToken(String email, String refreshToken){
+    public Optional<MemberRefreshToken> findByEmailAndRefreshToken(String email, String refreshToken) {
 
         try {
             return Optional.ofNullable(
@@ -51,5 +51,22 @@ public class MemberRepositoryJPA implements MemberRepository {
         }
     }
 
+    public Member findByEmailId(String email) {
+        return em.createQuery("select m from Member m where m.email =:email", Member.class)
+                .setParameter("email", email)
+                .getSingleResult();
 
+    }
+
+
+    public Member insertMember(Member member) {
+        em.persist(member);
+        return member;
+    }
+
+    public Member findByName(String name) {
+        return em.createQuery("select m from Member m where m.name =:name", Member.class)
+                .setParameter("name", name)
+                .getSingleResult();
+    }
 }

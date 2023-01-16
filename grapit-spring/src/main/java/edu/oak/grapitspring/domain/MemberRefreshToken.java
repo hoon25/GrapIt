@@ -9,7 +9,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -33,7 +32,7 @@ public class MemberRefreshToken {
     @NotNull
     private String refreshToken;
 
-    public MemberRefreshToken(@NotNull String email, @NotNull String refreshToken){
+    public MemberRefreshToken(@NotNull String email, @NotNull String refreshToken) {
         this.email = email;
         this.refreshToken = refreshToken;
     }

@@ -1,5 +1,6 @@
 package edu.oak.grapitspring.domain;
 
+import edu.oak.grapitspring.oauth.entity.ProviderType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 public class Member {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
     private String email;
@@ -30,8 +31,12 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
+    @Enumerated(EnumType.STRING)
+    private ProviderType providerType;
+
     @Builder
-    public Member(Long memberId, String email, String password, String name, String nickName, MemberType memberType, RoleType roleType) {
+
+    public Member(Long memberId, String email, String password, String name, String nickName, MemberType memberType, RoleType roleType, ProviderType providerType) {
         this.memberId = memberId;
         this.email = email;
         this.password = password;
@@ -39,8 +44,8 @@ public class Member {
         this.nickName = nickName;
         this.memberType = memberType;
         this.roleType = roleType;
+        this.providerType = providerType;
     }
-
 
     @Builder
     public static Member joinMember(String email, String password, String name, String nickName, MemberType memberType) {

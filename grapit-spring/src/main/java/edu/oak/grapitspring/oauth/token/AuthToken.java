@@ -17,19 +17,19 @@ public class AuthToken {
     private final String token;
     private final Key key;
 
-    private  static final String AUTHORITIES_KEY = "role";
+    private static final String AUTHORITIES_KEY = "role";
 
-    AuthToken(String id, Date expiry, Key key){
+    AuthToken(String id, Date expiry, Key key) {
         this.key = key;
         this.token = createAuthToken(id, expiry);
     }
 
-    AuthToken(String id, String role, Date expiry, Key key){
+    AuthToken(String id, String role, Date expiry, Key key) {
         this.key = key;
         this.token = createAuthToken(id, role, expiry);
     }
 
-    private String createAuthToken(String id, Date expiry){
+    private String createAuthToken(String id, Date expiry) {
         return Jwts.builder()
                 .setSubject(id)
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -37,7 +37,7 @@ public class AuthToken {
                 .compact();
     }
 
-    private String createAuthToken(String id, String role, Date expiry){
+    private String createAuthToken(String id, String role, Date expiry) {
         return Jwts.builder()
                 .setSubject(id)
                 .claim(AUTHORITIES_KEY, role)
@@ -50,8 +50,8 @@ public class AuthToken {
         return this.getTokenClaims() != null;
     }
 
-    public Claims getTokenClaims(){
-        try{
+    public Claims getTokenClaims() {
+        try {
             return Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
@@ -59,26 +59,26 @@ public class AuthToken {
                     .getBody();
         } catch (SecurityException e) {  // Exception 추후 체크 필요
             log.info("Invalid JWT signature.");
-        } catch (MalformedJwtException e){
+        } catch (MalformedJwtException e) {
             log.info("Invalid JWT token.");
-        } catch (ExpiredJwtException e){
+        } catch (ExpiredJwtException e) {
             log.info("Expired JWT token,");
-        } catch (UnsupportedJwtException e){
+        } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT token.");
-        } catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
             log.info("JWT token compact of handler are invalid.");
         }
         return null;
     }
 
-    public Claims getExpiredTokenClaims(){
-        try{
+    public Claims getExpiredTokenClaims() {
+        try {
             Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-        } catch (ExpiredJwtException e){
+        } catch (ExpiredJwtException e) {
             log.info("Expired JWT token.");
             return e.getClaims();
         }

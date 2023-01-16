@@ -39,6 +39,6 @@ public class TutorEntity {
         this.gender = gender;
         this.grade = grade;
         this.ranking = ranking;
-        this.study =study;
+        this.study = study;
     }
 }

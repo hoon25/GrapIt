@@ -12,7 +12,7 @@ public class JwtConfig {
     private String secret;
 
     @Bean
-    public AuthTokenProvider jwtProvider(){
+    public AuthTokenProvider jwtProvider() {
         return new AuthTokenProvider(secret);
     }
 }

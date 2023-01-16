@@ -1,12 +1,12 @@
 package edu.oak.grapitspring.oauth.exception;
 
-public class TokenValidFailedException extends RuntimeException{
+public class TokenValidFailedException extends RuntimeException {
 
-    public TokenValidFailedException(){
+    public TokenValidFailedException() {
         super("Failed to generate Token.");
     }
 
-    private TokenValidFailedException(String message){
+    private TokenValidFailedException(String message) {
         super(message);
     }
 }

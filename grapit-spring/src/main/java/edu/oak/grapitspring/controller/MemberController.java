@@ -1,6 +1,7 @@
 package edu.oak.grapitspring.controller;
 
 
+import edu.oak.grapitspring.common.ApiResponse;
 import edu.oak.grapitspring.domain.Member;
 import edu.oak.grapitspring.service.MemberService;
 import lombok.Builder;
@@ -8,6 +9,8 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -61,5 +64,12 @@ public class MemberController {
         private String name;
     }
 
+
+    @GetMapping("/api/v1/users")
+    public ApiResponse getMember() {
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Member member = memberService.getMember(principal.getUsername());
+        return ApiResponse.success("member", member);
+    }
 
 }

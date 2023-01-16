@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { Form } from 'react-bootstrap';
 import LineInputGroup from './input/LineInputGroup';
+import QuadraticInputGroup from './input/QuadraticInputGroup';
 
 export default function TwoDGraphInput({}) {
   const [twoDFigureType, setTwoDFigureType] = useState('일차함수');
 
   const handleSelect = e => {
+    console.log(e.target.value);
     setTwoDFigureType(e.target.value);
+    console.log(twoDFigureType);
   };
 
   return (
@@ -25,7 +28,7 @@ export default function TwoDGraphInput({}) {
           </Form.Control>
         </Form.Group>
       </Form>
-      <ResolveTwoFGraphInput figureType={twoDFigureType} />
+      <ResolveTwoFGraphInput twoDFigureType={twoDFigureType} />
     </div>
   );
 }
@@ -44,11 +47,12 @@ function ResolveOptionRow([type, selected], i) {
 }
 
 function ResolveTwoFGraphInput({ twoDFigureType }) {
+  console.log(twoDFigureType);
   switch (twoDFigureType) {
     case '일차함수':
       return <LineInputGroup />;
-    // case '이차함수':
-    //   return <SphereInputGroup />;
+    case '이차함수':
+      return <QuadraticInputGroup />;
     // case '원':
     //   return <PlatonicSolidInputGroup />;
     default:

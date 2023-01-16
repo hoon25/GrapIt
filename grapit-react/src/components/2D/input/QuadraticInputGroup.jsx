@@ -7,9 +7,10 @@ import { useInput } from '../../../hooks';
 import { setTwoDFigure } from '../../../store/TwoDfigureSlice';
 import { MathComponent } from 'mathjax-react';
 
-export default function LineInputGroup(props) {
+export default function QuadraticInputGroup(props) {
   const [firstProps, resetFirstProps] = useInput('');
   const [secondProps, resetSecondProps] = useInput('');
+  const [thirdProps, resetThirdProps] = useInput('');
   const [colorProps, resetColor] = useInput('#ffffff');
 
   const dispatch = useDispatch();
@@ -19,14 +20,16 @@ export default function LineInputGroup(props) {
     dispatch(
       setTwoDFigure.addFigure({
         figureId: generateUUID(),
-        type: 'Line',
+        type: 'TwoD',
         color: colorProps.value,
         firstProps: Number(firstProps.value),
         secondProps: Number(secondProps.value),
+        thirdProps: Number(thirdProps.value),
       }),
     );
     resetFirstProps();
     resetSecondProps();
+    resetThirdProps();
     resetColor();
   };
 
@@ -36,17 +39,25 @@ export default function LineInputGroup(props) {
         <div className="col-1">
           <MathComponent tex="y = " />
         </div>
-        <div className="col-3">
+        <div className="col-2">
           <FormGroup>
             <Form.Control {...firstProps} type="number" placeholder="" />
           </FormGroup>
         </div>
         <div className="col-1">
-          <MathComponent tex="x + " />
+          <MathComponent tex="x^2 + " />
         </div>
-        <div className="col-3">
+        <div className="col-2">
           <FormGroup>
             <Form.Control {...secondProps} type="number" placeholder="" />
+          </FormGroup>
+        </div>
+        <div className="col-1">
+          <MathComponent tex="x + " />
+        </div>
+        <div className="col-2">
+          <FormGroup>
+            <Form.Control {...thirdProps} type="number" placeholder="상수" />
           </FormGroup>
         </div>
       </div>

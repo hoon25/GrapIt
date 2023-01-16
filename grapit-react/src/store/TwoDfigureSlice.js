@@ -12,10 +12,9 @@ const TwoDfigure = createSlice({
           thick: 3,
         });
       } else {
-        state.figures.push({
+        state.TwoDfigures.push({
           ...action.payload,
-          polish: false,
-          transparent: false,
+          thick: 3,
         });
       }
     },

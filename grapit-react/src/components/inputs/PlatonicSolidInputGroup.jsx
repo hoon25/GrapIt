@@ -5,7 +5,7 @@ import { setFigure } from '../../store/figureSlice';
 import { useInput } from '../../hooks';
 
 function PlatonicSolidInputGroup() {
-  const [figureTypeProps, resetFigureType] = useInput('');
+  const [figureTypeProps, resetFigureType] = useInput('tetrahedron');
   const [positionProps, resetPosition] = useInput('');
   const [lengthProps, resetLength] = useInput('');
   const [colorProps, resetColor] = useInput('#000000');
@@ -33,9 +33,11 @@ function PlatonicSolidInputGroup() {
   return (
     <Form onSubmit={onSubmit}>
       <FormGroup>
+        <Form.Label>정다면체</Form.Label>
         <Form.Control as="select" {...figureTypeProps}>
-          <option>===정다면체===</option>
-          <option value="tetrahedron">정사면체</option>
+          <option value="tetrahedron" selected>
+            정사면체
+          </option>
           <option value="cube">정육면체</option>
           <option value="octahedron">정팔면체</option>
           <option value="dodecahedron">정십이면체</option>

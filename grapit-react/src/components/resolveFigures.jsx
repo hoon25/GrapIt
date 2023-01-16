@@ -25,56 +25,41 @@ export function resolveFigures(figure, i) {
   }
 
   switch (type) {
+    case 'tetrahedron':
+      length = calculateRadius(length, 'tetrahedron');
+      break;
+    case 'octahedron':
+      length = calculateRadius(length, 'octahedron');
+      break;
+    case 'dodecahedron':
+      length = calculateRadius(length, 'dodecahedron');
+      break;
+    case 'icosahedron':
+      length = calculateRadius(length, 'icosahedron');
+      break;
+    default:
+      break;
+  }
+
+  switch (type) {
     case 'box':
       return (
         <Box key={figureId} color={color} size={size} position={position} />
       );
     case 'cube':
-      return (
-        <Cube
-          key={figureId}
-          figureId={figureId}
-          color={color}
-          length={length}
-          position={position}
-        />
-      );
+      return <Cube key={figureId} {...figure} />;
     case 'sphere':
       return <Sphere key={figureId} {...figure} />;
     case 'twoPointedLine':
       return <TwoPointedLine key={figureId} {...figure} />;
     case 'tetrahedron':
-      return (
-        <Tetrahedron
-          key={figureId}
-          length={calculateRadius(length, 'tetrahedron')}
-          {...figure}
-        />
-      );
+      return <Tetrahedron key={figureId} {...figure} length={length} />;
     case 'octahedron':
-      return (
-        <Octahedron
-          key={figureId}
-          length={calculateRadius(length, 'octahedron')}
-          {...figure}
-        />
-      );
+      return <Octahedron key={figureId} {...figure} length={length} />;
     case 'dodecahedron':
-      return (
-        <Dodecahedron
-          key={figureId}
-          length={calculateRadius(length, 'dodecahedron')}
-          {...figure}
-        />
-      );
+      return <Dodecahedron key={figureId} {...figure} length={length} />;
     case 'icosahedron':
-      return (
-        <Icosahedron
-          key={figureId}
-          length={calculateRadius(length, 'icosahedron')}
-          {...figure}
-        />
-      );
+      return <Icosahedron key={figureId} {...figure} length={length} />;
 
     default:
       return null;
@@ -91,5 +76,7 @@ function calculateRadius(l, type) {
       return l * 1.401259;
     case 'icosahedron':
       return l * 0.951057;
+    default:
+      return null;
   }
 }

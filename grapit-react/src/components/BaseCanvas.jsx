@@ -1,4 +1,4 @@
-import { Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Container, Row, Stack } from 'react-bootstrap';
 import { DataPusher } from '../DataPusher';
 
 import CardBox from './CardBox';
@@ -10,18 +10,25 @@ function BaseCanvas() {
     <Container fluid>
       <DataPusher />
       <Row>
-        <Col className="" lg={9}>
+        <Col lg={9}>
           <ThreeDimensionCanvas />
         </Col>
-        <Col
-          className=""
-          lg={3}
-          style={{ backgroundColor: '#CCCCCC', height: '90vh' }}
-        >
-          <Row style={{ height: '40%' }}>
+        <Col lg={3} style={{ backgroundColor: '', height: '90vh' }}>
+          <Row style={{ height: '5vh', backgroundColor: '' }}>
+            <Stack direction="horizontal" gap={2}>
+              <Button variant="secondary">2D</Button>
+              <Button>3D</Button>
+            </Stack>
+          </Row>
+          <Row style={{ height: '40vh', backgroundColor: '' }}>
             <FigureInput />
           </Row>
-          <Row style={{ height: '60%' }}>
+          <Row
+            style={{
+              height: '45vh',
+              backgroundColor: '#eeeeee',
+            }}
+          >
             <CardBox />
           </Row>
         </Col>

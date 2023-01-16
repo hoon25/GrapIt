@@ -12,6 +12,7 @@ import SockJs from 'sockjs-client';
 import { useOthers, useUpdateMyPresence } from '../config/liveblocks.config';
 import Cursor from '../components/Cursor';
 import { EquationHandBoard } from './equationBoard/EquationHandBoard';
+import Vidu from './vidu/Vidu';
 
 var stompClient = null;
 
@@ -199,7 +200,7 @@ function RtcChat({ chat }) {
           <Row style={{ height: '70%' }} className="div-shadow">
             <div style={{ overflowX: 'auto' }}>
               <h4>영상 채팅</h4>
-              {/*<Vidu user={user} chat={chat} />*/}
+              <Vidu user={user} chat={chat} />
               <EquationHandBoard
                 graphColor={'#ffffff'}
                 // graphColor={graphColor}

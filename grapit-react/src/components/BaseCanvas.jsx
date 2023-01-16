@@ -2,8 +2,8 @@ import { Col, Container, Row } from 'react-bootstrap';
 import { DataPusher } from '../DataPusher';
 
 import ThreeDimensionCanvas from './ThreeDimensionCanvas';
-import GraphTypeSelector from './GraphTypeSelector';
 import ThreeDimensionSideBar from './ThreeDimensionSideBar';
+import CoordTypeSelector from './CoordTypeSelector';
 
 function BaseCanvas() {
   return (
@@ -14,7 +14,7 @@ function BaseCanvas() {
           <ThreeDimensionCanvas />
         </Col>
         <Col lg={3} style={{ backgroundColor: '', height: '90vh' }}>
-          <GraphTypeSelector />
+          <CoordTypeSelector />
           <ThreeDimensionSideBar />
         </Col>
       </Row>

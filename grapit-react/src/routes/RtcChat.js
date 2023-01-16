@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import '../css/Rtcchat.css';
 import '../css/Canvas.css';
 import Canvas from '../components/Canvas';
-import { setIsWhiteBoard } from '../store/isWhiteBoardSlice';
+import { toggleIsWhiteBoard } from '../store/isWhiteBoardSlice';
 import { TwoDGraph } from './graph/TwoDGraph';
 import { GraphTypeButton } from './graph/GraphTypeButton';
 import { GraphInputGroup } from './graph/GraphInputGroup';
@@ -15,7 +15,7 @@ import { EquationHandBoard } from './equationBoard/EquationHandBoard';
 import Vidu from './vidu/Vidu';
 import ThreeDimensionCanvas from '../components/ThreeDimensionCanvas';
 import { DataPusher } from '../DataPusher';
-import GraphTypeSelector from '../components/GraphTypeSelector';
+import CoordTypeSelector from '../components/CoordTypeSelector';
 import ThreeDimensionSideBar from '../components/ThreeDimensionSideBar';
 import { throttle } from 'lodash'
 import ThreeCardBox from '../components/ThreeCardBox';
@@ -43,6 +43,8 @@ function RtcChat({ chat }) {
   const [graphList, setGraphList] = useState([]);
 
   const [drawInfo, setDrawInfo] = useState();
+
+  const [coordType, setCoordType] = useState('2D');
 
   const dispatch = useDispatch();
   const isWhiteBoard = useSelector(state => state.isWhiteBoard);
@@ -214,97 +216,81 @@ function RtcChat({ chat }) {
             <div ref={mainParent}
               style={{ height: '100%', width: '100%', position: 'relative' }}
             >
-              {/* <div style={{ position: 'absolute', bottom: '0px', zIndex: '995' }}>
-              <Button
-                onClick={() => {
-                  if (isWhiteBoard.isSelected) {
-                    dispatch(setIsWhiteBoard(false));
-                  } else {
-                    dispatch(setIsWhiteBoard(true));
-                  }
-                }}
-              >
-                모드전환
-              </Button>
-            </div> */}
+              <div style={{ position: 'absolute', bottom: '0px', zIndex: '995' }}>
+                <Button
+                  onClick={() => { dispatch(toggleIsWhiteBoard()) }}
+                >
+                  모드전환
+                </Button>
+              </div>
 
-              {/* <div style={graphStyle}>
-              {isLoaded ? (
-                <TwoDGraph
-                  graphList={graphList}
-                  viewPointX={viewPointX}
-                  viewPointY={viewPointY}
-                  ratio={ratio}
-                  setRatio={setRatio}
-                  sendObjectInfo={sendObjectInfo}
-                  childWidth={childWidth}
-                  childHeight={childHeight}
-                />
-              ) : (
-                ''
-              )}
-            </div> */}
+              {coordType === '2D'
+                ?
+                <div style={graphStyle}>
+                  {isLoaded ? (
+                    <TwoDGraph
+                      graphList={graphList}
+                      viewPointX={viewPointX}
+                      viewPointY={viewPointY}
+                      ratio={ratio}
+                      setRatio={setRatio}
+                      sendObjectInfo={sendObjectInfo}
+                      childWidth={childWidth}
+                      childHeight={childHeight}
+                    />
+                  ) : (''
+                  )}
+                </div> :
+                <div style={graphStyle}>
+                  <ThreeDimensionCanvas />
+                  <DataPusher />
+                </div>}
 
-              {/* <div style={whiteBoardStyle}>
-              {isLoaded ? (
-                <Canvas
-                  childWidth={childWidth}
-                  childHeight={childHeight}
-                  isWhiteBoard={isWhiteBoard}
-                  sendPaintInfo={sendObjectInfo}
-                  drawInfo={drawInfo}
-                />
-              ) : (
-                ''
-              )}
-            </div> */}
-
-              {/* <DataPusher /> */}
-              {/* <ThreeDimensionCanvas /> */}
+              <div style={whiteBoardStyle}>
+                {isLoaded ? (
+                  <Canvas
+                    childWidth={childWidth}
+                    childHeight={childHeight}
+                    isWhiteBoard={isWhiteBoard}
+                    sendPaintInfo={sendObjectInfo}
+                    drawInfo={drawInfo}
+                  />
+                ) : (
+                  ''
+                )}
+              </div>
 
             </div>
           </Col>
 
 
           <Col xs={3} style={{ background: "" }} className="">
-            {/* <Row style={{ height: '5vh', backgroundColor: '' }}>
-              <Stack direction="horizontal" gap={2}>
-                <Button variant="secondary">2D</Button>
-                <Button>3D</Button>
-              </Stack>
-            </Row> */}
-            <GraphTypeSelector />
-
-            {/* <Row style={{ height: '5vh', backgroundColor: '' }}>
-            <Stack direction="horizontal" gap={2}>
-              <Button variant="secondary">2D</Button>
-              <Button>3D</Button>
-            </Stack>
-          </Row> */}
+            <CoordTypeSelector coordType={coordType} setCoordType={setCoordType} />
 
             <Row>
-              {/* <ThreeDimensionSideBar /> */}
-              <TwoDimensionSideBar
-                graphType={graphType}
-                setGraphType={setGraphType}
-                setGraphColor={setGraphColor}
-                graphColor={graphColor}
-                formulaFirst={formulaFirst}
-                setFormulaFirst={setFormulaFirst}
-                formulaSecond={formulaSecond}
-                setFormulaSecond={setFormulaSecond}
-                formulaThird={formulaThird}
-                setFormulaThird={setFormulaThird}
-                graphInfo={graphInfo}
-                setGraphInfo={setGraphInfo}
-                graphList={graphList}
-                setGraphList={setGraphList}
-                viewPointX={viewPointX}
-                setViewPointX={setViewPointX}
-                viewPointY={viewPointY}
-                setViewPointY={setViewPointY}
-                sendObjectInfo={sendObjectInfo}
-              />
+              {
+                coordType === '2D' ?
+                  <TwoDimensionSideBar
+                    graphType={graphType}
+                    setGraphType={setGraphType}
+                    setGraphColor={setGraphColor}
+                    graphColor={graphColor}
+                    formulaFirst={formulaFirst}
+                    setFormulaFirst={setFormulaFirst}
+                    formulaSecond={formulaSecond}
+                    setFormulaSecond={setFormulaSecond}
+                    formulaThird={formulaThird}
+                    setFormulaThird={setFormulaThird}
+                    graphInfo={graphInfo}
+                    setGraphInfo={setGraphInfo}
+                    graphList={graphList}
+                    setGraphList={setGraphList}
+                    viewPointX={viewPointX}
+                    setViewPointX={setViewPointX}
+                    viewPointY={viewPointY}
+                    setViewPointY={setViewPointY}
+                    sendObjectInfo={sendObjectInfo}
+                  /> : <ThreeDimensionSideBar />}
             </Row>
           </Col>
         </Row>

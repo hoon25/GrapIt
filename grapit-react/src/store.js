@@ -5,6 +5,7 @@ import isWhiteBoard from './store/isWhiteBoardSlice';
 import graph from './store/graphSlice';
 import figure from './store/figureSlice';
 import camera from './store/cameraSlice';
+import TwoDfigure from './store/TwoDfigureSlice';
 
 export default configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export default configureStore({
     graph: graph.reducer,
     figure: figure.reducer,
     camera: camera.reducer,
+    TwoDfigure: TwoDfigure.reducer,
   },
 });
 

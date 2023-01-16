@@ -4,9 +4,10 @@ import '../../css/Button3D.css';
 import React from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Inboxes, ZoomIn, ZoomOut } from 'react-bootstrap-icons';
+import { useSelect } from '@react-three/drei';
+import { useSelector } from 'react-redux';
 
 export function TwoDGraph({
-  graphList,
   viewPointX,
   viewPointY,
   ratio,
@@ -15,6 +16,7 @@ export function TwoDGraph({
   childWidth,
   childHeight,
 }) {
+  const TwoDgraphList = useSelector(state => state.TwoDfigure.TwoDfigures);
   // todo store 기반으로 변경
   // 스크롤 이벤트 제어. 나중에 쓸수 있음.
   function removeWindowWheel() {
@@ -136,7 +138,7 @@ export function TwoDGraph({
                 : Math.floor(Math.abs(ratio) / 5) + 1
             }
           />
-          {graphList.map((graph, index) => resolveGraph(graph, index))}
+          {TwoDgraphList.map((graph, index) => resolveGraph(graph, index))}
         </Mafs>
       </div>
     </div>
@@ -144,25 +146,25 @@ export function TwoDGraph({
 }
 
 function resolveGraph(graph, index) {
-  const [color, type] = graph;
-  const [first, second, third] = graph.slice(2, 5).map(Number);
+  const { color, figureId, firstProps, secondProps, thirdProps, type, thick } =
+    graph;
 
   if (type === 'Line') {
     return (
       <Line.PointAngle
         key={index}
-        point={[0, second]}
+        point={[0, secondProps]}
         color={color}
-        angle={Math.atan(first)}
-        weight={4}
+        angle={Math.atan(firstProps)}
+        weight={thick}
       />
     );
   } else if (type === 'Circle') {
     return (
       <Circle
         key={index}
-        center={[first, second]}
-        radius={third}
+        center={[firstProps, secondProps]}
+        radius={thirdProps}
         color={color}
       />
     );
@@ -173,7 +175,7 @@ function resolveGraph(graph, index) {
         color={color}
         y={x => {
           const _x = x;
-          return first * _x * _x + second * _x + third;
+          return firstProps * _x * _x + secondProps * _x + thirdProps;
         }}
       />
     );

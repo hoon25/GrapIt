@@ -4,21 +4,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import '../css/Rtcchat.css';
 import '../css/Canvas.css';
 import Canvas from '../components/Canvas';
-import { toggleIsWhiteBoard } from '../store/isWhiteBoardSlice';
 import { TwoDGraph } from './graph/TwoDGraph';
-import { GraphTypeButton } from './graph/GraphTypeButton';
-import { GraphInputGroup } from './graph/GraphInputGroup';
 import SockJs from 'sockjs-client';
 import { useOthers, useUpdateMyPresence } from '../config/liveblocks.config';
 import Cursor from '../components/Cursor';
-import { EquationHandBoard } from './equationBoard/EquationHandBoard';
 import Vidu from './vidu/Vidu';
 import ThreeDimensionCanvas from '../components/ThreeDimensionCanvas';
-import { DataPusher } from '../DataPusher';
 import CoordTypeSelector from '../components/CoordTypeSelector';
 import ThreeDimensionSideBar from '../components/ThreeDimensionSideBar';
-import { throttle } from 'lodash'
-import ThreeCardBox from '../components/ThreeCardBox';
+import TwoDimensionSideBar from '../components/2D/TwoDimensionSideBar';
 
 var stompClient = null;
 
@@ -34,8 +28,8 @@ function RtcChat({ chat }) {
   const [formulaThird, setFormulaThird] = useState('');
 
   // viewPoint 초기값
-  const [viewPointX, setViewPointX] = useState([-5, 5]);
-  const [viewPointY, setViewPointY] = useState([-5, 5]);
+  const [viewPointX, setViewPointX] = useState([-7, 7]);
+  const [viewPointY, setViewPointY] = useState([-7, 7]);
 
   // graphInfo : 그래프 정보(graphColor, graphType, ...)를 담는 배열
   // graphList : graphInfo를 담는 배열
@@ -64,7 +58,7 @@ function RtcChat({ chat }) {
 
   const whiteBoardStyle = {
     ...commonCanvasStyle,
-    pointerEvents: isWhiteBoard.isSelected ? 'auto' : 'none',
+    // pointerEvents: isWhiteBoard.isSelected ? 'auto' : 'none',
   };
 
   const mainParent = useRef();
@@ -215,19 +209,15 @@ function RtcChat({ chat }) {
         )}
         <Row style={{ height: '100%' }}>
           <Col xs={9} className="">
-            <div ref={mainParent}
+            <div
+              ref={mainParent}
               style={{ height: '100%', width: '100%', position: 'relative' }}
             >
-              <div style={{ position: 'absolute', bottom: '0px', zIndex: '995' }}>
-                <Button
-                  onClick={() => { dispatch(toggleIsWhiteBoard()) }}
-                >
-                  모드전환
-                </Button>
-              </div>
+              <div
+                style={{ position: 'absolute', bottom: '0px', zIndex: '995' }}
+              ></div>
 
-              {coordType === '2D'
-                ?
+              {coordType === '2D' ? (
                 <div style={graphStyle}>
                   {isLoaded ? (
                     <TwoDGraph
@@ -240,20 +230,22 @@ function RtcChat({ chat }) {
                       childWidth={childWidth}
                       childHeight={childHeight}
                     />
-                  ) : (''
+                  ) : (
+                    ''
                   )}
-                </div> :
+                </div>
+              ) : (
                 <div style={graphStyle}>
                   <ThreeDimensionCanvas />
-                  <DataPusher />
-                </div>}
+                  {/*<DataPusher />*/}
+                </div>
+              )}
 
               <div style={whiteBoardStyle}>
                 {isLoaded ? (
                   <Canvas
                     childWidth={childWidth}
                     childHeight={childHeight}
-                    isWhiteBoard={isWhiteBoard}
                     sendPaintInfo={sendObjectInfo}
                     drawInfo={drawInfo}
                   />
@@ -261,38 +253,41 @@ function RtcChat({ chat }) {
                   ''
                 )}
               </div>
-
             </div>
           </Col>
 
-
-          <Col xs={3} style={{ background: "" }} className="">
-            <CoordTypeSelector coordType={coordType} setCoordType={setCoordType} />
+          <Col xs={3} style={{ background: '' }} className="">
+            <CoordTypeSelector
+              coordType={coordType}
+              setCoordType={setCoordType}
+            />
 
             <Row>
-              {
-                coordType === '2D' ?
-                  <TwoDimensionSideBar
-                    graphType={graphType}
-                    setGraphType={setGraphType}
-                    setGraphColor={setGraphColor}
-                    graphColor={graphColor}
-                    formulaFirst={formulaFirst}
-                    setFormulaFirst={setFormulaFirst}
-                    formulaSecond={formulaSecond}
-                    setFormulaSecond={setFormulaSecond}
-                    formulaThird={formulaThird}
-                    setFormulaThird={setFormulaThird}
-                    graphInfo={graphInfo}
-                    setGraphInfo={setGraphInfo}
-                    graphList={graphList}
-                    setGraphList={setGraphList}
-                    viewPointX={viewPointX}
-                    setViewPointX={setViewPointX}
-                    viewPointY={viewPointY}
-                    setViewPointY={setViewPointY}
-                    sendObjectInfo={sendObjectInfo}
-                  /> : <ThreeDimensionSideBar />}
+              {coordType === '2D' ? (
+                <TwoDimensionSideBar
+                  graphType={graphType}
+                  setGraphType={setGraphType}
+                  setGraphColor={setGraphColor}
+                  graphColor={graphColor}
+                  formulaFirst={formulaFirst}
+                  setFormulaFirst={setFormulaFirst}
+                  formulaSecond={formulaSecond}
+                  setFormulaSecond={setFormulaSecond}
+                  formulaThird={formulaThird}
+                  setFormulaThird={setFormulaThird}
+                  graphInfo={graphInfo}
+                  setGraphInfo={setGraphInfo}
+                  graphList={graphList}
+                  setGraphList={setGraphList}
+                  viewPointX={viewPointX}
+                  setViewPointX={setViewPointX}
+                  viewPointY={viewPointY}
+                  setViewPointY={setViewPointY}
+                  sendObjectInfo={sendObjectInfo}
+                />
+              ) : (
+                <ThreeDimensionSideBar />
+              )}
             </Row>
           </Col>
         </Row>
@@ -303,62 +298,3 @@ function RtcChat({ chat }) {
 }
 
 export default RtcChat;
-function TwoDimensionSideBar(graphType, setGraphType, setGraphColor, graphColor, formulaFirst, setFormulaFirst, formulaSecond, setFormulaSecond, formulaThird, setFormulaThird, graphInfo, setGraphInfo, graphList, setGraphList, viewPointX, setViewPointX, viewPointY, setViewPointY, sendObjectInfo) {
-  return <Row style={{ height: '30%' }}>
-    <div style={{ display: '' }} className="div-shadow">
-      <h2>그래프 생성기</h2>
-
-      <div>
-        <GraphTypeButton
-          graphType={graphType}
-          setGraphType={setGraphType}
-          setGraphColor={setGraphColor} />
-      </div>
-      <div className="mt-3">
-        <GraphInputGroup
-          graphColor={graphColor}
-          setGraphColor={setGraphColor}
-          graphType={graphType}
-          setGraphType={setGraphType}
-          formulaFirst={formulaFirst}
-          setFormulaFirst={setFormulaFirst}
-          formulaSecond={formulaSecond}
-          setFormulaSecond={setFormulaSecond}
-          formulaThird={formulaThird}
-          setFormulaThird={setFormulaThird}
-          graphInfo={graphInfo}
-          setGraphInfo={setGraphInfo}
-          graphList={graphList}
-          setGraphList={setGraphList}
-          viewPointX={viewPointX}
-          setViewPointX={setViewPointX}
-          viewPointY={viewPointY}
-          setViewPointY={setViewPointY}
-          sendGraphInfo={sendObjectInfo} />
-        <EquationHandBoard
-          graphColor={'#ffffff'}
-          // graphColor={graphColor}
-          setGraphColor={setGraphColor}
-          graphType={graphType}
-          setGraphType={setGraphType}
-          formulaFirst={formulaFirst}
-          setFormulaFirst={setFormulaFirst}
-          formulaSecond={formulaSecond}
-          setFormulaSecond={setFormulaSecond}
-          formulaThird={formulaThird}
-          setFormulaThird={setFormulaThird}
-          graphInfo={graphInfo}
-          setGraphInfo={setGraphInfo}
-          graphList={graphList}
-          setGraphList={setGraphList}
-          viewPointX={viewPointX}
-          setViewPointX={setViewPointX}
-          viewPointY={viewPointY}
-          setViewPointY={setViewPointY}
-          sendGraphInfo={sendObjectInfo} />
-      </div>
-    </div>
-    <ThreeCardBox />
-  </Row>;
-}
-

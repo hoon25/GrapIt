@@ -6,10 +6,12 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
+@Transactional
 public class MemberRepositoryJPA implements MemberRepository {
 
     private final EntityManager em;

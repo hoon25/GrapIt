@@ -5,11 +5,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
+@Transactional
 public class RoomRepositoryJPA implements RoomRepository {
 
     private final EntityManager em;
@@ -26,7 +28,6 @@ public class RoomRepositoryJPA implements RoomRepository {
     }
 
     public Optional<Room> findByRoomId(Long roomId) {
-
         return Optional.ofNullable(em.find(Room.class, roomId));
     }
 

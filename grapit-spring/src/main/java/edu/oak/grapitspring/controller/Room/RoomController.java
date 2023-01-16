@@ -29,6 +29,7 @@ public class RoomController {
 
     @PostMapping("/room")
     public ResponseEntity createRoom(@RequestBody CreateRoomRequestDTO request, HttpSession session) {
+        log.info("createRoom request: {}", request);
         Member member = (Member) session.getAttribute("member");
         roomService.createRoom(request, member.getMemberId());
         return ResponseEntity.ok().build();

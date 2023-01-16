@@ -7,7 +7,7 @@ import { useInput } from '../../../hooks';
 import { setTwoDFigure } from '../../../store/TwoDfigureSlice';
 import { MathComponent } from 'mathjax-react';
 
-export default function QuadraticInputGroup(props) {
+export default function TwoDInputGroup(props) {
   const [firstProps, resetFirstProps] = useInput('');
   const [secondProps, resetSecondProps] = useInput('');
   const [thirdProps, resetThirdProps] = useInput('');
@@ -21,7 +21,7 @@ export default function QuadraticInputGroup(props) {
       setTwoDFigure.addFigure({
         figureId: generateUUID(),
         type: 'TwoD',
-        color: colorProps.value,
+        color: parseInt('0x' + colorProps.value.slice(1)),
         firstProps: Number(firstProps.value),
         secondProps: Number(secondProps.value),
         thirdProps: Number(thirdProps.value),

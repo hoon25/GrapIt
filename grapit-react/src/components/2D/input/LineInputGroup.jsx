@@ -20,7 +20,7 @@ export default function LineInputGroup(props) {
       setTwoDFigure.addFigure({
         figureId: generateUUID(),
         type: 'Line',
-        color: colorProps.value,
+        color: parseInt('0x' + colorProps.value.slice(1)),
         firstProps: Number(firstProps.value),
         secondProps: Number(secondProps.value),
       }),

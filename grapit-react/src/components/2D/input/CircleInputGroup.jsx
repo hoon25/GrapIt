@@ -21,7 +21,7 @@ export default function QuadraticInputGroup(props) {
       setTwoDFigure.addFigure({
         figureId: generateUUID(),
         type: 'Circle',
-        color: colorProps.value,
+        color: parseInt('0x' + colorProps.value.slice(1)),
         firstProps: Number(firstProps.value),
         secondProps: Number(secondProps.value),
         thirdProps: Number(thirdProps.value),

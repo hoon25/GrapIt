@@ -14,14 +14,12 @@ const defaultStyle = {
 };
 
 export function EquationHandBoard({
-  sendGraphInfo,
   graphColor,
-  setViewPointX,
-  setViewPointY,
+  viewPointX,
+  viewPointY,
+  sendObjectInfo,
 }) {
   const TwoDgraphList = useSelector(state => state.TwoDfigure.TwoDfigures);
-  // const { color, figureId, firstProps, secondProps, thirdProps, type, thick } =
-  //   TwoDgraphList[graphList[0]];
 
   const [ctx, setCtx] = useState();
   const [write, setWrite] = useState(false);
@@ -118,7 +116,7 @@ export function EquationHandBoard({
       setTwoDFigure.addFigure({
         figureId: generateUUID(),
         type: 'Line',
-        color: '#ffffff',
+        color: graphColor,
         firstProps: Number(a),
         secondProps: Number(b),
       }),
@@ -128,7 +126,7 @@ export function EquationHandBoard({
     // const copyViewPointY = [Number(b) - 3, Number(b) + 3];
     // setViewPointX(copyViewPointX);
     // setViewPointY(copyViewPointY);
-    sendGraphInfo('GRAPH', TwoDgraphList);
+    // sendObjectInfo('GRAPH', TwoDgraphList);
 
     return result;
   };
@@ -177,7 +175,7 @@ export function EquationHandBoard({
     // const copyViewPointY = [Number(b) - 3, Number(b) + 3];
     // setViewPointX(copyViewPointX);
     // setViewPointY(copyViewPointY);
-    sendGraphInfo('GRAPH', TwoDgraphList);
+    // sendObjectInfo('GRAPH', TwoDgraphList);
 
     return result;
   };
@@ -239,6 +237,7 @@ export function EquationHandBoard({
   };
 
   const submitCanvas = () => {
+    console.log(TwoDgraphList);
     console.log(mathpixSenderList_x, mathpixSenderList_y);
     getLatexFromMathPixAPI(mathpixSenderList_x, mathpixSenderList_y);
     // getGraphArgFromLatex();

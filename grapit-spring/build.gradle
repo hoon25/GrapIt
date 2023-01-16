@@ -44,6 +44,12 @@ dependencies {
 	// openvidu
 	implementation 'io.openvidu:openvidu-java-client:2.25.0'
 
+	// Google Social Login
+	implementation 'org.springframework.boot:spring-boot-starter-security:2.7.7'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:2.7.7'
+	implementation 'com.google.code.gson:gson'
+
+
 	//lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'

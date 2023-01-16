@@ -20,7 +20,7 @@ export default function QuadraticInputGroup(props) {
     dispatch(
       setTwoDFigure.addFigure({
         figureId: generateUUID(),
-        type: 'TwoD',
+        type: 'Circle',
         color: colorProps.value,
         firstProps: Number(firstProps.value),
         secondProps: Number(secondProps.value),
@@ -37,15 +37,15 @@ export default function QuadraticInputGroup(props) {
     <Form onSubmit={onSubmit}>
       <div className="flex justify-content-between p-0">
         <div className="col-1">
-          <MathComponent tex="y = " />
+          <MathComponent tex="(y-" />
         </div>
         <div className="col-2">
           <FormGroup>
             <Form.Control {...firstProps} type="number" placeholder="" />
           </FormGroup>
         </div>
-        <div className="col-1">
-          <MathComponent tex="x^2 + " />
+        <div className="col-3">
+          <MathComponent tex=")^2+(x-" />
         </div>
         <div className="col-2">
           <FormGroup>
@@ -53,12 +53,15 @@ export default function QuadraticInputGroup(props) {
           </FormGroup>
         </div>
         <div className="col-1">
-          <MathComponent tex="x + " />
+          <MathComponent tex=")^2 = " />
         </div>
         <div className="col-2">
           <FormGroup>
-            <Form.Control {...thirdProps} type="number" placeholder="상수" />
+            <Form.Control {...thirdProps} type="number" placeholder="" />
           </FormGroup>
+        </div>
+        <div className="col-1">
+          <MathComponent tex="^2" />
         </div>
       </div>
       <FormGroup>

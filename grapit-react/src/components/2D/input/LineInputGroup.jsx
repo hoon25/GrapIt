@@ -32,7 +32,7 @@ export default function LineInputGroup(props) {
 
   return (
     <Form onSubmit={onSubmit}>
-      <div className="flex justify-content-between">
+      <div className="flex justify-content-between p-0">
         <div className="col-1">
           <MathComponent tex="y = " />
         </div>

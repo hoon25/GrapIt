@@ -2,14 +2,13 @@ import { useState } from 'react';
 import { Form } from 'react-bootstrap';
 import LineInputGroup from './input/LineInputGroup';
 import QuadraticInputGroup from './input/QuadraticInputGroup';
+import CircleInputGroup from './input/CircleInputGroup';
 
-export default function TwoDGraphInput({}) {
+export default function TwoDGraphInput() {
   const [twoDFigureType, setTwoDFigureType] = useState('일차함수');
 
   const handleSelect = e => {
-    console.log(e.target.value);
     setTwoDFigureType(e.target.value);
-    console.log(twoDFigureType);
   };
 
   return (
@@ -53,8 +52,8 @@ function ResolveTwoFGraphInput({ twoDFigureType }) {
       return <LineInputGroup />;
     case '이차함수':
       return <QuadraticInputGroup />;
-    // case '원':
-    //   return <PlatonicSolidInputGroup />;
+    case '원':
+      return <CircleInputGroup />;
     default:
       return <LineInputGroup />;
   }

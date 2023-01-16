@@ -18,26 +18,11 @@ var stompClient = null;
 
 function RtcChat({ chat }) {
   const [ratio, setRatio] = useState(1);
-
-  const [graphColor, setGraphColor] = useState('#ffffff');
-  const [graphType, setGraphType] = useState('Line');
-
-  // todo 변수명 변경
-  const [formulaFirst, setFormulaFirst] = useState('');
-  const [formulaSecond, setFormulaSecond] = useState('');
-  const [formulaThird, setFormulaThird] = useState('');
-
   // viewPoint 초기값
   const [viewPointX, setViewPointX] = useState([-7, 7]);
   const [viewPointY, setViewPointY] = useState([-7, 7]);
-
-  // graphInfo : 그래프 정보(graphColor, graphType, ...)를 담는 배열
-  // graphList : graphInfo를 담는 배열
-  const [graphInfo, setGraphInfo] = useState([]);
   const [graphList, setGraphList] = useState([]);
-
   const [drawInfo, setDrawInfo] = useState();
-
   const [coordType, setCoordType] = useState('2D');
 
   const dispatch = useDispatch();
@@ -221,7 +206,6 @@ function RtcChat({ chat }) {
                 <div style={graphStyle}>
                   {isLoaded ? (
                     <TwoDGraph
-                      graphList={graphList}
                       viewPointX={viewPointX}
                       viewPointY={viewPointY}
                       ratio={ratio}
@@ -261,28 +245,11 @@ function RtcChat({ chat }) {
               coordType={coordType}
               setCoordType={setCoordType}
             />
-
             <Row>
               {coordType === '2D' ? (
                 <TwoDimensionSideBar
-                  graphType={graphType}
-                  setGraphType={setGraphType}
-                  setGraphColor={setGraphColor}
-                  graphColor={graphColor}
-                  formulaFirst={formulaFirst}
-                  setFormulaFirst={setFormulaFirst}
-                  formulaSecond={formulaSecond}
-                  setFormulaSecond={setFormulaSecond}
-                  formulaThird={formulaThird}
-                  setFormulaThird={setFormulaThird}
-                  graphInfo={graphInfo}
-                  setGraphInfo={setGraphInfo}
-                  graphList={graphList}
-                  setGraphList={setGraphList}
                   viewPointX={viewPointX}
-                  setViewPointX={setViewPointX}
                   viewPointY={viewPointY}
-                  setViewPointY={setViewPointY}
                   sendObjectInfo={sendObjectInfo}
                 />
               ) : (

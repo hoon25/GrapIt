@@ -1,35 +1,28 @@
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setGraph } from '../../store/graphSlice';
+import { Button } from 'react-bootstrap';
+import { setTwoDFigure } from '../../store/TwoDfigureSlice';
+import { generateUUID } from 'three/src/math/MathUtils';
 
 const defaultStyle = {
   border: '1px solid gray',
-  display: 'inline-block',
-  margin: '1rem',
+  width: '100%',
+  height: '50%',
+  // display: 'inline-block',
 };
 
 export function EquationHandBoard({
-  formulaFirst,
-  setFormulaFirst,
-  formulaSecond,
-  setFormulaSecond,
-  formulaThird,
-  setFormulaThird,
-  graphColor,
-  setGraphColor,
-  graphInfo,
-  setGraphInfo,
-  graphType,
-  setGraphType,
-  graphList,
-  setGraphList,
-  viewPointX,
-  setViewPointX,
-  viewPointY,
-  setViewPointY,
   sendGraphInfo,
+  graphColor,
+  setViewPointX,
+  setViewPointY,
 }) {
+  const TwoDgraphList = useSelector(state => state.TwoDfigure.TwoDfigures);
+  // const { color, figureId, firstProps, secondProps, thirdProps, type, thick } =
+  //   TwoDgraphList[graphList[0]];
+
   const [ctx, setCtx] = useState();
   const [write, setWrite] = useState(false);
   const [latexResult, setLatexResult] = useState(null);
@@ -118,20 +111,24 @@ export function EquationHandBoard({
         graphType: 'Line',
         a,
         b,
-        formulaThird,
+        thirdProps: null,
+      }),
+    );
+    dispatch(
+      setTwoDFigure.addFigure({
+        figureId: generateUUID(),
+        type: 'Line',
+        color: '#ffffff',
+        firstProps: Number(a),
+        secondProps: Number(b),
       }),
     );
 
-    const copyGraphInfo = [graphColor, 'Line', a, b, formulaThird];
-    setGraphInfo(copyGraphInfo);
-    const copyGraphList = [...graphList, copyGraphInfo];
-    setGraphList(copyGraphList);
-
-    const copyViewPointX = [Number(a) - 3, Number(a) + 3];
-    const copyViewPointY = [Number(b) - 3, Number(b) + 3];
-    setViewPointX(copyViewPointX);
-    setViewPointY(copyViewPointY);
-    sendGraphInfo('GRAPH', copyGraphList);
+    // const copyViewPointX = [Number(a) - 3, Number(a) + 3];
+    // const copyViewPointY = [Number(b) - 3, Number(b) + 3];
+    // setViewPointX(copyViewPointX);
+    // setViewPointY(copyViewPointY);
+    sendGraphInfo('GRAPH', TwoDgraphList);
 
     return result;
   };
@@ -165,16 +162,22 @@ export function EquationHandBoard({
       }),
     );
 
-    const copyGraphInfo = [graphColor, 'TwoD', a, b, c];
-    setGraphInfo(copyGraphInfo);
-    const copyGraphList = [...graphList, copyGraphInfo];
-    setGraphList(copyGraphList);
-
-    const copyViewPointX = [Number(a) - 3, Number(a) + 3];
-    const copyViewPointY = [Number(b) - 3, Number(b) + 3];
-    setViewPointX(copyViewPointX);
-    setViewPointY(copyViewPointY);
-    sendGraphInfo('GRAPH', copyGraphList);
+    dispatch(
+      setTwoDFigure.addFigure({
+        figureId: generateUUID(),
+        type: 'TwoD',
+        color: '#ffffff',
+        firstProps: Number(a),
+        secondProps: Number(b),
+        thirdProps: Number(c),
+      }),
+    );
+    //
+    // const copyViewPointX = [Number(a) - 3, Number(a) + 3];
+    // const copyViewPointY = [Number(b) - 3, Number(b) + 3];
+    // setViewPointX(copyViewPointX);
+    // setViewPointY(copyViewPointY);
+    sendGraphInfo('GRAPH', TwoDgraphList);
 
     return result;
   };
@@ -243,7 +246,7 @@ export function EquationHandBoard({
 
   return (
     <>
-      <div className="container">
+      <div>
         <canvas
           ref={canvasRef}
           style={defaultStyle}
@@ -260,10 +263,10 @@ export function EquationHandBoard({
             canvasEventListener(event, 'up');
           }}
         ></canvas>
+        <Button onClick={clearCanvas}>초기화</Button>
+        <Button onClick={submitCanvas}>생성</Button>
+        {latexResult && <div>{latexResult}</div>}
       </div>
-      <button onClick={clearCanvas}>삭제</button>
-      <button onClick={submitCanvas}>제출</button>
-      {latexResult && <div>{latexResult}</div>}
     </>
   );
 }

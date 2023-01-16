@@ -9,8 +9,8 @@ function Vidu({ user, chat }) {
   let chatRoomId = chat.roomId;
   let chatRoomName = chat.roomName;
   let OV = undefined;
+  var session = undefined;
 
-  const [session, setSession] = useState(undefined);
   const [mainStreamManager, setMainStreamManager] = useState(undefined);
   const [publisher, setPublisher] = useState(undefined);
   const [currentVideoDevice, setCurrentVideoDevice] = useState(undefined);
@@ -22,18 +22,15 @@ function Vidu({ user, chat }) {
     }
   }
 
-  function onbeforeunload(event) {
-    leaveSession();
-  }
-
   async function joinSession() {
+    console.log('joinSession');
     // --- 1) Get an OpenVidu object ---
     OV = new OpenVidu();
 
     // --- 2) Init a session ---
-    // var mySession = await OV.initSession();
     var mySession = await OV.initSession();
-    setSession(mySession);
+
+    session = mySession;
 
     // --- 3) Specify the actions when events take place in the session ---
     // On every new Stream received...
@@ -115,24 +112,22 @@ function Vidu({ user, chat }) {
 
   function leaveSession() {
     const mySession = session;
-
     if (mySession) {
+      console.log('real disconnect');
       mySession.disconnect();
     }
 
     OV = null;
-    setSession(undefined);
+    session = undefined;
     setMainStreamManager(undefined);
     setPublisher(undefined);
     setSubscribers([]);
   }
 
   useEffect(() => {
-    window.addEventListener('beforeunload', onbeforeunload);
     joinSession();
-
     return () => {
-      window.removeEventListener('beforeunload', onbeforeunload);
+      leaveSession();
     };
   }, []);
 

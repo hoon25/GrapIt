@@ -36,10 +36,10 @@ public class ViduController {
             throws OpenViduJavaClientException, OpenViduHttpException {
         System.out.println("ViduController.initializeSession");
         System.out.println("params = " + params);
+        params.put("customSessionId", params.get("customSessionId").toString());
         SessionProperties properties = SessionProperties.fromJson(params).build();
         Session session = openvidu.createSession(properties);
-        System.out.println("session = " + session);
-        System.out.println("session.getProperties().toJson().toString() = " + session.getProperties().toJson().toString());
+//        System.out.println("session.getProperties().toJson().toString() = " + session.getProperties().toJson().toString());
         return new ResponseEntity<>(session.getSessionId(), HttpStatus.OK);
     }
 

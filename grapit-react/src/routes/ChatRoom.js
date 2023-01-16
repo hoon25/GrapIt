@@ -15,7 +15,7 @@ function ChatRoomList() {
   // getAllChatRoom();
 
   function getAllChatRoom() {
-    axios.get('/api/chat').then(res => {
+    axios.get('/api/room').then(res => {
       setChatList(res.data);
       console.log(res.data);
     });
@@ -65,8 +65,8 @@ function ChatRoomList() {
           <tr>
             <th>#</th>
             <th>채팅방 NO</th>
-            <th>채팅방 종류</th>
             <th>채팅방 이름</th>
+            <th>선생님 닉네임</th>
             <th>입장하기</th>
           </tr>
         </thead>
@@ -89,20 +89,14 @@ function ChatRoom({ chat, i }) {
       <tr>
         <td></td>
         <td>{i}</td>
-        <td>{chat.chatType}</td>
         <td>{chat.roomName}</td>
+        <td>{chat.roomCreatorNickName}</td>
         <td>
           <Button
             variant="primary"
             onClick={function () {
               dispatch(setChat(chat));
-              if (chat.chatType === 'MSG') {
-                navigate(`/chat/room/msg/${chat.roomId}`);
-              } else if (chat.chatType === 'RTC') {
-                navigate(`/chat/room/rtc/${chat.roomId}`);
-              } else {
-                navigate(`/chat/room/both/${chat.roomId}`);
-              }
+              navigate(`/chat/room/${chat.roomId}`);
             }}
           >
             입장하기

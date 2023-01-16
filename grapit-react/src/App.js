@@ -25,14 +25,11 @@ function App() {
         <Route exact path="/" element={<Home />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/logout" element={<LogOut />} />
-        <Route path="/chat" element={<ChatRoom />} />
-        <Route path="/chat/room/msg/:roomId" element={<Chat chat={chat} />} />
-        <Route path="/chat/room/rtc/:roomId" element={<RTC chat={chat} />} />
+        <Route path="/room" element={<ChatRoom />} />
         <Route
-          path="/chat/room/both/:roomId"
+          path="/room/:roomId"
           element={<CollaborationPage chat={chat} />}
         />
-        <Route path="/chat/room/:roomId" element={<Chat chat={chat} />} />
         <Route path="/canvas" element={<Canvas />} />
         <Route path="/ocr" element={<OCR />} />
         <Route path="/survey" element={<SurveyComponent />} />

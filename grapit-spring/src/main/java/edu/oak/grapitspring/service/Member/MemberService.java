@@ -1,11 +1,11 @@
-package edu.oak.grapitspring.service;
+package edu.oak.grapitspring.service.Member;
 
 import edu.oak.grapitspring.common.exception.DuplicateException;
 import edu.oak.grapitspring.common.exception.LoginException;
-import edu.oak.grapitspring.controller.JoinRequestDTO;
-import edu.oak.grapitspring.controller.LoginRequestDTO;
+import edu.oak.grapitspring.controller.Member.JoinRequestDTO;
+import edu.oak.grapitspring.controller.Member.LoginRequestDTO;
 import edu.oak.grapitspring.domain.Member;
-import edu.oak.grapitspring.repository.MemberRepository;
+import edu.oak.grapitspring.repository.Member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

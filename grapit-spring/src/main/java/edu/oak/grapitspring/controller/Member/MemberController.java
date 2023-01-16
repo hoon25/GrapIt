@@ -1,8 +1,8 @@
-package edu.oak.grapitspring.controller;
+package edu.oak.grapitspring.controller.Member;
 
 
 import edu.oak.grapitspring.domain.Member;
-import edu.oak.grapitspring.service.MemberService;
+import edu.oak.grapitspring.service.Member.MemberService;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package edu.oak.grapitspring.controller;
+package edu.oak.grapitspring.controller.Member;
 
 import edu.oak.grapitspring.domain.Member;
 import edu.oak.grapitspring.domain.MemberType;

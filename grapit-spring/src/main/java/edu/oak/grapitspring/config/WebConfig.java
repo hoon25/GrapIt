@@ -1,4 +1,4 @@
-package edu.oak.grapitspring;
+package edu.oak.grapitspring.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

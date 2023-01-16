@@ -2,6 +2,7 @@ package edu.oak.grapitspring.repository;
 
 import edu.oak.grapitspring.domain.Member;
 import edu.oak.grapitspring.domain.MemberType;
+import edu.oak.grapitspring.repository.Member.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

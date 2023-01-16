@@ -1,4 +1,4 @@
-package edu.oak.grapitspring.service;
+package edu.oak.grapitspring.service.Room;
 
 import lombok.Builder;
 import lombok.Data;

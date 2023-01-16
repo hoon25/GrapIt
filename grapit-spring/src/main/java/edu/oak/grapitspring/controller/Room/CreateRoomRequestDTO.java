@@ -1,4 +1,4 @@
-package edu.oak.grapitspring.controller;
+package edu.oak.grapitspring.controller.Room;
 
 import edu.oak.grapitspring.domain.Room;
 import lombok.*;

@@ -1,9 +1,9 @@
-package edu.oak.grapitspring.service;
+package edu.oak.grapitspring.service.Room;
 
-import edu.oak.grapitspring.controller.CreateRoomRequestDTO;
+import edu.oak.grapitspring.controller.Room.CreateRoomRequestDTO;
 import edu.oak.grapitspring.domain.Room;
-import edu.oak.grapitspring.repository.MemberRepository;
-import edu.oak.grapitspring.repository.RoomRepository;
+import edu.oak.grapitspring.repository.Member.MemberRepository;
+import edu.oak.grapitspring.repository.Room.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

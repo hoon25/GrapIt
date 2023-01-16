@@ -1,4 +1,4 @@
-package edu.oak.grapitspring.rtc;
+package edu.oak.grapitspring.common.rtc;
 
 
 import io.openvidu.java.client.*;

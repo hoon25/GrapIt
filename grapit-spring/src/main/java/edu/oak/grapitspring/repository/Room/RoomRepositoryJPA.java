@@ -1,4 +1,4 @@
-package edu.oak.grapitspring.repository;
+package edu.oak.grapitspring.repository.Room;
 
 import edu.oak.grapitspring.domain.Room;
 import lombok.RequiredArgsConstructor;

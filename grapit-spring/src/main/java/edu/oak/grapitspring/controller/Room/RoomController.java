@@ -1,8 +1,8 @@
-package edu.oak.grapitspring.controller;
+package edu.oak.grapitspring.controller.Room;
 
 import edu.oak.grapitspring.domain.Member;
-import edu.oak.grapitspring.service.RoomResponseDTO;
-import edu.oak.grapitspring.service.RoomService;
+import edu.oak.grapitspring.service.Room.RoomResponseDTO;
+import edu.oak.grapitspring.service.Room.RoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

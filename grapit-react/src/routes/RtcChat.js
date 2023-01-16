@@ -58,7 +58,9 @@ function RtcChat({ chat }) {
   const graphStyle = {
     ...commonCanvasStyle,
     pointerEvents: isWhiteBoard.isSelected ? 'none' : 'auto',
+    zIndex: 10,
   };
+  console.log(graphStyle);
 
   const whiteBoardStyle = {
     ...commonCanvasStyle,
@@ -89,11 +91,11 @@ function RtcChat({ chat }) {
 
   const user = useSelector(state => state.user);
 
-  window.addEventListener('resize', () => {
-    setContainerInfo([window.innerWidth, window.innerHeight]);
-    // setChildWidth(mainParent.current.clientWidth);
-    // setChildHeight(mainParent.current.clientHeight);
-  });
+  // window.addEventListener('resize', () => {
+  //   setContainerInfo([window.innerWidth, window.innerHeight]);
+  //   // setChildWidth(mainParent.current.clientWidth);
+  //   // setChildHeight(mainParent.current.clientHeight);
+  // });
   window.addEventListener('orientationchange', () => {
     setContainerInfo([window.innerWidth, window.innerHeight]);
   });

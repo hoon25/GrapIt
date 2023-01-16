@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Form } from 'react-bootstrap';
 import LineInputGroup from './input/LineInputGroup';
-import QuadraticInputGroup from './input/QuadraticInputGroup';
+import TwoDInputGroup from './input/TwoDInputGroup';
 import CircleInputGroup from './input/CircleInputGroup';
 
 export default function TwoDGraphInput() {
@@ -51,7 +51,7 @@ function ResolveTwoFGraphInput({ twoDFigureType }) {
     case '일차함수':
       return <LineInputGroup />;
     case '이차함수':
-      return <QuadraticInputGroup />;
+      return <TwoDInputGroup />;
     case '원':
       return <CircleInputGroup />;
     default:

@@ -1,7 +1,7 @@
 import { Row } from 'react-bootstrap';
-import ThreeCardBox from '../ThreeCardBox';
 import TwoDGraphInput from './TwoDGraphInput';
 import { EquationHandBoard } from '../../routes/equationBoard/EquationHandBoard';
+import TwoCardBox from './TwoCardBox';
 
 export default function TwoDimensionSideBar(
   viewPointX,
@@ -14,10 +14,10 @@ export default function TwoDimensionSideBar(
         <TwoDGraphInput />
 
         <EquationHandBoard
-          graphColor={'#ffffff'}
+          graphColor={16777215}
           viewPointX={viewPointX}
           viewPointY={viewPointY}
-          sendGraphInfo={sendObjectInfo}
+          sendObjectInfo={sendObjectInfo}
         />
       </Row>
       <Row
@@ -26,7 +26,7 @@ export default function TwoDimensionSideBar(
           backgroundColor: '#eeeeee',
         }}
       >
-        <ThreeCardBox />
+        <TwoCardBox />
       </Row>
     </Row>
   );

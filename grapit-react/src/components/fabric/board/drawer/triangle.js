@@ -11,6 +11,7 @@ const drawEquilateral = (from, to, color, width) => {
     stroke: color,
     strokeWidth: width,
     fill: 'rgba(255,255,255,0)',
+    id: uuid.v4(),
   });
 };
 

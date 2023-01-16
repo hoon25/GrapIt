@@ -19,10 +19,6 @@ body {
   background-color: white;
 }
 
-.fabric-whiteboard {
-  border: none !important;
-}
-
 .messages {
   margin-top: 30px;
   display: flex;

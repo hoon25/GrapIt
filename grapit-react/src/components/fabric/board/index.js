@@ -27,7 +27,7 @@ function Board(props) {
     line: undefined,
     shape: undefined,
   });
-  const [currentGroupId, setCurrentGroupId] = useState('');
+  const [currentGroup, setCurrentGroup] = useState(undefined);
   const fabricCanvas = useRef(null);
 
   useEffect(() => {
@@ -46,7 +46,20 @@ function Board(props) {
     }
   }, [sendObj, mouseUp, selectedCount]);
 
-  function handleCanvasObjectsAdded() {
+  function handleCanvasObjectsAdded(options) {
+    console.log('handleCanvasObjectsAdded', options);
+    console.log(props.mode);
+    if (props.mode === 'pen') {
+      options.target.id = uuid.v4();
+      props.sendPaintInfo(
+        'PAINT',
+        JSON.stringify({
+          action: 'pen',
+          target: options.target.toJSON(['id']),
+        }),
+      );
+    }
+
     setSendObj(undefined);
   }
 
@@ -146,6 +159,7 @@ function Board(props) {
     fabricCanvas.current.off('selection:cleared');
     fabricCanvas.current.off('object:modified');
     fabricCanvas.current.off('object:moving');
+    fabricCanvas.current.off('object:added');
 
     fabricCanvas.current.on('mouse:down', handleCanvasMouseDown);
     fabricCanvas.current.on('mouse:up', handleCanvasMouseUp);
@@ -156,6 +170,7 @@ function Board(props) {
     fabricCanvas.current.on('selection:cleared', handleCanvasSelectionCleared);
     fabricCanvas.current.on('object:modified', handleCanvasObjectsModified);
     fabricCanvas.current.on('object:moving', handleCanvasObjectsMoving);
+    fabricCanvas.current.on('object:added', handleCanvasObjectsAdded);
     setNowProps(props);
   }, [props]);
 
@@ -176,6 +191,18 @@ function Board(props) {
     return null;
   };
 
+  function jsonToObject() {
+    fabric.util.enlivenObjects(
+      [props.drawInfo.target],
+      function (enlivenedObjects) {
+        enlivenedObjects.forEach(function (enlivenedObject) {
+          enlivenedObject.set('id', props.drawInfo.target.id);
+          fabricCanvas.current.add(enlivenedObject);
+        });
+      },
+    );
+  }
+
   useEffect(() => {
     // const object = JSON.parse(props.drawInfo.target);
     if (props.drawInfo === undefined) return;
@@ -186,18 +213,12 @@ function Board(props) {
 
     if (props.drawInfo.action === 'add') {
       if (objectById === null) {
-        fabric.util.enlivenObjects(
-          [props.drawInfo.target],
-          function (enlivenedObjects) {
-            enlivenedObjects.forEach(function (enlivenedObject) {
-              // enlivenedObject.id = props.drawInfo.target.id;
-              enlivenedObject.set('id', props.drawInfo.target.id);
-              console.log('아이디 체크');
-              console.log(enlivenedObject.id);
-              fabricCanvas.current.add(enlivenedObject);
-            });
-          },
-        );
+        jsonToObject();
+      }
+    } else if (props.drawInfo.action === 'modify') {
+      if (objectById !== null) {
+        fabricCanvas.current.remove(objectById);
+        jsonToObject();
       }
     } else if (props.drawInfo.action === 'move') {
       if (objectById !== null) {
@@ -217,6 +238,10 @@ function Board(props) {
           fabricCanvas.current.remove(objectById);
         }
       });
+    } else if (props.drawInfo.action === 'pen') {
+      if (objectById === null) {
+        jsonToObject();
+      }
     }
 
     // if (props.drawInfo !== undefined && props.drawInfo.count < 2) {
@@ -349,8 +374,6 @@ function Board(props) {
   function handleCanvasPathCreated(e) {
     const { enabled } = props;
     if (enabled === false || e.path === undefined) return;
-    console.log('handleCanvasPathCreated');
-    e.path.set('id', uuid.v4());
   }
 
   function handleCanvasSelectionCreated(e) {
@@ -359,12 +382,14 @@ function Board(props) {
     console.log(e);
     if (enabled === false || e.e === undefined) return;
     const selected = [];
+    let temp = [];
     e.selected.forEach(obj => {
       selected.push({
         id: obj.id,
         left: obj.left,
         top: obj.top,
       });
+      temp.push(obj);
       if (mode === 'eraser') {
         fabricCanvas.current.remove(obj);
       }
@@ -381,6 +406,13 @@ function Board(props) {
       fabricCanvas.current.discardActiveObject();
       return;
     }
+
+    console.log(e.selected);
+    // let newGroup = new fabric.Group(temp, {
+    //   id: uuid.v4(),
+    // });
+
+    // console.log(newGroup);
   }
   function handleCanvasSelectionUpdated(e) {
     const { mode, enabled, onSelectionUpdated } = props;
@@ -417,6 +449,7 @@ function Board(props) {
   }
 
   function handleCanvasObjectsModified(e) {
+    console.log('handleCanvasObjectsModified');
     const { enabled } = props;
     if (enabled === false || e.e === undefined) return;
     if (!e.target) return;
@@ -425,11 +458,21 @@ function Board(props) {
     const selected = [];
     if (objects) {
       objects.forEach(obj => {
+        props.sendPaintInfo(
+          'PAINT',
+          JSON.stringify({
+            action: 'modify',
+            target: obj.toJSON(['id']),
+          }),
+        );
+
         selected.push({
           id: obj.id,
           matrix: obj.calcTransformMatrix(),
           point: obj.getPointByOrigin('left', 'top'),
         });
+        console.log(obj.calcTransformMatrix());
+        console.log(obj.getPointByOrigin('left', 'top'));
       });
     }
   }
@@ -699,22 +742,19 @@ function Board(props) {
   }
 
   function handleCanvasObjectsMoving(options) {
-    console.log('handleCanvasObjectsMoving');
-    let target = undefined;
-    console.log(options);
-    if (selectedCount < 2) {
-      target = sendObj.toJSON(['id']);
-    } else {
-      target = sendObj;
-    }
-    props.sendPaintInfo(
-      'PAINT',
-      JSON.stringify({
-        count: selectedCount,
-        action: 'move',
-        target: target,
-      }),
-    );
+    // console.log('handleCanvasObjectsMoving');
+    // console.log(options);
+    // let target = undefined;
+    //
+    if (options.target)
+      props.sendPaintInfo(
+        'PAINT',
+        JSON.stringify({
+          count: selectedCount,
+          action: 'move',
+          target: options.target.toJSON(['id']),
+        }),
+      );
   }
 }
 

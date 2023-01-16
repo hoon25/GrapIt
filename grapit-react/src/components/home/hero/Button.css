@@ -41,3 +41,7 @@
     color: #242424;
     transition: 250ms;
 }
+
+.jb-white {
+    color: rgb(255, 255, 255);
+}

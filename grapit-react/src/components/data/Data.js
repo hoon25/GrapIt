@@ -20,7 +20,7 @@ export const nav = [{
     {
         text: '선생님찾기',
 
-        path: "/survey",
+        path: "/tutorfind",
     },
     // {
     //     text: 'Login',

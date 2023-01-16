@@ -5,7 +5,7 @@ import '../css/login.css';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../store/userSlice';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export function LogIn() {
   let [email, setEmail] = useState('');
@@ -94,8 +94,13 @@ export function LogIn() {
               로그인
             </Button>
           </div>
+
           <p className="forgot-password text-right mt-2">
             <a href="#">비밀번호</a>를 잊어버리셨나요?
+          </p>
+
+          <p className="text-center mt-2">
+            <Link to={'/join'}>회원가입</Link>
           </p>
         </div>
       </Form>

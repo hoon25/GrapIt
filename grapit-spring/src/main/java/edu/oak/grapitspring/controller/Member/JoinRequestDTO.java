@@ -18,18 +18,15 @@ public class JoinRequestDTO {
 
     private String nickName;
 
-    private MemberType memberType;
-
     public Member toEntity() {
-        return Member.builder().email(email).password(password).name(name).nickName(nickName).memberType(memberType).build();
+        return Member.builder().email(email).password(password).name(name).nickName(nickName).build();
     }
 
     @Builder
-    public JoinRequestDTO(String email, String password, String name, String nickName, MemberType memberType) {
+    public JoinRequestDTO(String email, String password, String name, String nickName) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.nickName = nickName;
-        this.memberType = memberType;
     }
 }

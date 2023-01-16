@@ -5,6 +5,7 @@ import edu.oak.grapitspring.common.exception.LoginException;
 import edu.oak.grapitspring.controller.Member.JoinRequestDTO;
 import edu.oak.grapitspring.controller.Member.LoginRequestDTO;
 import edu.oak.grapitspring.domain.Member;
+import edu.oak.grapitspring.domain.MemberType;
 import edu.oak.grapitspring.repository.Member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,8 @@ public class MemberService {
 
     public Long join(JoinRequestDTO requestDTO) {
         Member requestMember = requestDTO.toEntity();
-        Member member = Member.joinMember(requestMember.getEmail(), requestMember.getPassword(), requestMember.getName(), requestMember.getNickName(), requestMember.getMemberType());
+        // MemberType은 Student로 자동 설정
+        Member member = Member.joinMember(requestMember.getEmail(), requestMember.getPassword(), requestMember.getName(), requestMember.getNickName(), MemberType.STUDENT);
         validateDuplicateJoinEmail(member);
         return memberRepository.insert(member);
     }

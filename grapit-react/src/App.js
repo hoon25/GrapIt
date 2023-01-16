@@ -12,6 +12,7 @@ import Home from './components/home/Home';
 import Canvas from './components/Canvas';
 import Header from './components/common/header/Header';
 import OCR from './routes/ocr/OCR';
+import JoinMember from './routes/JoinMember';
 import SurveyComponent from './components/home/survey/survey';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route exact path="/" element={<Home />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/logout" element={<LogOut />} />
+        <Route path="/join" element={<JoinMember />} />
         <Route path="/room" element={<ChatRoom />} />
         <Route
           path="/room/:roomId"

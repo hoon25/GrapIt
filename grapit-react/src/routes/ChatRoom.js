@@ -25,16 +25,7 @@ function ChatRoomList() {
 
   return (
     <>
-      <Button
-        variant="danger"
-        style={{ float: 'right' }}
-        // onClick={() =>
-        //   axios
-        //     .post('/api/chat/room', { chatType: createRoomType })
-        //     .then(() => getAllChatRoom())
-        // }
-        onClick={handleShow}
-      >
+      <Button variant="danger" style={{ float: 'right' }} onClick={handleShow}>
         수업방 생성하기
       </Button>
       <CreateRoom

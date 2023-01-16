@@ -146,9 +146,8 @@ export function TwoDGraph({
 }
 
 function resolveGraph(graph, index) {
-  const { color, figureId, firstProps, secondProps, thirdProps, type, thick } =
-    graph;
-
+  const { firstProps, secondProps, thirdProps, type, thick } = graph;
+  const color = '#' + graph.color.toString(16);
   if (type === 'Line') {
     return (
       <Line.PointAngle
@@ -166,6 +165,7 @@ function resolveGraph(graph, index) {
         center={[firstProps, secondProps]}
         radius={thirdProps}
         color={color}
+        weight={thick}
       />
     );
   } else if (type === 'TwoD') {
@@ -173,6 +173,7 @@ function resolveGraph(graph, index) {
       <FunctionGraph.OfX
         key={index}
         color={color}
+        weight={thick}
         y={x => {
           const _x = x;
           return firstProps * _x * _x + secondProps * _x + thirdProps;

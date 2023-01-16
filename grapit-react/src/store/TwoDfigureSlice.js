@@ -20,38 +20,29 @@ const TwoDfigure = createSlice({
     },
 
     removeFigure: (state, action) => {
-      const index = state.figures.findIndex(
-        figure => figure.figureId === action.payload,
+      const index = state.TwoDfigures.findIndex(
+        TwoDfigure => TwoDfigure.figureId === action.payload,
       );
 
-      state.figures.splice(index, 1);
-    },
-    transparentFigure: (state, action) => {
-      const index = state.figures.findIndex(
-        figure => figure.figureId === action.payload,
-      );
-
-      state.figures[index].transparent = !state.figures[index].transparent;
+      state.TwoDfigures.splice(index, 1);
     },
     emphasizeFigure: (state, action) => {
-      const index = state.figures.findIndex(
-        figure => figure.figureId === action.payload,
+      const index = state.TwoDfigures.findIndex(
+        TwoDfigure => TwoDfigure.figureId === action.payload,
       );
-      if (state.figures[index].type === 'twoPointedLine') {
-        state.figures[index].thick = true;
-      } else {
-        state.figures[index].polish = true;
-      }
+      state.TwoDfigures[index].thick += 10;
     },
     deemphasizeFigure: (state, action) => {
-      const index = state.figures.findIndex(
-        figure => figure.figureId === action.payload,
+      const index = state.TwoDfigures.findIndex(
+        TwoDfigure => TwoDfigure.figureId === action.payload,
       );
-      if (state.figures[index].type === 'twoPointedLine') {
-        state.figures[index].thick = false;
-      } else {
-        state.figures[index].polish = false;
-      }
+      state.TwoDfigures[index].thick -= 10;
+    },
+    resetThick: (state, action) => {
+      const index = state.TwoDfigures.findIndex(
+        TwoDfigure => TwoDfigure.figureId === action.payload,
+      );
+      state.TwoDfigures[index].thick = 3;
     },
   },
 });

@@ -14,6 +14,8 @@ import Header from './components/common/header/Header';
 import OCR from './routes/ocr/OCR';
 import JoinMember from './routes/JoinMember';
 import SurveyComponent from './components/home/survey/survey';
+import ThreeCanvas from './components/ThreeCanvas';
+import BaseCanvas from './components/BaseCanvas';
 
 function App() {
   let chat = useSelector(state => state.chat);
@@ -35,6 +37,8 @@ function App() {
         <Route path="/canvas" element={<Canvas />} />
         <Route path="/ocr" element={<OCR />} />
         <Route path="/survey" element={<SurveyComponent />} />
+        <Route path="/three" element={<ThreeCanvas />} />
+        <Route path="/base" element={<BaseCanvas />} />
       </Routes>
     </div>
   );

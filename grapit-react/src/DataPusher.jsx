@@ -9,6 +9,6 @@ export function DataPusher() {
     for (const obj of data) {
       dispatch(figure.actions.addFigure(obj));
     }
-  }, 200);
+  }, 1000);
   // return 'datapusher';
 }

@@ -1,10 +1,10 @@
 import { useEffect, useState, ReactDOM, useRef, useLayoutEffect } from 'react';
-import { Button, Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Container, Row, Stack } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import '../css/Rtcchat.css';
 import '../css/Canvas.css';
 import Canvas from '../components/Canvas';
-import { setIsWhiteBoard } from '../store/isWhiteBoardSlice';
+import { toggleIsWhiteBoard } from '../store/isWhiteBoardSlice';
 import { TwoDGraph } from './graph/TwoDGraph';
 import { GraphTypeButton } from './graph/GraphTypeButton';
 import { GraphInputGroup } from './graph/GraphInputGroup';
@@ -13,6 +13,12 @@ import { useOthers, useUpdateMyPresence } from '../config/liveblocks.config';
 import Cursor from '../components/Cursor';
 import { EquationHandBoard } from './equationBoard/EquationHandBoard';
 import Vidu from './vidu/Vidu';
+import ThreeDimensionCanvas from '../components/ThreeDimensionCanvas';
+import { DataPusher } from '../DataPusher';
+import CoordTypeSelector from '../components/CoordTypeSelector';
+import ThreeDimensionSideBar from '../components/ThreeDimensionSideBar';
+import { throttle } from 'lodash'
+import ThreeCardBox from '../components/ThreeCardBox';
 
 var stompClient = null;
 
@@ -37,6 +43,8 @@ function RtcChat({ chat }) {
   const [graphList, setGraphList] = useState([]);
 
   const [drawInfo, setDrawInfo] = useState();
+
+  const [coordType, setCoordType] = useState('2D');
 
   const dispatch = useDispatch();
   const isWhiteBoard = useSelector(state => state.isWhiteBoard);
@@ -108,6 +116,10 @@ function RtcChat({ chat }) {
     });
   }, []);
 
+  // const camera = useSelector(state => state.camera.camera);
+  // console.log(camera.camera)
+  // console.log('!')
+
   function sendObjectInfo(objectType, object) {
     if (stompClient) {
       stompClient.debug = null;
@@ -167,144 +179,186 @@ function RtcChat({ chat }) {
   };
 
   return (
-    <Container
-      style={{ height: '100%' }}
-      ref={tempRef}
-      onPointerMove={e => {
-        updateMyPresence({
-          cursor: { x: e.clientX, y: e.clientY },
-          screenInfo: { width: containerInfo[0], height: containerInfo[1] },
-        });
-      }}
-      onPointerLeave={() =>
-        updateMyPresence({ cursor: null, screenInfo: null })
-      }
-    >
-      {userOther.map(({ connectionId, presence }) =>
-        presence.cursor ? (
-          <Cursor
-            key={connectionId}
-            name={presence.userInfo.name}
-            color={presence.userInfo.color}
-            x={
-              presence.cursor.x *
-              (window.innerWidth / presence.screenInfo.width)
-            }
-            y={
-              presence.cursor.y *
-              (window.innerHeight / presence.screenInfo.height)
-            }
-          />
-        ) : null,
-      )}
-      <Row style={{ height: '100%' }}>
-        <Col xs={3} style={{}} className="mt-5">
-          <Row style={{ height: '70%' }} className="div-shadow">
-            <div style={{ overflowX: 'auto' }}>
-              <h4>영상 채팅</h4>
-              <Vidu user={user} chat={chat} />
-              <EquationHandBoard
-                graphColor={'#ffffff'}
-                // graphColor={graphColor}
-                setGraphColor={setGraphColor}
-                graphType={graphType}
-                setGraphType={setGraphType}
-                formulaFirst={formulaFirst}
-                setFormulaFirst={setFormulaFirst}
-                formulaSecond={formulaSecond}
-                setFormulaSecond={setFormulaSecond}
-                formulaThird={formulaThird}
-                setFormulaThird={setFormulaThird}
-                graphInfo={graphInfo}
-                setGraphInfo={setGraphInfo}
-                graphList={graphList}
-                setGraphList={setGraphList}
-                viewPointX={viewPointX}
-                setViewPointX={setViewPointX}
-                viewPointY={viewPointY}
-                setViewPointY={setViewPointY}
-                sendGraphInfo={sendObjectInfo}
+    <>
+      <Container
+        fluid
+        style={{ height: '100%' }}
+        // ref={tempRef}
+        onPointerMove={e => {
+          updateMyPresence({
+            cursor: { x: e.clientX, y: e.clientY },
+            screenInfo: { width: containerInfo[0], height: containerInfo[1] },
+          });
+        }}
+        onPointerLeave={() =>
+          updateMyPresence({ cursor: null, screenInfo: null })
+        }
+      >
+        {userOther.map(
+          // todo 함수 분리
+          ({ connectionId, presence }) =>
+            presence.cursor ? (
+              <Cursor
+                key={connectionId}
+                name={presence.userInfo.name}
+                color={presence.userInfo.color}
+                x={
+                  presence.cursor.x *
+                  (window.innerWidth / presence.screenInfo.width)
+                }
+                y={
+                  presence.cursor.y *
+                  (window.innerHeight / presence.screenInfo.height)
+                }
               />
-            </div>
-          </Row>
-
-          <Row style={{ height: '30%' }}>
-            <div style={{ display: '' }} className="div-shadow">
-              <h2>그래프 생성기</h2>
-
-              <div>
-                <GraphTypeButton
-                  graphType={graphType}
-                  setGraphType={setGraphType}
-                  setGraphColor={setGraphColor}
-                />
+            ) : null,
+        )}
+        <Row style={{ height: '100%' }}>
+          <Col xs={9} className="">
+            <div ref={mainParent}
+              style={{ height: '100%', width: '100%', position: 'relative' }}
+            >
+              <div style={{ position: 'absolute', bottom: '0px', zIndex: '995' }}>
+                <Button
+                  onClick={() => { dispatch(toggleIsWhiteBoard()) }}
+                >
+                  모드전환
+                </Button>
               </div>
-              <div className="mt-3">
-                <GraphInputGroup
-                  graphColor={graphColor}
-                  setGraphColor={setGraphColor}
-                  graphType={graphType}
-                  setGraphType={setGraphType}
-                  formulaFirst={formulaFirst}
-                  setFormulaFirst={setFormulaFirst}
-                  formulaSecond={formulaSecond}
-                  setFormulaSecond={setFormulaSecond}
-                  formulaThird={formulaThird}
-                  setFormulaThird={setFormulaThird}
-                  graphInfo={graphInfo}
-                  setGraphInfo={setGraphInfo}
-                  graphList={graphList}
-                  setGraphList={setGraphList}
-                  viewPointX={viewPointX}
-                  setViewPointX={setViewPointX}
-                  viewPointY={viewPointY}
-                  setViewPointY={setViewPointY}
-                  sendGraphInfo={sendObjectInfo}
-                />
-              </div>
-            </div>
-          </Row>
-        </Col>
 
-        <Col xs={9} className="mt-5">
-          <div
-            ref={mainParent}
-            style={{ height: '100%', width: '100%', position: 'relative' }}
-          >
-            <div style={graphStyle}>
-              {isLoaded ? (
-                <TwoDGraph
-                  graphList={graphList}
-                  viewPointX={viewPointX}
-                  viewPointY={viewPointY}
-                  ratio={ratio}
-                  setRatio={setRatio}
-                  sendObjectInfo={sendObjectInfo}
-                  childWidth={childWidth}
-                  childHeight={childHeight}
-                />
-              ) : (
-                ''
-              )}
+              {coordType === '2D'
+                ?
+                <div style={graphStyle}>
+                  {isLoaded ? (
+                    <TwoDGraph
+                      graphList={graphList}
+                      viewPointX={viewPointX}
+                      viewPointY={viewPointY}
+                      ratio={ratio}
+                      setRatio={setRatio}
+                      sendObjectInfo={sendObjectInfo}
+                      childWidth={childWidth}
+                      childHeight={childHeight}
+                    />
+                  ) : (''
+                  )}
+                </div> :
+                <div style={graphStyle}>
+                  <ThreeDimensionCanvas />
+                  <DataPusher />
+                </div>}
+
+              <div style={whiteBoardStyle}>
+                {isLoaded ? (
+                  <Canvas
+                    childWidth={childWidth}
+                    childHeight={childHeight}
+                    isWhiteBoard={isWhiteBoard}
+                    sendPaintInfo={sendObjectInfo}
+                    drawInfo={drawInfo}
+                  />
+                ) : (
+                  ''
+                )}
+              </div>
+
             </div>
-            <div>
-              {isLoaded ? (
-                <Canvas
-                  childWidth={childWidth}
-                  childHeight={childHeight}
-                  isWhiteBoard={isWhiteBoard}
-                  sendPaintInfo={sendObjectInfo}
-                  drawInfo={drawInfo}
-                />
-              ) : (
-                ''
-              )}
-            </div>
-          </div>
-        </Col>
-      </Row>
-    </Container>
+          </Col>
+
+
+          <Col xs={3} style={{ background: "" }} className="">
+            <CoordTypeSelector coordType={coordType} setCoordType={setCoordType} />
+
+            <Row>
+              {
+                coordType === '2D' ?
+                  <TwoDimensionSideBar
+                    graphType={graphType}
+                    setGraphType={setGraphType}
+                    setGraphColor={setGraphColor}
+                    graphColor={graphColor}
+                    formulaFirst={formulaFirst}
+                    setFormulaFirst={setFormulaFirst}
+                    formulaSecond={formulaSecond}
+                    setFormulaSecond={setFormulaSecond}
+                    formulaThird={formulaThird}
+                    setFormulaThird={setFormulaThird}
+                    graphInfo={graphInfo}
+                    setGraphInfo={setGraphInfo}
+                    graphList={graphList}
+                    setGraphList={setGraphList}
+                    viewPointX={viewPointX}
+                    setViewPointX={setViewPointX}
+                    viewPointY={viewPointY}
+                    setViewPointY={setViewPointY}
+                    sendObjectInfo={sendObjectInfo}
+                  /> : <ThreeDimensionSideBar />}
+            </Row>
+          </Col>
+        </Row>
+      </Container>
+      {/* <Vidu user={user} chat={chat} /> */}
+    </>
   );
 }
 
 export default RtcChat;
+function TwoDimensionSideBar(graphType, setGraphType, setGraphColor, graphColor, formulaFirst, setFormulaFirst, formulaSecond, setFormulaSecond, formulaThird, setFormulaThird, graphInfo, setGraphInfo, graphList, setGraphList, viewPointX, setViewPointX, viewPointY, setViewPointY, sendObjectInfo) {
+  return <Row style={{ height: '30%' }}>
+    <div style={{ display: '' }} className="div-shadow">
+      <h2>그래프 생성기</h2>
+
+      <div>
+        <GraphTypeButton
+          graphType={graphType}
+          setGraphType={setGraphType}
+          setGraphColor={setGraphColor} />
+      </div>
+      <div className="mt-3">
+        <GraphInputGroup
+          graphColor={graphColor}
+          setGraphColor={setGraphColor}
+          graphType={graphType}
+          setGraphType={setGraphType}
+          formulaFirst={formulaFirst}
+          setFormulaFirst={setFormulaFirst}
+          formulaSecond={formulaSecond}
+          setFormulaSecond={setFormulaSecond}
+          formulaThird={formulaThird}
+          setFormulaThird={setFormulaThird}
+          graphInfo={graphInfo}
+          setGraphInfo={setGraphInfo}
+          graphList={graphList}
+          setGraphList={setGraphList}
+          viewPointX={viewPointX}
+          setViewPointX={setViewPointX}
+          viewPointY={viewPointY}
+          setViewPointY={setViewPointY}
+          sendGraphInfo={sendObjectInfo} />
+        <EquationHandBoard
+          graphColor={'#ffffff'}
+          // graphColor={graphColor}
+          setGraphColor={setGraphColor}
+          graphType={graphType}
+          setGraphType={setGraphType}
+          formulaFirst={formulaFirst}
+          setFormulaFirst={setFormulaFirst}
+          formulaSecond={formulaSecond}
+          setFormulaSecond={setFormulaSecond}
+          formulaThird={formulaThird}
+          setFormulaThird={setFormulaThird}
+          graphInfo={graphInfo}
+          setGraphInfo={setGraphInfo}
+          graphList={graphList}
+          setGraphList={setGraphList}
+          viewPointX={viewPointX}
+          setViewPointX={setViewPointX}
+          viewPointY={viewPointY}
+          setViewPointY={setViewPointY}
+          sendGraphInfo={sendObjectInfo} />
+      </div>
+    </div>
+    <ThreeCardBox />
+  </Row>;
+}
+

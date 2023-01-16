@@ -1,9 +1,10 @@
 package edu.oak.grapitspring.service;
 
 import edu.oak.grapitspring.common.exception.LoginException;
-import edu.oak.grapitspring.controller.LoginRequestDTO;
+import edu.oak.grapitspring.controller.Member.LoginRequestDTO;
 import edu.oak.grapitspring.domain.Member;
-import edu.oak.grapitspring.repository.MemberRepository;
+import edu.oak.grapitspring.repository.Member.MemberRepository;
+import edu.oak.grapitspring.service.Member.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

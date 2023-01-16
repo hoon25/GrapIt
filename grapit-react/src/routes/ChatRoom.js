@@ -4,69 +4,42 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setChat } from '../store/chatSlice';
+import { CreateRoom } from './CreateRoom';
 
 function ChatRoomList() {
-  let [chatList, setChatList] = useState([]);
-  let [createRoomType, setCreateRoomType] = useState('');
+  const [chatList, setChatList] = useState([]);
   let navigate = useNavigate();
+
+  const [createRoomShow, setCreateRoomShow] = useState(false);
+  const handleClose = () => setCreateRoomShow(false);
+  const handleShow = () => setCreateRoomShow(true);
 
   useEffect(() => getAllChatRoom(), []);
 
-  // getAllChatRoom();
-
   function getAllChatRoom() {
-    axios.get('/api/chat').then(res => {
+    axios.get('/api/room').then(res => {
       setChatList(res.data);
       console.log(res.data);
     });
   }
 
-  // axios.get("/chat").then(res => {
-  //     setChatList(res.data);
-  //     console.log(res.data)
-  // });
-
   return (
     <>
-      <input
-        type="radio"
-        name="chatRoomType"
-        value="text"
-        onClick={() => setCreateRoomType('MSG')}
-      />{' '}
-      텍스트채팅
-      <input
-        type="radio"
-        name="chatRoomType"
-        value="text"
-        onClick={() => setCreateRoomType('RTC')}
-      />{' '}
-      영상채팅
-      <input
-        type="radio"
-        name="chatRoomType"
-        value="video"
-        onClick={() => setCreateRoomType('BOTH')}
-      />{' '}
-      텍스트영상채팅
-      <Button
-        variant="danger"
-        style={{ float: 'right' }}
-        onClick={() =>
-          axios
-            .post('/api/chat/room', { chatType: createRoomType })
-            .then(() => getAllChatRoom())
-        }
-      >
-        채팅방 생성하기
+      <Button variant="danger" style={{ float: 'right' }} onClick={handleShow}>
+        수업방 생성하기
       </Button>
+      <CreateRoom
+        modalShow={createRoomShow}
+        handleClose={handleClose}
+        handleShow={handleShow}
+      />
       <Table striped bordered hover>
         <thead>
           <tr>
             <th>#</th>
-            <th>채팅방 NO</th>
-            <th>채팅방 종류</th>
-            <th>채팅방 이름</th>
+            <th>NO</th>
+            <th>수업방 이름</th>
+            <th>선생님 닉네임</th>
             <th>입장하기</th>
           </tr>
         </thead>
@@ -89,20 +62,14 @@ function ChatRoom({ chat, i }) {
       <tr>
         <td></td>
         <td>{i}</td>
-        <td>{chat.chatType}</td>
         <td>{chat.roomName}</td>
+        <td>{chat.roomCreatorNickName}</td>
         <td>
           <Button
             variant="primary"
             onClick={function () {
               dispatch(setChat(chat));
-              if (chat.chatType === 'MSG') {
-                navigate(`/chat/room/msg/${chat.roomId}`);
-              } else if (chat.chatType === 'RTC') {
-                navigate(`/chat/room/rtc/${chat.roomId}`);
-              } else {
-                navigate(`/chat/room/both/${chat.roomId}`);
-              }
+              navigate(`/room/${chat.roomId}`);
             }}
           >
             입장하기

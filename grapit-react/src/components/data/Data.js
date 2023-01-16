@@ -6,20 +6,21 @@ export const nav = [
   {
     text: 'chatting',
 
-    path: '/chat',
-  },
-  {
-    text: '선생님찾기',
+        path: '/canvas',
+    },
+    {
+        text: '수업방',
 
-    path: '/survey',
-  },
-  // {
-  //     text: 'Login',
+        path: '/room',
+    },
+    {
+        text: 'ocr',
 
-  //     path: '/login',
-  // },
-  // {
-  //     text: 'Logout',
+        path: '/ocr',
+    },
+    {
+        text: '선생님찾기',
+
 
   //     path: '/logout',
   // },

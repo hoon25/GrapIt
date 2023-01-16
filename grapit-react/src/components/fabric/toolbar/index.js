@@ -2,44 +2,15 @@ import React, { useEffect, useState } from 'react';
 import Thickness from './thickness';
 import classNames from 'class-names';
 import ColorPicker from './colorpicker';
+import PropTypes from 'prop-types';
 import modes from '../utils/mode';
 import './style.scss';
-import '../../../css/floatingButton.css';
-import '../../../css/Button3D.css';
-import { setIsWhiteBoard } from '../../../store/isWhiteBoardSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  ArrowsMove,
-  Brush,
-  BrushFill,
-  CardText,
-  Dash,
-  DashLg,
-  EraserFill,
-  GraphUp,
-  PaletteFill,
-  Square,
-  TypeUnderline,
-  VectorPen,
-} from 'react-bootstrap-icons';
 
 function Toolbar(props) {
   const [toolButtons, setToolButtons] = useState([]);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [showFontsize, setShowFontsize] = useState(false);
   const [toolChange, setToolChange] = useState(undefined);
-
-  const dispatch = useDispatch();
-  const isWhiteBoard = useSelector(state => state.isWhiteBoard);
-
-  const Icon = {
-    select: <ArrowsMove />,
-    pen: <BrushFill />,
-    line: <DashLg />,
-    text: <CardText />,
-    rectangle: <Square />,
-    eraser: <EraserFill />,
-  };
 
   useEffect(() => {
     const toolButtons = [];
@@ -53,46 +24,37 @@ function Toolbar(props) {
   }, []);
 
   return (
-    <div
-      className="menu"
-      style={{ position: 'absolute', top: '140px', left: 0 }}
-    >
-      <input
-        type="checkbox"
-        onClick={() => {
-          console.log(isWhiteBoard.isSelected);
-          if (!isWhiteBoard.isSelected) {
-            dispatch(setIsWhiteBoard(true));
-          } else {
-            dispatch(setIsWhiteBoard(false));
-          }
-        }}
-        className="menu-open"
-        name="menu-open"
-        id="menu-open"
-      />
-      <label
-        className="menu-item button-3d menu-open-button"
-        htmlFor="menu-open"
+    <div className="fabric-whiteboard-toolbar">
+      <ul
+        id="fabric-whiteboard-toolbar-ul"
+        className="fabric-whiteboard-toolbar-ul"
       >
-        {isWhiteBoard.isSelected ? <VectorPen /> : <GraphUp />}
-      </label>
+        <li className="toolbar-ul-li" title="thickness">
+          <Thickness
+            visible={props.showToolbar}
+            enabled={props.enabled}
+            brushColor={props.brushColor}
+            brushThickness={props.brushThickness}
+            brushThicknessRange={props.brushThicknessRange}
+            setBrushThickness={props.setBrushThickness}
+          />
+        </li>
 
-      {toolButtons.map((btn, index) => (
-        <a key={index} href="#" className="menu-item button-3d">
+        {toolButtons.map((btn, index) => (
           <li
+            key={index}
             className={classNames(
-              'tool',
+              'toolbar-ul-li',
               btn.key === props.buttonMode ? 'active' : '',
             )}
             // data={btn.key}
             title={btn.title}
             onClick={() => {
               if (props.enabled === false) return;
+              // props.setMode(btn.key);
               props.setButtonMode(btn.key);
             }}
           >
-            {Icon[btn.key]}
             <i
               className={classNames(
                 `toolbar-ul-${btn.key}`,
@@ -100,11 +62,10 @@ function Toolbar(props) {
               )}
             />
           </li>
-        </a>
-      ))}
-      <a href="#" className="menu-item button-3d">
+        ))}
+
         <li
-          className="tool"
+          className="toolbar-ul-li"
           title="brush"
           onClick={() => {
             if (props.enabled === false) return;
@@ -113,32 +74,30 @@ function Toolbar(props) {
         >
           <i className="toolbar-ul-brush" />
         </li>
-        <PaletteFill />
+
         <ColorPicker
           visible={showColorPicker}
           color={props.brushColor}
           colors={props.brushColors}
           setBrushColor={props.setBrushColor}
         />
-      </a>
-      <a href="#" className="menu-item button-3d">
-        <label className="menu-item button-3d">
-          <span className="hamburger hamburger-1"></span>
-          <span className="hamburger hamburger-2"></span>
-          <span className="hamburger hamburger-3"></span>
-        </label>
-
-        <Thickness
-          visible={props.showToolbar}
-          enabled={props.enabled}
-          brushColor={props.brushColor}
-          brushThickness={props.brushThickness}
-          brushThicknessRange={props.brushThicknessRange}
-          setBrushThickness={props.setBrushThickness}
-        />
-      </a>
+      </ul>
     </div>
   );
 }
+
+Toolbar.propTypes = {
+  visible: PropTypes.bool,
+  enabled: PropTypes.bool,
+  mode: PropTypes.oneOf(modes),
+  fontSize: PropTypes.number,
+  brushColor: PropTypes.string,
+  brushColors: PropTypes.arrayOf(PropTypes.string),
+  brushThickness: PropTypes.number,
+  brushThicknessRange: PropTypes.arrayOf(PropTypes.number),
+  onModeClick: PropTypes.func,
+  onBrushColorChange: PropTypes.func,
+  onBrushThicknessChange: PropTypes.func,
+};
 
 export default Toolbar;

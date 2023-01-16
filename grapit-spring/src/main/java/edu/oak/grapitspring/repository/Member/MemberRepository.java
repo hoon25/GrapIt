@@ -1,4 +1,4 @@
-package edu.oak.grapitspring.repository;
+package edu.oak.grapitspring.repository.Member;
 
 import edu.oak.grapitspring.domain.Member;
 

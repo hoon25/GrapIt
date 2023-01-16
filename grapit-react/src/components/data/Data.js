@@ -8,9 +8,9 @@ export const nav = [{
         path: '/canvas',
     },
     {
-        text: 'video',
+        text: '수업방',
 
-        path: '/vidu',
+        path: '/room',
     },
     {
         text: 'ocr',

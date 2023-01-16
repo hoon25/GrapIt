@@ -1,4 +1,4 @@
-package edu.oak.grapitspring.repository;
+package edu.oak.grapitspring.repository.Member;
 
 import edu.oak.grapitspring.domain.Member;
 import lombok.RequiredArgsConstructor;
@@ -6,10 +6,12 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
+@Transactional
 public class MemberRepositoryJPA implements MemberRepository {
 
     private final EntityManager em;

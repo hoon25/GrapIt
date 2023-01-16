@@ -1,7 +1,7 @@
 //package edu.oak.grapitspring.controller;
 //
 //import com.fasterxml.jackson.databind.ObjectMapper;
-//import edu.oak.grapitspring.service.MemberService;
+//import edu.oak.grapitspring.service.Member.MemberService;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
 //import org.springframework.beans.factory.annotation.Autowired;

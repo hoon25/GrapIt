@@ -1,7 +1,7 @@
 import { Col, Container, Row } from 'react-bootstrap';
 import { DataPusher } from '../DataPusher';
 
-import CardBox from './CardBox';
+import ThreeCardBox from './ThreeCardBox';
 import FigureInput from './FigureInput';
 import ThreeDimensionCanvas from './ThreeDimensionCanvas';
 
@@ -22,7 +22,7 @@ function ThreeCanvas() {
             <FigureInput />
           </Row>
           <Row style={{ height: '60%' }}>
-            <CardBox />
+            <ThreeCardBox />
           </Row>
         </Col>
       </Row>

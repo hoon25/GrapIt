@@ -6,14 +6,18 @@ import { useSelector } from 'react-redux';
 import Axis from './Axis';
 import { PointLights } from './PointLights';
 import { resolveFigures } from './resolveFigures';
-import { debounce } from 'lodash';
+import { debounce, throttle } from 'lodash';
 import { data } from '../data.js';
+import { setCamera } from '../store/cameraSlice';
+import { useDispatch } from 'react-redux';
 
 function ThreeDimensionCanvas(props) {
   const cameraRef = useRef();
   const [unit, setUnit] = useState(6);
 
   const figureStore = useSelector(state => state.figure.figures);
+
+  const dispatch = useDispatch();
 
   const adjustScale = debounce(() => {
     const zoom = cameraRef.current.zoom;
@@ -24,6 +28,32 @@ function ThreeDimensionCanvas(props) {
       setUnit(newUnit < upperLimit ? newUnit : upperLimit);
     }
   }, 600);
+
+  const updateCamera = throttle(() => {
+    const camera = {
+      id: cameraRef.current.uuid,
+      zoom: cameraRef.current.zoom,
+      position: [...cameraRef.current.position],
+      rotation: [...cameraRef.current.rotation].slice(0, 3),
+    };
+
+    dispatch(setCamera.updateCamera(camera));
+  }, 1000);
+
+  // setCamera.updateCamera(camera);
+
+  // const data = figureStore.map(figure => {
+  //   const { type, ...rest } = figure;
+  //   return rest;
+  // });
+  // console.log('data', data);
+  // fetch('http://localhost:3001/api/figures', {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body: JSON.stringify(data),
+  // });
 
   return (
     <Canvas>
@@ -37,6 +67,7 @@ function ThreeDimensionCanvas(props) {
       <OrbitControls
         enableDamping={false}
         onChange={() => {
+          updateCamera();
           adjustScale();
         }}
       />

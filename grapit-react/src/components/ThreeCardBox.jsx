@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setFigure } from '../store/figureSlice';
 import { translate } from './translate';
 
-export default function CardBox() {
+export default function ThreeCardBox() {
   const figureStore = useSelector(state => state.figure.figures);
 
   const dispatch = useDispatch();

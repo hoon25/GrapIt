@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-let isWhiteBoard = createSlice({
+const isWhiteBoard = createSlice({
   name: 'isWhiteBoard',
   initialState: { isSelected: false },
   reducers: {
@@ -10,6 +10,7 @@ let isWhiteBoard = createSlice({
   },
 });
 
-export let { setIsWhiteBoard } = isWhiteBoard.actions;
+export const { setIsWhiteBoard } = isWhiteBoard.actions;
+export const { toggleIsWhiteBoard } = isWhiteBoard.actions;
 
 export default isWhiteBoard;

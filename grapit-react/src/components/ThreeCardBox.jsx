@@ -3,6 +3,7 @@ import { Button, Card, Col, Row, Stack } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFigure } from '../store/figureSlice';
 import { translate } from './translate';
+import * as Icon from 'react-bootstrap-icons';
 
 export default function ThreeCardBox() {
   const figureStore = useSelector(state => state.figure.figures);
@@ -45,6 +46,7 @@ function makeCard([figure, dispatch], i) {
   return (
     <Card key={i}>
       <Card.Header
+        className="d-flex justify-content-between"
         style={{
           fontWeight: 'bold',
           backgroundColor: headerColor,
@@ -52,24 +54,27 @@ function makeCard([figure, dispatch], i) {
         }}
       >
         {translate(figure.type)}
+        <Icon.X
+          lg={2}
+          color={contrastColor(headerColor)}
+          size="25px"
+          onClick={onDelBtnClick}
+        />
       </Card.Header>
-      <Card.Body
-        onClick={onCardClick}
-        onMouseDown={onCardMouseDown}
-        onMouseUp={onCardMouseUp}
-      >
-        <Row>
-          <Col lg={8}>{resolveInfo(figure)}</Col>
-          <Col lg={2}>
-            {/* <Stack direction="horizontal" gap={2}> */}
-            {/* <Button className="btn-sm" variant="secondary">
-              투명
-            </Button> */}
-            <Button className="btn-sm" variant="danger" onClick={onDelBtnClick}>
-              X
-            </Button>
-            {/* </Stack> */}
+      <Card.Body className="pl-1 pr-1">
+        <Row className="d-flex justify-content-between">
+          <Col onMouseDown={onCardMouseDown} onMouseUp={onCardMouseUp}>
+            {resolveInfo(figure)}
           </Col>
+          {figure.type !== 'twoPointedLine' && (
+            <Col lg={2} className="d-flex align-items-center">
+              <Icon.EyeFill
+                color={figure.transparent ? 'lightgray' : 'black'}
+                size="30px"
+                onClick={onCardClick}
+              />
+            </Col>
+          )}
         </Row>
       </Card.Body>
     </Card>

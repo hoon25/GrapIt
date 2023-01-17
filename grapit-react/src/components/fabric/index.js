@@ -43,7 +43,7 @@ function WhiteBoard(props) {
             drawInfo={props.drawInfo}
           />
         </div>
-        <div>
+        <div style={{ position: 'absolute', top: '-50px', right: '130px' }}>
           <ToolBar
             visible={props.showToolbar}
             enabled={props.enableToolbar}

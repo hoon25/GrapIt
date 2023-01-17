@@ -250,7 +250,7 @@ function RtcChat({ chat }) {
               <div
                 style={{
                   position: 'absolute',
-                  backgroundColor: '#FFDCDC',
+                  // backgroundColor: '#FFDCDC',
                   zIndex: 1000,
                   width: '300px',
                   height: '200px',
@@ -258,7 +258,7 @@ function RtcChat({ chat }) {
                   bottom: '0px',
                 }}
               >
-                {/*<Vidu user={user} chat={chat} />*/}
+                <Vidu user={user} chat={chat} />
               </div>
             </div>
           </Col>

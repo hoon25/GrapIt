@@ -39,7 +39,6 @@ function RtcChat({ chat }) {
     pointerEvents: isWhiteBoard.isSelected ? 'none' : 'auto',
     zIndex: 10,
   };
-  console.log(graphStyle);
 
   const whiteBoardStyle = {
     ...commonCanvasStyle,
@@ -247,7 +246,9 @@ function RtcChat({ chat }) {
                   right: '0px',
                   bottom: '0px',
                 }}
-              ></div>
+              >
+                {/*<Vidu user={user} chat={chat} />*/}
+              </div>
             </div>
           </Col>
 
@@ -270,7 +271,6 @@ function RtcChat({ chat }) {
           </Col>
         </Row>
       </Container>
-      {/* <Vidu user={user} chat={chat} /> */}
     </>
   );
 }

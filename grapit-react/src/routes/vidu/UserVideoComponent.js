@@ -14,12 +14,12 @@ export default class UserVideoComponent extends Component {
     console.log(this.props.streamManager);
     return (
       <>
-        <div>
-          <p>{this.getNicknameTag()}</p>
-        </div>
+        {/*<div>*/}
+        {/*  <p>{this.getNicknameTag()}</p>*/}
+        {/*</div>*/}
         <div>
           {this.props.streamManager !== undefined ? (
-            <div className="streamcomponent">
+            <div>
               <OpenViduVideoComponent
                 streamManager={this.props.streamManager}
               />

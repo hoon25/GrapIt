@@ -62,7 +62,14 @@ export function TwoDGraph({
 
   return (
     <div style={{ position: 'relative' }}>
-      <div style={{ position: 'absolute', display: 'flex' }}>
+      <div
+        style={{
+          position: 'absolute',
+          display: 'flex',
+          top: '20px',
+          left: '10px',
+        }}
+      >
         <div>
           <div
             className="button-3d"
@@ -75,7 +82,7 @@ export function TwoDGraph({
             <ZoomIn />
           </div>
           <div
-            className="button-3d"
+            className="button-3d mt-3"
             onClick={() => {
               sendObjectInfo('RATIO', ratio + 0.5);
               setRatio(ratio + 0.5);

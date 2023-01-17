@@ -6,7 +6,7 @@ export default function ThreeDimensionSideBar(props) {
   return (
     <Row>
       <Row style={{ height: '40vh', backgroundColor: '' }}>
-        <FigureInput />
+        <FigureInput sendObjectInfo={props.sendObjectInfo} />
       </Row>
       <Row
         style={{
@@ -14,7 +14,7 @@ export default function ThreeDimensionSideBar(props) {
           backgroundColor: '#eeeeee',
         }}
       >
-        <ThreeCardBox />
+        <ThreeCardBox sendObjectInfo={props.sendObjectInfo} />
       </Row>
     </Row>
   );

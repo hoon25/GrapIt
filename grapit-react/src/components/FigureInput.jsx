@@ -28,10 +28,10 @@ function FigureInput(props) {
           </Form.Control>
         </Form.Group>
       </Form>
-      <ResolveInputGroup figureType={figureType} />
-      {/* <button onClick={() => setFigureType('twoPointedLine')}>1</button>
-      <button onClick={() => setFigureType('sphere')}>2</button>
-      <button onClick={() => setFigureType('platonicSolid')}>3</button> */}
+      <ResolveInputGroup
+        figureType={figureType}
+        sendObjectInfo={props.sendObjectInfo}
+      />
     </div>
   );
 }
@@ -49,16 +49,16 @@ function ResolveOptionRow([type, selected], i) {
   );
 }
 
-function ResolveInputGroup({ figureType }) {
+function ResolveInputGroup({ figureType, sendObjectInfo }) {
   switch (figureType) {
     case 'twoPointedLine':
-      return <LineInputGroup />;
+      return <LineInputGroup sendObjectInfo={sendObjectInfo} />;
     case 'sphere':
-      return <SphereInputGroup />;
+      return <SphereInputGroup sendObjectInfo={sendObjectInfo} />;
     case 'platonicSolid':
-      return <PlatonicSolidInputGroup />;
+      return <PlatonicSolidInputGroup sendObjectInfo={sendObjectInfo} />;
     default:
-      return <LineInputGroup />;
+      return <LineInputGroup sendObjectInfo={sendObjectInfo} />;
   }
 }
 

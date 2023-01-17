@@ -2,7 +2,7 @@ import { Form } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import FormGroup from 'react-bootstrap/esm/FormGroup';
 import { setFigure } from '../../store/figureSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useInput } from '../../hooks';
 import { generateUUID } from 'three/src/math/MathUtils';
 
@@ -11,23 +11,29 @@ function LineInputGroup(props) {
   const [point2Props, resetPoint2] = useInput('');
   const [colorProps, resetColor] = useInput('#ffffff');
 
+  const figureList = useSelector(state => state.figure.figures);
   const dispatch = useDispatch();
 
   const onSubmit = e => {
     e.preventDefault();
 
-    dispatch(
-      setFigure.addFigure({
-        figureId: generateUUID(),
-        type: 'twoPointedLine',
-        color: parseInt('0x' + colorProps.value.slice(1)),
-        point1: point1Props.value.split(',').map(x => Number(x)),
-        point2: point2Props.value.split(',').map(x => Number(x)),
-      }),
-    );
+    const newFigure = {
+      figureId: generateUUID(),
+      type: 'twoPointedLine',
+      color: parseInt('0x' + colorProps.value.slice(1)),
+      point1: point1Props.value.split(',').map(x => Number(x)),
+      point2: point2Props.value.split(',').map(x => Number(x)),
+    };
+
+    dispatch(setFigure.addFigure(newFigure));
+
     resetPoint1();
     resetPoint2();
     resetColor();
+
+    const copy = [...figureList, newFigure];
+    //TODO 한개씩 추가로 나중에 바꾸기
+    props.sendObjectInfo('FIGURE', JSON.stringify(copy));
     // useMemo 를 사용해서 point1, point2 를 저장해두고
     // point1, point2 가 바뀔때만 계산하도록 하면 좋을듯
   };

@@ -1,34 +1,39 @@
 import { Button, Form, FormGroup } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { generateUUID } from 'three/src/math/MathUtils';
 import { setFigure } from '../../store/figureSlice';
 import { useInput } from '../../hooks';
 
-function PlatonicSolidInputGroup() {
+function PlatonicSolidInputGroup(props) {
   const [figureTypeProps, resetFigureType] = useInput('tetrahedron');
   const [positionProps, resetPosition] = useInput('');
   const [lengthProps, resetLength] = useInput('');
   const [colorProps, resetColor] = useInput('#000000');
 
+  const figureList = useSelector(state => state.figure.figures);
   const dispatch = useDispatch();
 
   const onSubmit = e => {
     e.preventDefault();
 
-    dispatch(
-      setFigure.addFigure({
-        figureId: generateUUID(),
-        type: figureTypeProps.value,
-        position: positionProps.value.split(',').map(x => Number(x)),
-        length: Number(lengthProps.value),
-        color: parseInt('0x' + colorProps.value.slice(1)),
-      }),
-    );
+    const newFigure = {
+      figureId: generateUUID(),
+      type: figureTypeProps.value,
+      position: positionProps.value.split(',').map(x => Number(x)),
+      length: Number(lengthProps.value),
+      color: parseInt('0x' + colorProps.value.slice(1)),
+    };
+
+    dispatch(setFigure.addFigure(newFigure));
 
     resetFigureType();
     resetPosition();
     resetLength();
     resetColor();
+
+    const copy = [...figureList, newFigure];
+    //TODO 한개씩 추가로 나중에 바꾸기
+    props.sendObjectInfo('FIGURE', JSON.stringify(copy));
   };
   return (
     <Form onSubmit={onSubmit}>

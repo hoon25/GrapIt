@@ -14,6 +14,7 @@ import CoordTypeSelector from '../components/CoordTypeSelector';
 import ThreeDimensionSideBar from '../components/ThreeDimensionSideBar';
 import TwoDimensionSideBar from '../components/2D/TwoDimensionSideBar';
 import TwoDfigure, { setTwoDFigure } from '../store/TwoDfigureSlice';
+import { setFigure } from '../store/figureSlice';
 
 var stompClient = null;
 
@@ -138,7 +139,14 @@ function RtcChat({ chat }) {
       } else if (newMessage.type === 'CAMERA') {
         setThreeCamera(JSON.parse(newMessage.message));
       } else if (newMessage.type === 'FIGURE') {
-        setFigureList(JSON.parse(newMessage.message));
+        const receivedFigureInfo = JSON.parse(newMessage.message);
+
+        if (receivedFigureInfo.length === 0) {
+          dispatch(setFigure.switchFigure([]));
+        }
+        if (newMessage.message !== JSON.stringify(towDFigureList)) {
+          dispatch(setFigure.switchFigure(receivedFigureInfo));
+        }
       }
     }
   }
@@ -276,7 +284,9 @@ function RtcChat({ chat }) {
                   sendObjectInfo={sendObjectInfo}
                 />
               ) : (
-                <ThreeDimensionSideBar />
+                <ThreeDimensionSideBar
+                  sendObjectInfo={sendObjectInfo}
+                />
               )}
             </Row>
           </Col>

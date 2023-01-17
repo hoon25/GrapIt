@@ -5,7 +5,7 @@ import { setFigure } from '../store/figureSlice';
 import { translate } from './translate';
 import * as Icon from 'react-bootstrap-icons';
 
-export default function ThreeCardBox() {
+export default function ThreeCardBox(props) {
   const figureStore = useSelector(state => state.figure.figures);
 
   const dispatch = useDispatch();
@@ -19,28 +19,79 @@ export default function ThreeCardBox() {
         overflowY: 'scroll',
       }}
     >
-      {figureStore.map(x => [x, dispatch]).map(makeCard)}
+      {figureStore
+        .map(x => [x, dispatch, props.sendObjectInfo, figureStore])
+        .map(makeCard)}
     </Stack>
   );
 }
 
-function makeCard([figure, dispatch], i) {
+function makeCard([figure, dispatch, sendObjectInfo, figureStore], i) {
   const headerColor = '#' + figure.color.toString(16);
 
-  const onCardClick = () => {
+  const toggleOpacity = () => {
     dispatch(setFigure.transparentFigure(figure.figureId));
+
+    // TODO 부채
+    const copy = [...figureStore];
+    const index = copy.findIndex(f => f.figureId === figure.figureId);
+
+    const newFigure = { ...copy[index] };
+    newFigure.transparent = !newFigure.transparent;
+
+    copy[index] = newFigure;
+
+    sendObjectInfo('FIGURE', JSON.stringify(copy));
   };
 
-  const onCardMouseDown = () => {
+  const emphasize = () => {
     dispatch(setFigure.emphasizeFigure(figure.figureId));
+
+    // TODO 부채
+    const copy = [...figureStore];
+    const index = copy.findIndex(f => f.figureId === figure.figureId);
+
+    const newFigure = { ...copy[index] };
+    if (newFigure.type === 'twoPointedLine') {
+      newFigure.thick = true;
+    } else {
+      newFigure.polish = true;
+    }
+
+    copy[index] = newFigure;
+
+    sendObjectInfo('FIGURE', JSON.stringify(copy));
   };
 
-  const onCardMouseUp = () => {
+  const deemphasize = () => {
     dispatch(setFigure.deemphasizeFigure(figure.figureId));
+
+    // TODO 부채
+    const copy = [...figureStore];
+    const index = copy.findIndex(f => f.figureId === figure.figureId);
+
+    const newFigure = { ...copy[index] };
+    if (newFigure.type === 'twoPointedLine') {
+      newFigure.thick = false;
+    } else {
+      newFigure.polish = false;
+    }
+
+    copy[index] = newFigure;
+
+    sendObjectInfo('FIGURE', JSON.stringify(copy));
   };
 
   const onDelBtnClick = () => {
     dispatch(setFigure.removeFigure(figure.figureId));
+
+    // TODO 부채
+    const copy = [...figureStore];
+    const index = copy.findIndex(f => f.figureId === figure.figureId);
+
+    copy.splice(index, 1);
+
+    sendObjectInfo('FIGURE', JSON.stringify(copy));
   };
 
   return (
@@ -63,7 +114,7 @@ function makeCard([figure, dispatch], i) {
       </Card.Header>
       <Card.Body className="pl-1 pr-1">
         <Row className="d-flex justify-content-between">
-          <Col onMouseDown={onCardMouseDown} onMouseUp={onCardMouseUp}>
+          <Col onMouseDown={emphasize} onMouseUp={deemphasize}>
             {resolveInfo(figure)}
           </Col>
           {figure.type !== 'twoPointedLine' && (
@@ -71,7 +122,7 @@ function makeCard([figure, dispatch], i) {
               <Icon.EyeFill
                 color={figure.transparent ? 'lightgray' : 'black'}
                 size="30px"
-                onClick={onCardClick}
+                onClick={toggleOpacity}
               />
             </Col>
           )}

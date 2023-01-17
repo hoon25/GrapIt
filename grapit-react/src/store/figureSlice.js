@@ -36,7 +36,10 @@ const figure = createSlice({
       } else {
         state.figures[index].polish = false
       }
-    }
+    },
+    switchFigure: (state, action) => {
+      state.figures = action.payload;
+    },
   },
 });
 

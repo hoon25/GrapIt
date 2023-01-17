@@ -3,7 +3,7 @@ export const nav = [{
         path: '/',
     },
     {
-        text: 'Canvas',
+        text: 'chatting',
 
         path: '/canvas',
     },
@@ -19,17 +19,8 @@ export const nav = [{
     },
     {
         text: '선생님찾기',
-
-        path: "/tutorfind",
+        path: '/survey',
     },
-    // {
-    //     text: 'Login',
-
-    //     path: '/login',
-    // },
-    // {
-    //     text: 'Logout',
-
     //     path: '/logout',
     // },
 ];

@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,18 @@ import javax.servlet.http.HttpSession;
 public class MemberController {
 
     private final MemberService memberService;
+
+    @GetMapping("/checksession")
+    public ResponseEntity<LoginResponseDTO> checkSession(HttpSession session) {
+        Member member = (Member) session.getAttribute("member");
+        if (member == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.ok().body(LoginResponseDTO.builder()
+                .email(member.getEmail())
+                .nickName(member.getNickName())
+                .build());
+    }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO request, HttpSession session) {
@@ -60,6 +73,5 @@ public class MemberController {
     static class JoinResponseDTO {
         private String name;
     }
-
 
 }

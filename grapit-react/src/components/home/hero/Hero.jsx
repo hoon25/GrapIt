@@ -46,7 +46,13 @@ import Typewriter from 'typewriter-effect';
 const Hero = () => {
   return (
     <div className="hero-container">
-      <video src="/videos/video-1.mp4" autoPlay loop muted />
+      <video
+        className="main-video"
+        src="/videos/video-1.mp4"
+        autoPlay
+        loop
+        muted
+      />
       <h1>
         <Typewriter
           options={{

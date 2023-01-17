@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-
-import classNames from 'class-names';
 
 import modes from './utils/mode';
+import './style.scss';
+
 import {
   getWhiteBoardData,
   loadWhiteBoardData,
@@ -20,68 +19,51 @@ import Board from './board';
 import ToolBar from './toolbar';
 
 import './style.scss';
+import { useSelector } from 'react-redux';
 function WhiteBoard(props) {
+  const isWhiteBoard = useSelector(state => state.isWhiteBoard);
+
+  const whiteBoardStyle = {
+    pointerEvents: isWhiteBoard.isSelected ? 'auto' : 'none',
+  };
   if (props.visible) {
     return (
-      <div className={classNames('fabric-whiteboard', props.className)}>
-        <Board
-          visible={props.showBoard}
-          enabled={props.enableBoard}
-          mode={props.mode}
-          width={props.width}
-          height={props.height}
-          fontSize={props.fontSize}
-          brushColor={props.brushColor}
-          brushThickness={props.brushThickness}
-          sendPaintInfo={props.sendPaintInfo}
-          drawInfo={props.drawInfo}
-        />
-
-        <ToolBar
-          visible={props.showToolbar}
-          enabled={props.enableToolbar}
-          buttonMode={props.buttonMode}
-          fontSize={props.fontSize}
-          brushColor={props.brushColor}
-          brushColors={props.brushColors}
-          brushThickness={props.brushThickness}
-          brushThicknessRange={props.brushThicknessRange}
-          setBrushColor={props.setBrushColor}
-          setBrushThickness={props.setBrushThickness}
-          setButtonMode={props.setButtonMode}
-        />
+      <div className="fabric-whiteboard">
+        <div style={whiteBoardStyle}>
+          <Board
+            visible={props.showBoard}
+            enabled={props.enableBoard}
+            mode={props.mode}
+            width={props.width}
+            height={props.height}
+            fontSize={props.fontSize}
+            brushColor={props.brushColor}
+            brushThickness={props.brushThickness}
+            sendPaintInfo={props.sendPaintInfo}
+            drawInfo={props.drawInfo}
+          />
+        </div>
+        <div style={{ position: 'absolute', top: '-50px', right: '130px' }}>
+          <ToolBar
+            visible={props.showToolbar}
+            enabled={props.enableToolbar}
+            buttonMode={props.buttonMode}
+            fontSize={props.fontSize}
+            brushColor={props.brushColor}
+            brushColors={props.brushColors}
+            brushThickness={props.brushThickness}
+            brushThicknessRange={props.brushThicknessRange}
+            setBrushColor={props.setBrushColor}
+            setBrushThickness={props.setBrushThickness}
+            setButtonMode={props.setButtonMode}
+          />
+        </div>
       </div>
     );
   } else {
     return <React.Component />;
   }
 }
-
-WhiteBoard.propTypes = {
-  visible: PropTypes.bool,
-  className: PropTypes.string,
-  width: PropTypes.string,
-  height: PropTypes.string,
-  showToolbar: PropTypes.bool,
-  enableToolbar: PropTypes.bool,
-  showBoard: PropTypes.bool,
-  enableBoard: PropTypes.bool,
-  mode: PropTypes.oneOf(modes),
-  fontSize: PropTypes.number,
-  brushColor: PropTypes.string,
-  brushColors: PropTypes.arrayOf(PropTypes.string),
-  brushThickness: PropTypes.number,
-  brushThicknessRange: PropTypes.arrayOf(PropTypes.number),
-  onModeClick: PropTypes.func,
-  onBrushColorChange: PropTypes.func,
-  onBrushThicknessChange: PropTypes.func,
-  onObjectAdded: PropTypes.func,
-  onObjectsModified: PropTypes.func,
-  onObjectsRemoved: PropTypes.func,
-  onSelectionCreated: PropTypes.func,
-  onSelectionUpdated: PropTypes.func,
-  onSelectionCleared: PropTypes.func,
-};
 
 WhiteBoard.defaultProps = {
   visible: true,

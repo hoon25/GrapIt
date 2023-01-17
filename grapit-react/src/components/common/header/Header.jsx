@@ -1,15 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './header.css';
 import { nav } from '../../data/Data';
 import { Link, useNavigate } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { setUser, resetUser } from '../../../store/userSlice';
 
 const Header = () => {
   const [navList, setNavList] = useState(false);
 
   let user = useSelector(state => state.user);
   let navigate = useNavigate();
+  let dispatch = useDispatch();
+
+  const [sessionValid, setSessionValid] = useState(false);
+
+  useEffect(() => {
+    axios.get('/api/checksession').then(res => {
+      console.log(res);
+      if (res.status === 200) {
+        setSessionValid(true);
+        dispatch(setUser(res.data));
+      } else {
+        setSessionValid(false);
+        dispatch(resetUser());
+      }
+    });
+  });
 
   return (
     <>

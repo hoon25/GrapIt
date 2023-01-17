@@ -1,13 +1,17 @@
 import { OrthographicCamera } from '@react-three/drei/core';
 import { OrbitControls } from '@react-three/drei/web';
 import { Canvas } from '@react-three/fiber';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Axis from './Axis';
 import { PointLights } from './PointLights';
 import { resolveFigures } from './resolveFigures';
-import { debounce } from 'lodash';
+import { debounce, throttle } from 'lodash';
 import { data } from '../data.js';
+import { setCamera } from '../store/cameraSlice';
+import { useDispatch } from 'react-redux';
+import * as _ from 'lodash';
+import { Button } from 'react-bootstrap';
 
 function ThreeDimensionCanvas(props) {
   const cameraRef = useRef();
@@ -25,6 +29,40 @@ function ThreeDimensionCanvas(props) {
     }
   }, 600);
 
+  // todo - redux 적용하기
+  useEffect(() => {
+    if (!_.isEmpty(props.threeCamera)) {
+      const { id, zoom, position, rotation } = props.threeCamera;
+
+      console.log('cameraRef.current.uuid', cameraRef?.current?.uuid);
+      console.log('id', id);
+      console.log('True', id === cameraRef?.current?.uuid);
+
+      if (cameraRef.current.uuid && cameraRef.current.uuid !== id) {
+        cameraRef.current.zoom = zoom;
+        cameraRef.current.position.set(...position);
+        cameraRef.current.rotation.set(...rotation);
+
+        cameraRef.current.updateProjectionMatrix();
+
+        adjustScale();
+      }
+    }
+  }, [props.threeCamera]);
+
+  useEffect(() => {}, [props.figureList]);
+
+  const updateCamera = debounce(() => {
+    const camera = {
+      id: cameraRef.current.uuid,
+      zoom: cameraRef.current.zoom,
+      position: [...cameraRef.current.position],
+      rotation: [...cameraRef.current.rotation].slice(0, 3),
+    };
+
+    props.sendObjectInfo('CAMERA', JSON.stringify(camera));
+  }, 500);
+
   return (
     <Canvas>
       <color attach="background" args={['#000000']} />
@@ -37,6 +75,7 @@ function ThreeDimensionCanvas(props) {
       <OrbitControls
         enableDamping={false}
         onChange={() => {
+          updateCamera();
           adjustScale();
         }}
       />

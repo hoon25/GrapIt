@@ -29,14 +29,7 @@ h1 {
 .menu-item,
 .menu-open-button {
   background: #0d6efd;
-  /*border-radius: 100%;*/
-  /*width: 40px;*/
-  /*height: 40px;*/
-  /*margin-top: 10px;*/
-  /*margin-left: -40px;*/
   position: absolute;
-  /*top: 20px;*/
-  /*color: white;*/
   text-align: center;
   line-height: 80px;
   transform: translate3d(0, 0, 0);
@@ -88,8 +81,8 @@ h1 {
 
 .menu {
   position: absolute;
-  top: 6vh;
-  left: 50px;
+  top: 6.5vh;
+  left: 3.5vw;
   width: 50px;
   height: 50px;
   box-sizing: border-box;
@@ -138,27 +131,27 @@ h1 {
 
 .menu-open:checked ~ .menu-item:nth-child(3) {
   transition-duration: 190ms;
-  transform: translate3d(0, 50px, 0);
+  transform: translate3d(0, 60px, 0);
 }
 .menu-open:checked ~ .menu-item:nth-child(4) {
   transition-duration: 290ms;
-  transform: translate3d(0, 120px, 0);
+  transform: translate3d(0, 130px, 0);
 }
 .menu-open:checked ~ .menu-item:nth-child(5) {
   transition-duration: 390ms;
-  transform: translate3d(0, 190px, 0);
+  transform: translate3d(0, 200px, 0);
 }
 .menu-open:checked ~ .menu-item:nth-child(6) {
   transition-duration: 490ms;
-  transform: translate3d(0, 260px, 0);
+  transform: translate3d(0, 270px, 0);
 }
 .menu-open:checked ~ .menu-item:nth-child(7) {
   transition-duration: 590ms;
-  transform: translate3d(0, 330px, 0);
+  transform: translate3d(0, 340px, 0);
 }
 .menu-open:checked ~ .menu-item:nth-child(8) {
   transition-duration: 690ms;
-  transform: translate3d(0, 400px, 0);
+  transform: translate3d(0, 410px, 0);
 }
 .menu-open:checked ~ .menu-item:nth-child(9) {
   transition-duration: 790ms;

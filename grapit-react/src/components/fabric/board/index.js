@@ -5,8 +5,11 @@ import * as drawer from './drawer';
 import uuid from 'node-uuid';
 
 import './style.scss';
+import { useDispatch } from 'react-redux';
+import { setDraw } from '../../../store/DrawSlice';
 
 function Board(props) {
+  const dispatch = useDispatch();
   const [canvasId, setCanvasId] = useState(
     `fabric-whiteboard-canvas-${uuid.v4()}`,
   );
@@ -87,6 +90,8 @@ function Board(props) {
     // fabricCanvas.current.on('object:removed', handleCanvasObjectsRemoved);
 
     fabricCanvas.current.zoom = window.zoom ? window.zoom : 1;
+
+    dispatch(setDraw.resetThick(resetCanvas));
   }, []);
 
   useEffect(() => {
@@ -755,6 +760,10 @@ function Board(props) {
           target: options.target.toJSON(['id']),
         }),
       );
+  }
+
+  function resetCanvas() {
+    fabricCanvas.current.remove(...fabricCanvas.current.getObjects());
   }
 }
 

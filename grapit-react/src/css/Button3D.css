@@ -1,23 +1,25 @@
 
+.button-3d svg{
+    display: block;
+    flex: 1;
+    padding: 0;
+    text-align: center;
+}
+
+
 .button-3d {
     display: flex;
     justify-content: center;
     align-items: center;
-    align-content: center;
     width: 50px;
     height: 50px;
+    text-align: center;
 
-
-    /*display:inline-block;*/
     color:#ecf0f1;
-    text-decoration:none;
     border-radius: 50%;
     border:solid 1px #0a58ca;
     background:#0d6efd;
-    text-align:center;
     font-size: 28px;
-    /*padding:16px 18px 14px;*/
-    margin: 12px;
 
     -webkit-transition: all 0.1s;
     -moz-transition: all 0.1s;

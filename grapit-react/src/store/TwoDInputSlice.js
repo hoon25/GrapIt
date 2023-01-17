@@ -7,7 +7,7 @@ const TwoDInput = createSlice({
     firstProps: '',
     secondProps: '',
     thirdProps: '',
-    color: 16777215,
+    color: '#ffffff',
   },
   reducers: {
     setFirstProps: (state, action) => {
@@ -20,6 +20,10 @@ const TwoDInput = createSlice({
 
     setThirdProps: (state, action) => {
       state.thirdProps = action.payload;
+    },
+
+    setColor: (state, action) => {
+      state.color = action.payload;
     },
 
     setProps: (state, action) => {

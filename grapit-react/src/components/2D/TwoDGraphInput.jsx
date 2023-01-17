@@ -6,7 +6,7 @@ import CircleInputGroup from './input/CircleInputGroup';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTwoDInput } from '../../store/TwoDInputSlice';
 
-export default function TwoDGraphInput() {
+export default function TwoDGraphInput({ sendObjectInfo }) {
   const TwoDInputType = useSelector(state => state.TwoDInput.type);
   const dispatch = useDispatch();
   const handleSelect = e => {
@@ -36,7 +36,10 @@ export default function TwoDGraphInput() {
           </Form.Control>
         </Form.Group>
       </Form>
-      <ResolveTwoDGraphInput TwoDInputType={TwoDInputType} />
+      <ResolveTwoDGraphInput
+        TwoDInputType={TwoDInputType}
+        sendObjectInfo={sendObjectInfo}
+      />
     </div>
   );
 }
@@ -49,15 +52,15 @@ function ResolveOptionRow([type, selected], i) {
   );
 }
 
-function ResolveTwoDGraphInput({ TwoDInputType }) {
+function ResolveTwoDGraphInput({ TwoDInputType, sendObjectInfo }) {
   switch (TwoDInputType) {
     case '일차함수':
-      return <LineInputGroup />;
+      return <LineInputGroup sendObjectInfo={sendObjectInfo} />;
     case '이차함수':
-      return <TwoDInputGroup />;
+      return <TwoDInputGroup sendObjectInfo={sendObjectInfo} />;
     case '원':
-      return <CircleInputGroup />;
+      return <CircleInputGroup sendObjectInfo={sendObjectInfo} />;
     default:
-      return <LineInputGroup />;
+      return <LineInputGroup sendObjectInfo={sendObjectInfo} />;
   }
 }

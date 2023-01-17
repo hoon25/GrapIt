@@ -237,6 +237,17 @@ function RtcChat({ chat }) {
                   ''
                 )}
               </div>
+              <div
+                style={{
+                  position: 'absolute',
+                  backgroundColor: '#FFDCDC',
+                  zIndex: 1000,
+                  width: '300px',
+                  height: '200px',
+                  right: '0px',
+                  bottom: '0px',
+                }}
+              ></div>
             </div>
           </Col>
 

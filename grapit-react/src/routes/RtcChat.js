@@ -60,6 +60,7 @@ function RtcChat({ chat }) {
   useEffect(() => {
     setChildWidth(mainParent.current.clientWidth);
     setChildHeight(mainParent.current.clientHeight);
+    sockjs_conn();
     setIsLoaded(true);
     // canvasParent.current.appendChild(canvas);
   }, []);
@@ -87,18 +88,23 @@ function RtcChat({ chat }) {
   // 동기화 소켓 통신
   const Stomp = require('stompjs/lib/stomp.js').Stomp;
 
-  useEffect(() => {
-    const sock = new SockJs('/sock/ws-stomp');
-    console.log('☠️');
-    stompClient = Stomp.over(sock);
-    stompClient.debug = null;
-    stompClient.connect({}, () => {
-      stompClient.subscribe(
-        '/sock/sub/chat/room/' + chat.roomId,
-        rerenderGraph,
-      );
+  const sockjs_conn = function () {
+    // socket 접속로직
+    var socket = new SockJs('/sock/ws-stomp');
+    // stomp 연결로직
+    stompClient = Stomp.over(socket);
+    stompClient.connect({ reconnect_delay: 5000 }, frame => {
+      if (stompClient.connected) {
+        stompClient.subscribe(
+          '/sock/sub/chat/room/' + chat.roomId,
+          rerenderGraph,
+        );
+        console.log('stompClient connect success');
+      } else {
+        console.log('Failed to connect, retrying...');
+      }
     });
-  }, []);
+  };
 
   function sendObjectInfo(objectType, object) {
     if (stompClient) {
@@ -284,9 +290,7 @@ function RtcChat({ chat }) {
                   sendObjectInfo={sendObjectInfo}
                 />
               ) : (
-                <ThreeDimensionSideBar
-                  sendObjectInfo={sendObjectInfo}
-                />
+                <ThreeDimensionSideBar sendObjectInfo={sendObjectInfo} />
               )}
             </Row>
           </Col>

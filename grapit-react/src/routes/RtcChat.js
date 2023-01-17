@@ -46,6 +46,9 @@ function RtcChat({ chat }) {
 
   const [coordType, setCoordType] = useState('2D');
 
+  const [threeCamera, setThreeCamera] = useState({})
+  const [figureList, setFigureList] = useState([]);
+
   const dispatch = useDispatch();
   const isWhiteBoard = useSelector(state => state.isWhiteBoard);
 
@@ -60,7 +63,7 @@ function RtcChat({ chat }) {
     pointerEvents: isWhiteBoard.isSelected ? 'none' : 'auto',
     zIndex: 10,
   };
-  console.log(graphStyle);
+  // console.log(graphStyle);
 
   const whiteBoardStyle = {
     ...commonCanvasStyle,
@@ -116,10 +119,6 @@ function RtcChat({ chat }) {
     });
   }, []);
 
-  // const camera = useSelector(state => state.camera.camera);
-  // console.log(camera.camera)
-  // console.log('!')
-
   function sendObjectInfo(objectType, object) {
     if (stompClient) {
       stompClient.debug = null;
@@ -156,6 +155,10 @@ function RtcChat({ chat }) {
         if (newMessage.message !== JSON.stringify(graphList)) {
           setGraphList(receivedGraphInfo);
         }
+      } else if (newMessage.type === 'CAMERA') {
+        setThreeCamera(JSON.parse(newMessage.message))
+      } else if (newMessage.type === 'FIGURE') {
+        setFigureList(JSON.parse(newMessage.message))
       }
     }
   }
@@ -244,8 +247,14 @@ function RtcChat({ chat }) {
                   )}
                 </div> :
                 <div style={graphStyle}>
-                  <ThreeDimensionCanvas />
-                  <DataPusher />
+                  <ThreeDimensionCanvas
+                    sendObjectInfo={sendObjectInfo}
+                    threeCamera={threeCamera}
+                    figureList={figureList}
+                    setThreeCamera={setThreeCamera}
+                    setFigureList={setFigureList}
+                  />
+                  {/* <DataPusher /> */}
                 </div>}
 
               <div style={whiteBoardStyle}>

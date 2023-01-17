@@ -21,6 +21,6 @@ public class ChatDTO {
     }
 
     public enum MessageType {
-        ENTER, LEAVE, TALK, GRAPH, PAINT, RATIO
+        ENTER, LEAVE, TALK, GRAPH, PAINT, RATIO, CAMERA, FIGURE
     }
 }

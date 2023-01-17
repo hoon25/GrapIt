@@ -6,10 +6,13 @@ import { generateUUID } from 'three/src/math/MathUtils';
 import { useInput } from '../../../hooks';
 import { setTwoDFigure } from '../../../store/TwoDfigureSlice';
 import { MathComponent } from 'mathjax-react';
+import { setTwoDInput } from '../../../store/TwoDInputSlice';
 
 export default function LineInputGroup(props) {
-  const [firstProps, resetFirstProps] = useInput('');
-  const [secondProps, resetSecondProps] = useInput('');
+  const TwoDInput = useSelector(state => state.TwoDInput);
+
+  // const [firstProps, resetFirstProps] = useInput('');
+  // const [secondProps, resetSecondProps] = useInput('');
   const [colorProps, resetColor] = useInput('#ffffff');
 
   const dispatch = useDispatch();
@@ -20,25 +23,39 @@ export default function LineInputGroup(props) {
       setTwoDFigure.addFigure({
         figureId: generateUUID(),
         type: 'Line',
-        color: parseInt('0x' + colorProps.value.slice(1)),
-        firstProps: Number(firstProps.value),
-        secondProps: Number(secondProps.value),
+        color: TwoDInput.color,
+        firstProps: Number(TwoDInput.firstProps),
+        secondProps: Number(TwoDInput.secondProps),
       }),
     );
-    resetFirstProps();
-    resetSecondProps();
-    resetColor();
+    // resetFirstProps();
+    // resetSecondProps();
+    // resetColor();
+    dispatch(
+      setTwoDInput.resetProps({
+        firstProps: '',
+        secondProps: '',
+        color: '#ffffff',
+      }),
+    );
   };
 
   return (
     <Form onSubmit={onSubmit}>
-      <div className="flex justify-content-between p-0">
+      <div className="flex justify-content-between">
         <div className="col-1">
           <MathComponent tex="y = " />
         </div>
         <div className="col-3">
           <FormGroup>
-            <Form.Control {...firstProps} type="number" placeholder="" />
+            <Form.Control
+              onChange={event => {
+                dispatch(setTwoDInput.setFirstProps(event.target.value));
+              }}
+              value={TwoDInput.firstProps}
+              type="text"
+              placeholder=""
+            />
           </FormGroup>
         </div>
         <div className="col-1">
@@ -46,7 +63,14 @@ export default function LineInputGroup(props) {
         </div>
         <div className="col-3">
           <FormGroup>
-            <Form.Control {...secondProps} type="number" placeholder="" />
+            <Form.Control
+              onChange={event => {
+                dispatch(setTwoDInput.setSecondProps(event.target.value));
+              }}
+              value={TwoDInput.secondProps}
+              type="text"
+              placeholder=""
+            />
           </FormGroup>
         </div>
       </div>

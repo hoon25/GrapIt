@@ -4,9 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setTwoDFigure } from '../../store/TwoDfigureSlice';
 import { MathComponent } from 'mathjax-react';
 import { Trash3Fill } from 'react-bootstrap-icons';
+import { setTwoDInput } from '../../store/TwoDInputSlice';
 
 export default function TwoCardBox() {
   const TwoDfigure = useSelector(state => state.TwoDfigure.TwoDfigures);
+  const TwoDInput = useSelector(state => state.TwoDInput);
 
   const dispatch = useDispatch();
 
@@ -29,6 +31,7 @@ function makeCard([TwoDfigure, dispatch], i) {
 
   const onCardMouseDown = () => {
     dispatch(setTwoDFigure.emphasizeFigure(TwoDfigure.figureId));
+    dispatch(setTwoDInput.setProps(TwoDfigure));
   };
 
   const onCardMouseUp = () => {

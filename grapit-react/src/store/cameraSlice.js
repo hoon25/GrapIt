@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-console.log('cameraSlice');
-
 const camera = createSlice({
   name: 'camera',
   initialState: {
@@ -10,7 +8,7 @@ const camera = createSlice({
   reducers: {
     updateCamera(state, action) {
       state.camera = action.payload;
-      console.log(state.camera)
+      // console.log(state.camera)
     },
     // addGraph(state, action) {
     //   state.graphList.push(action.payload);

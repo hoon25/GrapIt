@@ -38,12 +38,14 @@ function ThreeDimensionCanvas(props) {
       console.log('id', id);
       console.log('True', id === cameraRef?.current?.uuid);
 
-      if (cameraRef.current.uuid !== id) {
+      if (cameraRef.current.uuid && cameraRef.current.uuid !== id) {
         cameraRef.current.zoom = zoom;
         cameraRef.current.position.set(...position);
         cameraRef.current.rotation.set(...rotation);
 
         cameraRef.current.updateProjectionMatrix();
+
+        adjustScale();
       }
     }
   }, [props.threeCamera]);
@@ -59,7 +61,7 @@ function ThreeDimensionCanvas(props) {
     };
 
     props.sendObjectInfo('CAMERA', JSON.stringify(camera));
-  }, 1000);
+  }, 500);
 
   return (
     <Canvas>

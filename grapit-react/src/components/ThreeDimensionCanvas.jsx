@@ -34,9 +34,9 @@ function ThreeDimensionCanvas(props) {
     if (!_.isEmpty(props.threeCamera)) {
       const { id, zoom, position, rotation } = props.threeCamera;
 
-      console.log('cameraRef.current.uuid', cameraRef.current.uuid);
+      console.log('cameraRef.current.uuid', cameraRef?.current?.uuid);
       console.log('id', id);
-      console.log('True', id === cameraRef.current.uuid);
+      console.log('True', id === cameraRef?.current?.uuid);
 
       if (cameraRef.current.uuid !== id) {
         cameraRef.current.zoom = zoom;

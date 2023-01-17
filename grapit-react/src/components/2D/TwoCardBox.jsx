@@ -6,7 +6,7 @@ import { MathComponent } from 'mathjax-react';
 import { Trash3Fill } from 'react-bootstrap-icons';
 import { setTwoDInput } from '../../store/TwoDInputSlice';
 
-export default function TwoCardBox() {
+export default function TwoCardBox({ sendObjectInfo }) {
   const TwoDfigure = useSelector(state => state.TwoDfigure.TwoDfigures);
   const TwoDInput = useSelector(state => state.TwoDInput);
 
@@ -21,16 +21,19 @@ export default function TwoCardBox() {
         overflowY: 'scroll',
       }}
     >
-      {TwoDfigure.map(x => [x, dispatch]).map(makeCard)}
+      {TwoDfigure.map(x => [x, dispatch, sendObjectInfo]).map(makeCard)}
     </Stack>
   );
 }
 
-function makeCard([TwoDfigure, dispatch], i) {
-  const headerColor = '#' + TwoDfigure.color.toString(16);
+function makeCard([TwoDfigure, dispatch, sendObjectInfo], i) {
+  const headerColor = TwoDfigure.color;
 
   const onCardMouseDown = () => {
     dispatch(setTwoDFigure.emphasizeFigure(TwoDfigure.figureId));
+  };
+
+  const onCardDoubleClick = () => {
     dispatch(setTwoDInput.setProps(TwoDfigure));
   };
 
@@ -40,6 +43,7 @@ function makeCard([TwoDfigure, dispatch], i) {
 
   const onDelBtnClick = () => {
     dispatch(setTwoDFigure.removeFigure(TwoDfigure.figureId));
+    sendObjectInfo('GRAPH', TwoDfigure);
   };
 
   const onCardMouseLeave = () => {
@@ -61,6 +65,7 @@ function makeCard([TwoDfigure, dispatch], i) {
         onMouseLeave={onCardMouseLeave}
         onMouseDown={onCardMouseDown}
         onMouseUp={onCardMouseUp}
+        onDoubleClick={onCardDoubleClick}
       >
         <Row className="flex justify-content-between align-content-center">
           <Col lg={8}>{resolveInfo(TwoDfigure)}</Col>
@@ -86,14 +91,10 @@ function resolveInfo(TwoDfigure) {
 }
 
 function contrastColor(colorText) {
-  const color = parseInt(colorText.substring(1), 16); // convert rrggbb to decimal
-
-  const r = (color >> 16) & 0xff;
-  const g = (color >> 8) & 0xff;
-  const b = color & 0xff;
-
+  const r = parseInt(colorText.substr(1, 2), 16);
+  const g = parseInt(colorText.substr(3, 2), 16);
+  const b = parseInt(colorText.substr(5, 2), 16);
   const yiq = (r * 299 + g * 587 + b * 114) / 1000;
-
   return yiq >= 128 ? 'black' : 'white';
 }
 

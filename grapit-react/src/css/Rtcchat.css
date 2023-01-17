@@ -2,36 +2,12 @@ input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
 }
-
-.div-shadow {
-  box-shadow: rgb(0 0 0 / 16%) 2px 2px 30px;
-  border-radius: 8px;
-  background-color: white;
-}
-
 .questioncontent {
   opacity: 1;
   width: 100%;
   height: 100%;
 }
 
-
-.tab_bar{
-    position: absolute;
-    top: 70px;
-    z-index: -1;
-}
-
-.tab-content,
-.tab-pane {
-  height: 100%;
-  z-index: 1;
-}
-
-.tab-parent {
-  position: relative;
-  height: 100%;
-}
 
 /*.MafsView{*/
 /*    background: white;*/

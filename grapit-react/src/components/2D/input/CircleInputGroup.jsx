@@ -6,31 +6,36 @@ import { generateUUID } from 'three/src/math/MathUtils';
 import { useInput } from '../../../hooks';
 import { setTwoDFigure } from '../../../store/TwoDfigureSlice';
 import { MathComponent } from 'mathjax-react';
+import { setTwoDInput } from '../../../store/TwoDInputSlice';
 
-export default function QuadraticInputGroup(props) {
-  const [firstProps, resetFirstProps] = useInput('');
-  const [secondProps, resetSecondProps] = useInput('');
-  const [thirdProps, resetThirdProps] = useInput('');
-  const [colorProps, resetColor] = useInput('#ffffff');
-
+export default function CircleInputGroup({ sendObjectInfo }) {
+  const TwoDInput = useSelector(state => state.TwoDInput);
+  const TwoDFigureList = useSelector(state => state.TwoDfigure.TwoDfigures);
   const dispatch = useDispatch();
   const onSubmit = e => {
     e.preventDefault();
 
+    const newCircle = {
+      figureId: generateUUID(),
+      type: 'Circle',
+      color: TwoDInput.color,
+      firstProps: Number(TwoDInput.firstProps),
+      secondProps: Number(TwoDInput.secondProps),
+      thirdProps: Number(TwoDInput.thirdProps),
+    };
+
+    dispatch(setTwoDFigure.addFigure(newCircle));
     dispatch(
-      setTwoDFigure.addFigure({
-        figureId: generateUUID(),
-        type: 'Circle',
-        color: parseInt('0x' + colorProps.value.slice(1)),
-        firstProps: Number(firstProps.value),
-        secondProps: Number(secondProps.value),
-        thirdProps: Number(thirdProps.value),
+      setTwoDInput.resetProps({
+        firstProps: '',
+        secondProps: '',
+        color: '#ffffff',
       }),
     );
-    resetFirstProps();
-    resetSecondProps();
-    resetThirdProps();
-    resetColor();
+
+    const copy = [...TwoDFigureList, newCircle];
+    //TODO 한개씩 추가로 나중에 바꾸기
+    sendObjectInfo('GRAPH', JSON.stringify(copy));
   };
 
   return (
@@ -41,7 +46,14 @@ export default function QuadraticInputGroup(props) {
         </div>
         <div className="col-2">
           <FormGroup>
-            <Form.Control {...firstProps} type="number" placeholder="" />
+            <Form.Control
+              onChange={event => {
+                dispatch(setTwoDInput.setFirstProps(event.target.value));
+              }}
+              value={TwoDInput.firstProps}
+              type="number"
+              placeholder=""
+            />
           </FormGroup>
         </div>
         <div className="col-3">
@@ -49,7 +61,14 @@ export default function QuadraticInputGroup(props) {
         </div>
         <div className="col-2">
           <FormGroup>
-            <Form.Control {...secondProps} type="number" placeholder="" />
+            <Form.Control
+              onChange={event => {
+                dispatch(setTwoDInput.setSecondProps(event.target.value));
+              }}
+              value={TwoDInput.secondProps}
+              type="number"
+              placeholder=""
+            />
           </FormGroup>
         </div>
         <div className="col-1">
@@ -57,7 +76,14 @@ export default function QuadraticInputGroup(props) {
         </div>
         <div className="col-2">
           <FormGroup>
-            <Form.Control {...thirdProps} type="number" placeholder="" />
+            <Form.Control
+              onChange={event => {
+                dispatch(setTwoDInput.setThirdProps(event.target.value));
+              }}
+              value={TwoDInput.thirdProps}
+              type="number"
+              placeholder=""
+            />
           </FormGroup>
         </div>
         <div className="col-1">
@@ -66,7 +92,13 @@ export default function QuadraticInputGroup(props) {
       </div>
       <FormGroup>
         <Form.Label>색상</Form.Label>
-        <Form.Control {...colorProps} type="color" />
+        <Form.Control
+          onChange={event => {
+            dispatch(setTwoDInput.setColor(event.target.value));
+          }}
+          value={TwoDInput.color}
+          type="color"
+        />
       </FormGroup>
       <Button variant="primary" type="submit">
         생성

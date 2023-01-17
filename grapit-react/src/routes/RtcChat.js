@@ -13,6 +13,7 @@ import ThreeDimensionCanvas from '../components/ThreeDimensionCanvas';
 import CoordTypeSelector from '../components/CoordTypeSelector';
 import ThreeDimensionSideBar from '../components/ThreeDimensionSideBar';
 import TwoDimensionSideBar from '../components/2D/TwoDimensionSideBar';
+import TwoDfigure, { setTwoDFigure } from '../store/TwoDfigureSlice';
 
 var stompClient = null;
 
@@ -27,6 +28,7 @@ function RtcChat({ chat }) {
 
   const dispatch = useDispatch();
   const isWhiteBoard = useSelector(state => state.isWhiteBoard);
+  const towDFigureList = useSelector(state => state.TwoDfigure.TwoDfigures);
 
   const commonCanvasStyle = {
     height: '100%',
@@ -129,10 +131,10 @@ function RtcChat({ chat }) {
         const receivedGraphInfo = JSON.parse(newMessage.message);
 
         if (receivedGraphInfo.length === 0) {
-          setGraphList([]);
+          dispatch(setTwoDFigure.switchFigure([]));
         }
-        if (newMessage.message !== JSON.stringify(graphList)) {
-          setGraphList(receivedGraphInfo);
+        if (newMessage.message !== JSON.stringify(towDFigureList)) {
+          dispatch(setTwoDFigure.switchFigure(receivedGraphInfo));
         }
       }
     }
@@ -239,7 +241,7 @@ function RtcChat({ chat }) {
               <div
                 style={{
                   position: 'absolute',
-                  backgroundColor: '#FFDCDC',
+                  // backgroundColor: '#FFDCDC',
                   zIndex: 1000,
                   width: '300px',
                   height: '200px',
@@ -247,7 +249,7 @@ function RtcChat({ chat }) {
                   bottom: '0px',
                 }}
               >
-                {/*<Vidu user={user} chat={chat} />*/}
+                <Vidu user={user} chat={chat} />
               </div>
             </div>
           </Col>

@@ -19,6 +19,18 @@ const TwoDfigure = createSlice({
       }
     },
 
+    // setTwoDFigureToEdit: (state, action) => {
+    //   state.TwoDfigures = state.TwoDfigures.map(figure => {
+    //     if (figure.id === action.payload.id) {
+    //       return {
+    //         ...figure,
+    //         isEdit: true,
+    //       };
+    //     }
+    //     return figure;
+    //   });
+    // },
+
     removeFigure: (state, action) => {
       const index = state.TwoDfigures.findIndex(
         TwoDfigure => TwoDfigure.figureId === action.payload,
@@ -43,6 +55,10 @@ const TwoDfigure = createSlice({
         TwoDfigure => TwoDfigure.figureId === action.payload,
       );
       state.TwoDfigures[index].thick = 3;
+    },
+
+    switchFigure: (state, action) => {
+      state.TwoDfigures = action.payload;
     },
   },
 });

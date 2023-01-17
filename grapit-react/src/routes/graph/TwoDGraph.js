@@ -146,8 +146,8 @@ export function TwoDGraph({
 }
 
 function resolveGraph(graph, index) {
-  const { firstProps, secondProps, thirdProps, type, thick } = graph;
-  const color = '#' + graph.color.toString(16);
+  const { color, firstProps, secondProps, thirdProps, type, thick } = graph;
+
   if (type === 'Line') {
     return (
       <Line.PointAngle

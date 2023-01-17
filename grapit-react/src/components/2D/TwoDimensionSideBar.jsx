@@ -2,19 +2,22 @@ import { Row } from 'react-bootstrap';
 import TwoDGraphInput from './TwoDGraphInput';
 import { EquationHandBoard } from '../../routes/equationBoard/EquationHandBoard';
 import TwoCardBox from './TwoCardBox';
+import CircleColorPicker from '../CircleColorPicker';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
-export default function TwoDimensionSideBar(
+export default function TwoDimensionSideBar({
   viewPointX,
   viewPointY,
   sendObjectInfo,
-) {
+}) {
   return (
     <Row>
       <Row style={{ height: '40vh', backgroundColor: '' }}>
-        <TwoDGraphInput />
-
+        <TwoDGraphInput sendObjectInfo={sendObjectInfo} />
+        {/*<CircleColorPicker />*/}
         <EquationHandBoard
-          graphColor={16777215}
+          graphColor={'#ffffff'}
           viewPointX={viewPointX}
           viewPointY={viewPointY}
           sendObjectInfo={sendObjectInfo}
@@ -26,7 +29,7 @@ export default function TwoDimensionSideBar(
           backgroundColor: '#eeeeee',
         }}
       >
-        <TwoCardBox />
+        <TwoCardBox sendObjectInfo={sendObjectInfo} />
       </Row>
     </Row>
   );

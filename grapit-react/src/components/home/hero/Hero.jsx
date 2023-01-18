@@ -48,7 +48,7 @@ const Hero = () => {
     <div className="hero-container">
       <video
         className="main-video"
-        src="/videos/video-1.mp4"
+        src="/videos/pyta.mp4"
         autoPlay
         loop
         muted

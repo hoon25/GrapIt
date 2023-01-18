@@ -12,7 +12,7 @@ const defaultStyle = {
   border: '1px solid gray',
   width: '300px',
   height: '150px',
-  display: 'inline-block',
+  // display: 'inline-block',
 };
 
 export function EquationHandBoard({

@@ -36,50 +36,41 @@ function Board(props) {
   const load = useSelector(state => state.Load);
   useEffect(() => {
     if (load.first) {
-      fabric.Image.fromURL(
-        'http://localhost:3000/images/problem/problem.png',
-        function (img) {
-          const oImg = img
-            .set({
-              left: 0,
-              top: 680,
-              angle: 0,
-            })
-            .scale(0.6);
-          fabricCanvas.current.add(oImg).renderAll();
-        },
-      );
+      fabric.Image.fromURL('/images/problem/problem.png', function (img) {
+        const oImg = img
+          .set({
+            left: 0,
+            top: 630,
+            angle: 0,
+          })
+          .scale(0.6);
+        fabricCanvas.current.add(oImg).renderAll();
+      });
 
       dispatch(setLoad.setFirst());
     } else if (load.second) {
-      fabric.Image.fromURL(
-        'http://localhost:3000/images/problem/problem.png',
-        function (img) {
-          const oImg = img
-            .set({
-              left: 0,
-              top: 680,
-              angle: 0,
-            })
-            .scale(0.6);
-          fabricCanvas.current.add(oImg).renderAll();
-        },
-      );
+      fabric.Image.fromURL('/images/problem/problem.png', function (img) {
+        const oImg = img
+          .set({
+            left: 0,
+            top: 630,
+            angle: 0,
+          })
+          .scale(0.6);
+        fabricCanvas.current.add(oImg).renderAll();
+      });
       dispatch(setLoad.setSecond());
     } else if (load.third) {
-      fabric.Image.fromURL(
-        'http://localhost:3000/images/problem/problem.png',
-        function (img) {
-          const oImg = img
-            .set({
-              left: 0,
-              top: 680,
-              angle: 0,
-            })
-            .scale(0.6);
-          fabricCanvas.current.add(oImg).renderAll();
-        },
-      );
+      fabric.Image.fromURL('/images/problem/problem.png', function (img) {
+        const oImg = img
+          .set({
+            left: 0,
+            top: 630,
+            angle: 0,
+          })
+          .scale(0.6);
+        fabricCanvas.current.add(oImg).renderAll();
+      });
       dispatch(setLoad.setThird());
     }
   }, [load]);

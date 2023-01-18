@@ -11,13 +11,13 @@ export default function ProblemCardBox({ sendObjectInfo }) {
 
   const problems = [
     {
-      title: '으어어',
+      title: '정글중 1학년 중간고사',
     },
     {
-      title: '고쳐주세요',
+      title: '정글중 1학년 기말고사',
     },
     {
-      title: '고쳐줘',
+      title: '정글중 2학년',
     },
   ];
 

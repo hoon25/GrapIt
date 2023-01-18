@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   ArrowClockwise,
   ArrowsMove,
+  ArrowUpRight,
   Brush,
   BrushFill,
   CardText,
@@ -41,7 +42,7 @@ function Toolbar(props) {
     select: <ArrowsMove />,
     pen: <BrushFill />,
     line: <DashLg />,
-    text: <CardText />,
+    arrow: <ArrowUpRight />,
     rectangle: <Square />,
     eraser: <EraserFill />,
   };

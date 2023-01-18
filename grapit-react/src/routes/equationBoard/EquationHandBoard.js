@@ -74,13 +74,20 @@ export function EquationHandBoard({
 
         const onCheck = () => {
           if (res.data.latex_styled !== undefined) {
-            window.confirm('입력한 수식이 맞나요? \n' + res.data.latex_styled);
-            let latex = res.data.latex_styled.replace(/\s+/g, '');
-            setLatexResult(latex);
-            getGraphArgFromLatex(latex);
-          } else {
-            alert('다시 입력해주세요');
-            clearCanvas();
+            if (window.confirm('입력한 수식이 맞나요? \n' + res.data.latex_styled)) {
+              window.confirm(
+                  '입력한 수식이 맞나요? \n' + res.data.latex_styled,
+              );
+              let latex = res.data.latex_styled.replace(/\s+/g, '');
+              setLatexResult(latex);
+              getGraphArgFromLatex(latex);
+            } else {
+              alert('다시 입력해주세요');
+              clearCanvas();
+            }
+          }else{
+          alert('인식하지 못했습니다. 다시 입력해주세요');
+          clearCanvas();
           }
         };
         onCheck();

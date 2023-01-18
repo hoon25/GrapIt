@@ -71,9 +71,19 @@ export function EquationHandBoard({
       .then(res => {
         console.log(res);
         console.log(res.data.latex_styled);
-        // let latex = res.data.latex_styledstring.replace(/\s+/g, "");;
-        setLatexResult(res.data.latex_styled.replace(/\s+/g, ''));
-        getGraphArgFromLatex(res.data.latex_styled.replace(/\s+/g, ''));
+
+        const onCheck = () => {
+          if (res.data.latex_styled !== undefined) {
+            window.confirm('입력한 수식이 맞나요? \n' + res.data.latex_styled);
+            let latex = res.data.latex_styled.replace(/\s+/g, '');
+            setLatexResult(latex);
+            getGraphArgFromLatex(latex);
+          } else {
+            alert('다시 입력해주세요');
+            clearCanvas();
+          }
+        };
+        onCheck();
       });
   };
 
@@ -102,6 +112,7 @@ export function EquationHandBoard({
 
   const first_order_equation_parsing = latex => {
     let result = latex.match(/y=([+-]?\d+)?(\d+)?(x)?([+-]?\d+)?/);
+    console.log(result);
     let tmp_a1 = result[1] ? result[1] : 1;
     let tmp_a2 = result[2] ? result[2] : 1;
     let a = tmp_a1 ? tmp_a1 : tmp_a2;
@@ -272,7 +283,7 @@ export function EquationHandBoard({
         <Button size="sm" onClick={submitCanvas}>
           생성
         </Button>
-        {latexResult && <div>{latexResult}</div>}
+        {/*{latexResult && <div>{latexResult}</div>}*/}
       </div>
     </>
   );

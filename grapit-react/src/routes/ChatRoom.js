@@ -53,7 +53,7 @@ function ChatRoom({ chat, i }) {
       <div className="article">
         <tr>
           <td></td>{' '}
-          <Card style={{ width: '18rem' }}>
+          <Card style={{ width: '18rem' }} data-aos="fade-up">
             <div className="card__container">
               <td>
                 <th>#{i}</th>

@@ -181,27 +181,23 @@ function RtcChat({ chat }) {
         style={{ height: '100%' }}
         // ref={tempRef}
       >
-        {userOther.map(
-          // todo 함수 분리
-          ({ connectionId, presence }) =>
-            presence.cursor ? (
-              <Cursor
-                key={connectionId}
-                name={presence.userInfo.name}
-                color={presence.userInfo.color}
-                x={
-                  presence.cursor.x *
-                  (window.innerWidth / presence.screenInfo.width)
-                }
-                y={
-                  presence.cursor.y *
-                  (window.innerHeight / presence.screenInfo.height)
-                }
-              />
-            ) : null,
-        )}
         <Row style={{ height: '100%' }}>
-          <Col xs={9} className="">
+          <Col
+            xs={9}
+            onPointerMove={e => {
+              console.log('hi');
+              updateMyPresence({
+                cursor: { x: e.clientX, y: e.clientY },
+                screenInfo: {
+                  width: containerInfo[0],
+                  height: containerInfo[1],
+                },
+              });
+            }}
+            onPointerLeave={() =>
+              updateMyPresence({ cursor: null, screenInfo: null })
+            }
+          >
             <div
               ref={mainParent}
               style={{ height: '100%', width: '100%', position: 'relative' }}
@@ -250,21 +246,29 @@ function RtcChat({ chat }) {
                     childHeight={childHeight}
                     sendPaintInfo={sendObjectInfo}
                     drawInfo={drawInfo}
-                    onPointerMove={e => {
-                      updateMyPresence({
-                        cursor: { x: e.clientX, y: e.clientY },
-                        screenInfo: {
-                          width: containerInfo[0],
-                          height: containerInfo[1],
-                        },
-                      });
-                    }}
-                    onPointerLeave={() =>
-                      updateMyPresence({ cursor: null, screenInfo: null })
-                    }
                   />
                 ) : (
                   ''
+                )}
+
+                {userOther.map(
+                  // todo 함수 분리
+                  ({ connectionId, presence }) =>
+                    presence.cursor ? (
+                      <Cursor
+                        key={connectionId}
+                        name={presence.userInfo.name}
+                        color={presence.userInfo.color}
+                        x={
+                          presence.cursor.x *
+                          (window.innerWidth / presence.screenInfo.width)
+                        }
+                        y={
+                          presence.cursor.y *
+                          (window.innerHeight / presence.screenInfo.height)
+                        }
+                      />
+                    ) : null,
                 )}
               </div>
               <div

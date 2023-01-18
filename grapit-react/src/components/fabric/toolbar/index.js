@@ -84,7 +84,7 @@ function Toolbar(props) {
           value={image}
           type="file"
           accept="image/*"
-          hidden="true"
+          hidden={true}
           onChange={event => {
             const file = event.target.files[0];
             const reader = new FileReader();

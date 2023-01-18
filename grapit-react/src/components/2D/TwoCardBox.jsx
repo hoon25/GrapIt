@@ -135,16 +135,23 @@ function makeInfo(TwoDfigure) {
 
 function makeFormulaFormat(TwoDfigure) {
   const { firstProps, secondProps, thirdProps } = TwoDfigure;
+  let formula;
   switch (TwoDfigure.type) {
     case 'Line':
-      return LineFormulaFormat(firstProps, secondProps);
+      formula = LineFormulaFormat(firstProps, secondProps);
+      break;
     case 'TwoD':
-      return TwoDFormulaFormat(firstProps, secondProps, thirdProps);
+      formula = TwoDFormulaFormat(firstProps, secondProps, thirdProps);
+      break;
     case 'Circle':
-      return CircleFormulaFormat(firstProps, secondProps, thirdProps);
+      formula = CircleFormulaFormat(firstProps, secondProps, thirdProps);
+      break;
     default:
       return 'error';
   }
+  formula = formula.replace(/--/g, '+');
+  formula = formula.replace(/-+/g, '-');
+  return formula;
 }
 function LineFormulaFormat(first, second) {
   let formula = 'y = ';

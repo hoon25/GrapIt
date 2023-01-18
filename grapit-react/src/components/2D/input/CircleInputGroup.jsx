@@ -93,16 +93,21 @@ export default function CircleInputGroup({ sendObjectInfo }) {
       <FormGroup>
         <Form.Label>색상</Form.Label>
         <Form.Control
+          style={{ display: 'inline-block' }}
           onChange={event => {
             dispatch(setTwoDInput.setColor(event.target.value));
           }}
           value={TwoDInput.color}
           type="color"
         />
+        <Button
+          style={{ display: 'inline-block', float: 'right' }}
+          variant="primary"
+          type="submit"
+        >
+          생성
+        </Button>
       </FormGroup>
-      <Button variant="primary" type="submit">
-        생성
-      </Button>
     </Form>
   );
 }

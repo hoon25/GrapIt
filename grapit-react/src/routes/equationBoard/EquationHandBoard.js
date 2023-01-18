@@ -9,7 +9,7 @@ import { generateUUID } from 'three/src/math/MathUtils';
 const defaultStyle = {
   border: '1px solid gray',
   width: '100%',
-  height: '50%',
+  height: '30%',
   display: 'inline-block',
 };
 
@@ -264,8 +264,12 @@ export function EquationHandBoard({
             canvasEventListener(event, 'up');
           }}
         ></canvas>
-        <Button onClick={clearCanvas}>초기화</Button>
-        <Button onClick={submitCanvas}>생성</Button>
+        <Button size="sm" onClick={clearCanvas}>
+          초기화
+        </Button>
+        <Button size="sm" onClick={submitCanvas}>
+          생성
+        </Button>
         {latexResult && <div>{latexResult}</div>}
       </div>
     </>

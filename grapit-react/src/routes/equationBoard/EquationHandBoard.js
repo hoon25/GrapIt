@@ -249,9 +249,9 @@ export function EquationHandBoard({
 
   return (
     <>
-      <>
-        Beta☘️ 손으로 수식입력
-      </>
+      {/*<>*/}
+      {/*  Beta☘️ 손으로 수식입력*/}
+      {/*</>*/}
       <div>
         <canvas
           ref={canvasRef}

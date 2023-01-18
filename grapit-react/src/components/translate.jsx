@@ -15,7 +15,7 @@ export function translate(figureType) {
     case 'octahedron':
       return '정팔면체';
     case 'dodecahedron':
-      return '정십면체';
+      return '정십이면체';
     case 'icosahedron':
       return '정이십면체';
     case 'cylinder':

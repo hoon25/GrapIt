@@ -9,7 +9,7 @@ import * as Icon from 'react-bootstrap-icons';
 import { translate } from '../translate';
 
 export default function TwoCardBox({ sendObjectInfo }) {
-  const TwoDfigure = useSelector(state => state.TwoDfigure.TwoDfigures);
+  const TwoDfigures = useSelector(state => state.TwoDfigure.TwoDfigures);
   const TwoDInput = useSelector(state => state.TwoDInput);
 
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ export default function TwoCardBox({ sendObjectInfo }) {
         overflowY: 'scroll',
       }}
     >
-      {TwoDfigure.map(x => [x, dispatch, sendObjectInfo]).map(makeCard)}
+      {TwoDfigures.map(x => [x, dispatch, sendObjectInfo]).map(makeCard)}
     </Stack>
   );
 }

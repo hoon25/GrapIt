@@ -18,22 +18,6 @@ header a {
     font-weight: 500;
 }
 
-
-/* header a:hover {
-  color: #27ae60;
-} */
-
-
-/* header span {
-  width: auto;
-  padding: 0px 6px;
-  background: #27ae60;
-  border-radius: 50px;
-  color: #ffffff;
-  margin-right: 4px;
-  font-weight: 400;
-} */
-
 header h4 {
     font-weight: 500;
     margin-right: 20px;
@@ -77,16 +61,6 @@ header .toggle {
 
 
 /* NAVIGATION */
-
-
-/* 
-nav {
-  width: 80%;
-  margin: 0 auto;
-  background: #fff;
-  padding: 50px 0;
-  box-shadow: 0px 5px 0px #dedede;
-} */
 
 nav ul {
     list-style: none;

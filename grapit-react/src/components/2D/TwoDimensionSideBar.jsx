@@ -10,13 +10,15 @@ export default function TwoDimensionSideBar({
   viewPointY,
   sendObjectInfo,
 }) {
+  const inputColor = useSelector(state => state.TwoDInput.color);
+
   return (
     <Row>
       <Row style={{ height: '45vh', backgroundColor: '' }}>
         <TwoDGraphInput sendObjectInfo={sendObjectInfo} />
         {/*<CircleColorPicker />*/}
         <EquationHandBoard
-          graphColor={'#ffffff'}
+          graphColor={inputColor}
           viewPointX={viewPointX}
           viewPointY={viewPointY}
           sendObjectInfo={sendObjectInfo}

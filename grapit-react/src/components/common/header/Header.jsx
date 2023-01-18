@@ -31,38 +31,37 @@ const Header = () => {
 
   return (
     <>
-      <header>
-        <div className="container flex">
-          <div className="logo">
-            <h5>GrapIt</h5>
-          </div>
-          <nav className="stroke">
-            <ul className={navList ? 'small' : 'flex'}>
-              {nav.map((list, index) => (
-                <li key={index}>
-                  <Link to={list.path}>{list.text}</Link>
-                </li>
-              ))}
+      <div className="container flex">
+        <div className="logo">
+          <h4>Grap-It</h4>
+        </div>
+        <nav className="stroke">
+          <ul className={navList ? 'small' : 'flex'}>
+            {nav.map((list, index) => (
+              <li key={index}>
+                <Link to={list.path}>{list.text}</Link>
+              </li>
+            ))}
 
-              {user.nickName == null ? (
-                <li>
-                  <Link to="/login">로그인</Link>
-                </li>
-              ) : (
-                <li>
-                  {user.nickName} <Link to="/logout">로그아웃</Link>
-                </li>
-              )}
-            </ul>
-          </nav>
+            {user.nickName == null ? (
+              <li>
+                <Link to="/login">로그인</Link>
+              </li>
+            ) : (
+              <li>
+                {user.nickName} <Link to="/logout">로그아웃</Link>
+              </li>
+            )}
+          </ul>
+        </nav>
 
-          <div className="button-flex">
-            {/* <button className='btn3'>
+        <div className="button-flex">
+          {/* <button className='btn3'>
               <i className='fa fa-sign-out'></i> 로그인
             </button> */}
-          </div>
+        </div>
 
-          <div className="toggle">
+        {/* <div className="toggle">
             <button onClick={() => setNavList(!navList)}>
               {navList ? (
                 <i className="fa fa-times"></i>
@@ -70,9 +69,8 @@ const Header = () => {
                 <i className="fa fa-bars"></i>
               )}
             </button>
-          </div>
-        </div>
-      </header>
+          </div> */}
+      </div>
     </>
   );
 };

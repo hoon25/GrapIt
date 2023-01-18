@@ -1,5 +1,5 @@
 :root {
-    --primary: #ffffff;
+    --primary: #89c0ff;
 }
 
 .btn {
@@ -40,4 +40,8 @@
     background: rgb(238, 216, 255);
     color: #242424;
     transition: 250ms;
+}
+
+.jb-white {
+    color: rgb(255, 255, 255);
 }

@@ -43,7 +43,7 @@ export function CollaborationPage({ chat }) {
 
   return (
     <RoomProvider
-      id="1234"
+      id={String(chat.roomId)}
       initialPresence={{
         cursor: null,
         userInfo: {

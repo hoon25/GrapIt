@@ -32,7 +32,7 @@ function Board(props) {
   });
 
   const fabricCanvas = useRef(null);
-
+  const user = useSelector(state => state.user);
   const load = useSelector(state => state.Load);
   useEffect(() => {
     if (load.first) {
@@ -96,14 +96,16 @@ function Board(props) {
     if (sendObj !== undefined && mouseUp === true) {
       let action = undefined;
       if (props.mode !== 'eraser' && props.mode !== 'select') {
-        props.sendPaintInfo(
-          'PAINT',
-          JSON.stringify({
-            count: selectedCount,
-            action: 'add',
-            target: sendObj.toJSON(['id']),
-          }),
-        );
+        if (sendObj.id !== undefined && sendObj.id !== null) {
+          props.sendPaintInfo(
+            'PAINT',
+            JSON.stringify({
+              count: selectedCount,
+              action: 'add',
+              target: sendObj.toJSON(['id']),
+            }),
+          );
+        }
       }
     }
   }, [sendObj, mouseUp, selectedCount]);
@@ -115,7 +117,8 @@ function Board(props) {
         'PAINT',
         JSON.stringify({
           action: 'pen',
-          target: options.target.toJSON(['id']),
+          drawer: user.nickName,
+          target: options.target.toJSON(['id', 'drawer']),
         }),
       );
     }
@@ -147,6 +150,15 @@ function Board(props) {
     // fabricCanvas.current.on('object:removed', handleCanvasObjectsRemoved);
 
     fabricCanvas.current.zoom = window.zoom ? window.zoom : 1;
+
+    fabricCanvas.current.setDimensions(
+      {
+        width: 1680,
+        height: 720,
+      },
+      { backstoreOnly: true },
+    );
+
     props.setBoard(fabricCanvas.current);
   }, []);
 
@@ -305,8 +317,10 @@ function Board(props) {
     } else if (props.drawInfo.action === 'remove-all') {
       resetCanvas();
     } else if (props.drawInfo.action === 'pen') {
-      if (objectById === null) {
-        jsonToObject();
+      if (props.drawInfo.drawer !== user.nickName) {
+        if (objectById === null) {
+          jsonToObject();
+        }
       }
     }
 
@@ -462,13 +476,15 @@ function Board(props) {
     });
     setSendObj(undefined);
     if (mode === 'eraser') {
-      props.sendPaintInfo(
-        'PAINT',
-        JSON.stringify({
-          action: 'remove',
-          target: selected,
-        }),
-      );
+      if (selected.id !== undefined && selected.id !== null) {
+        props.sendPaintInfo(
+          'PAINT',
+          JSON.stringify({
+            action: 'remove',
+            target: selected,
+          }),
+        );
+      }
       fabricCanvas.current.discardActiveObject();
       return;
     }
@@ -524,13 +540,15 @@ function Board(props) {
     const selected = [];
     if (objects) {
       objects.forEach(obj => {
-        props.sendPaintInfo(
-          'PAINT',
-          JSON.stringify({
-            action: 'modify',
-            target: obj.toJSON(['id']),
-          }),
-        );
+        if (obj.id !== undefined && obj.id !== null) {
+          props.sendPaintInfo(
+            'PAINT',
+            JSON.stringify({
+              action: 'modify',
+              target: obj.toJSON(['id']),
+            }),
+          );
+        }
 
         selected.push({
           id: obj.id,
@@ -813,18 +831,25 @@ function Board(props) {
     // let target = undefined;
     //
     if (options.target)
-      props.sendPaintInfo(
-        'PAINT',
-        JSON.stringify({
-          count: selectedCount,
-          action: 'move',
-          target: options.target.toJSON(['id']),
-        }),
-      );
+      if (options.target.id !== undefined && options.target.id !== null) {
+        props.sendPaintInfo(
+          'PAINT',
+          JSON.stringify({
+            count: selectedCount,
+            action: 'move',
+            target: options.target.toJSON(['id']),
+          }),
+        );
+      }
   }
 
   function resetCanvas() {
-    fabricCanvas.current.remove(...fabricCanvas.current.getObjects());
+    const allObjects = fabricCanvas.current.getObjects();
+    allObjects.forEach(object => {
+      if (object.id !== undefined && object.id !== null) {
+        fabricCanvas.current.remove(object);
+      }
+    });
   }
 }
 

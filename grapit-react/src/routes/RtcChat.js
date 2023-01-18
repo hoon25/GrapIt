@@ -127,13 +127,10 @@ function RtcChat({ chat }) {
   // sendGraphInfo()
   function rerenderGraph(payload) {
     const newMessage = JSON.parse(payload.body);
-
     if (newMessage.sender !== user.nickName) {
       if (newMessage.type === 'RATIO') {
         setRatio(Number(newMessage.message));
       } else if (newMessage.type === 'PAINT') {
-        console.log('🖌🖌🖌🖌🖌🖌🖌🖌');
-        console.log(JSON.parse(newMessage.message));
         setDrawInfo(JSON.parse(newMessage.message));
       } else if (newMessage.type === 'GRAPH') {
         const receivedGraphInfo = JSON.parse(newMessage.message);

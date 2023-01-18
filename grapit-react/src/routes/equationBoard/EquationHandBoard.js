@@ -10,10 +10,8 @@ import { generateUUID } from 'three/src/math/MathUtils';
 // reactive 하게 포인터를 받지 못해서 고정하지 않으면 canvas인식 오류 발생합니다.
 const defaultStyle = {
   border: '1px solid gray',
-  // width: '300px',
-  // height: '150px',
-  width: '100%',
-  height: '50%',
+  width: '300px',
+  height: '150px',
   // zIndex: '99'
   // display: 'inline-block',
 };
@@ -251,8 +249,10 @@ export function EquationHandBoard({
 
   return (
     <>
-      <div>
+      <>
         Beta☘️ 손으로 수식입력
+      </>
+      <div>
         <canvas
           ref={canvasRef}
           style={defaultStyle}

@@ -6,10 +6,12 @@ import { Button } from 'react-bootstrap';
 import { setTwoDFigure } from '../../store/TwoDfigureSlice';
 import { generateUUID } from 'three/src/math/MathUtils';
 
+// canvas 기본 width : 300px height : 150px
+// reactive 하게 포인터를 받지 못해서 고정하지 않으면 canvas인식 오류 발생합니다.
 const defaultStyle = {
   border: '1px solid gray',
-  width: '100%',
-  height: '30%',
+  width: '300px',
+  height: '150px',
   display: 'inline-block',
 };
 

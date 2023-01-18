@@ -12,7 +12,7 @@ export default function TwoDimensionSideBar({
 }) {
   return (
     <Row>
-      <Row style={{ height: '40vh', backgroundColor: '' }}>
+      <Row style={{ height: '45vh', backgroundColor: '' }}>
         <TwoDGraphInput sendObjectInfo={sendObjectInfo} />
         {/*<CircleColorPicker />*/}
         <EquationHandBoard
@@ -24,7 +24,7 @@ export default function TwoDimensionSideBar({
       </Row>
       <Row
         style={{
-          height: '45vh',
+          height: '40vh',
           backgroundColor: '#eeeeee',
         }}
       >

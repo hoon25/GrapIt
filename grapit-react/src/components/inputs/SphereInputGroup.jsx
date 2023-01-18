@@ -6,7 +6,7 @@ import { setFigure } from '../../store/figureSlice';
 import { useInput } from '../../hooks';
 
 function SphereInputGroup(props) {
-  const [positionProps, resetPosition] = useInput('');
+  const [positionProps, resetPosition] = useInput('0, 0, 0');
   const [radiusProps, resetRadius] = useInput('');
   const [colorProps, resetColor] = useInput('#000000');
 

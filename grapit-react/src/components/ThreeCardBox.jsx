@@ -20,13 +20,22 @@ export default function ThreeCardBox(props) {
       }}
     >
       {figureStore
-        .map(x => [x, dispatch, props.sendObjectInfo, figureStore])
+        .map(x => [
+          x,
+          dispatch,
+          props.sendObjectInfo,
+          figureStore,
+          props.setFigureType,
+        ])
         .map(makeCard)}
     </Stack>
   );
 }
 
-function makeCard([figure, dispatch, sendObjectInfo, figureStore], i) {
+function makeCard(
+  [figure, dispatch, sendObjectInfo, figureStore, setFigureType],
+  i,
+) {
   const headerColor = '#' + figure.color.toString(16);
 
   const toggleOpacity = () => {
@@ -94,6 +103,19 @@ function makeCard([figure, dispatch, sendObjectInfo, figureStore], i) {
     sendObjectInfo('FIGURE', JSON.stringify(copy));
   };
 
+  const applyFigure = () => {
+    let figureType = figure.type;
+    if (
+      figureType === 'tetrahedron' ||
+      figureType === 'cube' ||
+      figureType === 'octahedron' ||
+      figureType === 'dodecahedron' ||
+      figureType === 'icosahedron'
+    )
+      figureType = 'platonicSolid';
+    setFigureType(figureType);
+  };
+
   return (
     <Card key={i}>
       <Card.Header
@@ -114,12 +136,16 @@ function makeCard([figure, dispatch, sendObjectInfo, figureStore], i) {
       </Card.Header>
       <Card.Body className="pl-1 pr-1">
         <Row className="d-flex justify-content-between">
-          <Col onMouseDown={emphasize} onMouseUp={deemphasize}>
+          <Col
+            onMouseDown={emphasize}
+            onMouseUp={deemphasize}
+            onDoubleClick={applyFigure}
+          >
             {resolveInfo(figure)}
           </Col>
           {figure.type !== 'twoPointedLine' && (
             <Col lg={2} className="d-flex align-items-center">
-              <Icon.EyeFill
+              <Icon.Mask
                 color={figure.transparent ? 'lightgray' : 'black'}
                 size="30px"
                 onClick={toggleOpacity}

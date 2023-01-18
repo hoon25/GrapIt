@@ -6,7 +6,7 @@ import { useInput } from '../../hooks';
 
 function PlatonicSolidInputGroup(props) {
   const [figureTypeProps, resetFigureType] = useInput('tetrahedron');
-  const [positionProps, resetPosition] = useInput('');
+  const [positionProps, resetPosition] = useInput('0, 0, 0');
   const [lengthProps, resetLength] = useInput('');
   const [colorProps, resetColor] = useInput('#000000');
 

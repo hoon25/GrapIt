@@ -75,9 +75,6 @@ export function EquationHandBoard({
         const onCheck = () => {
           if (res.data.latex_styled !== undefined) {
             if (window.confirm('입력한 수식이 맞나요? \n' + res.data.latex_styled)) {
-              window.confirm(
-                  '입력한 수식이 맞나요? \n' + res.data.latex_styled,
-              );
               let latex = res.data.latex_styled.replace(/\s+/g, '');
               setLatexResult(latex);
               getGraphArgFromLatex(latex);

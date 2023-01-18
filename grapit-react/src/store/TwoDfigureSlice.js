@@ -48,7 +48,7 @@ const TwoDfigure = createSlice({
       const index = state.TwoDfigures.findIndex(
         TwoDfigure => TwoDfigure.figureId === action.payload,
       );
-      state.TwoDfigures[index].thick -= 10;
+      state.TwoDfigures[index].thick = 3;
     },
     resetThick: (state, action) => {
       const index = state.TwoDfigures.findIndex(

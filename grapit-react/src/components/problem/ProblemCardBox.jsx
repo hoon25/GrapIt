@@ -4,21 +4,20 @@ import { Trash3Fill } from 'react-bootstrap-icons';
 import { setTwoDInput } from '../../store/TwoDInputSlice';
 import { useDispatch } from 'react-redux';
 import { setLoad } from '../../store/loadSlice';
+import { translate } from '../translate';
+import * as Icon from 'react-bootstrap-icons';
 export default function ProblemCardBox({ sendObjectInfo }) {
   const dispatch = useDispatch();
 
   const problems = [
     {
-      title: 'Problem 1',
-      src: '../../resource/cat.png',
+      title: '으어어',
     },
     {
-      title: 'Problem 2',
-      src: '../../resource/cat.png',
+      title: '고쳐주세요',
     },
     {
-      title: 'Problem 3',
-      src: '../../resource/cat.png',
+      title: '고쳐줘',
     },
   ];
 
@@ -52,6 +51,7 @@ function makeCard([problem, dispatch], i) {
   return (
     <Card key={i}>
       <Card.Header
+        className="d-flex justify-content-between"
         style={{
           fontWeight: 'bold',
           backgroundColor: headerColor,
@@ -59,15 +59,11 @@ function makeCard([problem, dispatch], i) {
         }}
       >
         {i + 1 + '번째 문제'}
+        <Icon.X lg={2} color={contrastColor(headerColor)} size="25px" />
       </Card.Header>
       <Card.Body onClick={onCardClick}>
         <Row className="flex justify-content-between align-content-center">
-          <Col lg={8}>{problem.title}</Col>
-          <Col lg={2}>
-            <Button className="btn-sm" variant="danger">
-              <Trash3Fill />
-            </Button>
-          </Col>
+          <Col lg={12}>{problem.title}</Col>
         </Row>
       </Card.Body>
     </Card>

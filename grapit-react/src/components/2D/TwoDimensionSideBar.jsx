@@ -5,19 +5,22 @@ import TwoCardBox from './TwoCardBox';
 import CircleColorPicker from '../CircleColorPicker';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import TwoDInput from '../../store/TwoDInputSlice';
 
 export default function TwoDimensionSideBar({
   viewPointX,
   viewPointY,
   sendObjectInfo,
 }) {
+  const inputColor = useSelector(state => state.TwoDInput.color);
+
   return (
     <Row>
       <Row style={{ height: '40vh', backgroundColor: '' }}>
         <TwoDGraphInput sendObjectInfo={sendObjectInfo} />
         {/*<CircleColorPicker />*/}
         <EquationHandBoard
-          graphColor={'#ffffff'}
+          graphColor={inputColor}
           viewPointX={viewPointX}
           viewPointY={viewPointY}
           sendObjectInfo={sendObjectInfo}

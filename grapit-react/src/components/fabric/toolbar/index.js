@@ -36,7 +36,6 @@ function Toolbar(props) {
 
   const dispatch = useDispatch();
   const isWhiteBoard = useSelector(state => state.isWhiteBoard);
-  const canvasReset = useSelector(state => state.Draw.DrawsReset);
 
   const Icon = {
     select: <ArrowsMove />,
@@ -114,7 +113,11 @@ function Toolbar(props) {
         href="#"
         className="menu-item button-3d"
         onClick={() => {
-          canvasReset();
+          props.setClear(true);
+          props.sendPaintInfo(
+            'PAINT',
+            JSON.stringify({ action: 'remove-all' }),
+          );
         }}
       >
         <Trash3Fill />

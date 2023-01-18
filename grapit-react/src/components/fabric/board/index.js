@@ -6,7 +6,6 @@ import uuid from 'node-uuid';
 
 import './style.scss';
 import { useDispatch } from 'react-redux';
-import { setDraw } from '../../../store/DrawSlice';
 
 function Board(props) {
   const dispatch = useDispatch();

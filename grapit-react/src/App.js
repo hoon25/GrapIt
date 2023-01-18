@@ -16,6 +16,10 @@ import JoinMember from './routes/JoinMember';
 import SurveyComponent from './components/home/survey/survey';
 import ThreeCanvas from './components/ThreeCanvas';
 import BaseCanvas from './components/BaseCanvas';
+import { Survey } from 'survey-react-ui';
+import 'survey-core/defaultV2.min.css';
+import Result from './components/home/survey/result';
+import Vidu from './routes/vidu/Vidu';
 
 function App() {
   let chat = useSelector(state => state.chat);
@@ -39,6 +43,9 @@ function App() {
         <Route path="/survey" element={<SurveyComponent />} />
         <Route path="/three" element={<ThreeCanvas />} />
         <Route path="/base" element={<BaseCanvas />} />
+        <Route path="/vidu" element={<Vidu />} />
+        <Route path="/tutorfind" element={<SurveyComponent />} />
+        <Route path="/result" element={<Result />} />
       </Routes>
     </div>
   );

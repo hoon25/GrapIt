@@ -1,6 +1,6 @@
 export const data1 = {
-    "title": "자신에게 맞는 선생님을 찾아드려요 ",
-    "description": "~~학습 상태 분석중입니다~~",
+    "title": "자신에게 맞는 선생님을 찾으세요! ",
+    "description": "학습 상태 분석중입니다~",
     "pages": [{
             "name": "page1",
             "elements": [{

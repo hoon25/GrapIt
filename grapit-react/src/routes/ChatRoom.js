@@ -1,10 +1,12 @@
-import { Button, Table } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setChat } from '../store/chatSlice';
 import { CreateRoom } from './CreateRoom';
+import './vidu/CreateRoom.css';
+import './ChatRoom.css';
 
 function ChatRoomList() {
   const [chatList, setChatList] = useState([]);
@@ -25,30 +27,19 @@ function ChatRoomList() {
 
   return (
     <>
-      <Button variant="danger" style={{ float: 'right' }} onClick={handleShow}>
-        수업방 생성하기
-      </Button>
+      <button class="custom-btn btn-9" onClick={handleShow}>
+        방 생성하기
+      </button>
       <CreateRoom
         modalShow={createRoomShow}
         handleClose={handleClose}
         handleShow={handleShow}
       />
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>NO</th>
-            <th>수업방 이름</th>
-            <th>선생님 닉네임</th>
-            <th>입장하기</th>
-          </tr>
-        </thead>
-        <tbody>
-          {chatList.map((chat, i) => (
-            <ChatRoom chat={chat} i={i} />
-          ))}
-        </tbody>
-      </Table>
+      <tbody className="article1">
+        {chatList.map((chat, i) => (
+          <ChatRoom chat={chat} i={i} />
+        ))}
+      </tbody>
     </>
   );
 }
@@ -59,23 +50,36 @@ function ChatRoom({ chat, i }) {
 
   return (
     <>
-      <tr>
-        <td></td>
-        <td>{i}</td>
-        <td>{chat.roomName}</td>
-        <td>{chat.roomCreatorNickName}</td>
-        <td>
-          <Button
-            variant="primary"
-            onClick={function () {
-              dispatch(setChat(chat));
-              navigate(`/room/${chat.roomId}`);
-            }}
-          >
-            입장하기
-          </Button>
-        </td>
-      </tr>
+      <div className="article">
+        <tr>
+          <td></td>{' '}
+          <Card style={{ width: '18rem' }}>
+            <div className="card__container">
+              <td>
+                <th>#{i}</th>
+              </td>
+
+              <td>
+                {' '}
+                <th> {chat.roomName} </th>
+              </td>
+
+              <td>선생님 닉네임: {chat.roomCreatorNickName}</td>
+              <td>
+                <Button
+                  variant="primary"
+                  onClick={function () {
+                    dispatch(setChat(chat));
+                    navigate(`/room/${chat.roomId}`);
+                  }}
+                >
+                  입장하기
+                </Button>
+              </td>
+            </div>
+          </Card>
+        </tr>
+      </div>
     </>
   );
 }

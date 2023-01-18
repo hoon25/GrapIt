@@ -18,7 +18,6 @@ const Header = () => {
 
   useEffect(() => {
     axios.get('/api/checksession').then(res => {
-      console.log(res);
       if (res.status === 200) {
         setSessionValid(true);
         dispatch(setUser(res.data));

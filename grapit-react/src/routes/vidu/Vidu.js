@@ -113,7 +113,6 @@ function Vidu({ user, chat }) {
   function leaveSession() {
     const mySession = session;
     if (mySession) {
-      console.log('real disconnect');
       mySession.disconnect();
     }
 

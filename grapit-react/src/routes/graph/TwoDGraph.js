@@ -30,17 +30,10 @@ export function TwoDGraph({
   function preventWheelEvent(e) {
     e.preventDefault();
 
-    console.log('x = ' + e.deltaX);
-    console.log('y = ' + e.deltaY);
-
     if (e.deltaY % 1 < 0 && e.deltaX === 0) {
-      console.log('축소');
       setRatio(ratio - 1);
-      console.log('현재 비율' + ratio);
     } else if (e.deltaY % 1 > 0 && e.deltaX === 0) {
-      console.log('확대');
       setRatio(ratio + 1);
-      console.log('현재 비율' + ratio);
     }
   }
 

@@ -5,6 +5,13 @@ export default function CoordTypeSelector({ coordType, setCoordType }) {
     <Row style={{ height: '5vh', backgroundColor: '' }}>
       <Stack direction="horizontal" gap={2}>
         <Button
+          variant={coordType === 'problem' ? 'primary' : 'secondary'}
+          onClick={() => setCoordType('problem')}
+        >
+          문제
+        </Button>
+
+        <Button
           variant={coordType === '2D' ? 'primary' : 'secondary'}
           onClick={() => setCoordType('2D')}
         >

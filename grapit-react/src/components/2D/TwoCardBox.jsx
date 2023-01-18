@@ -23,16 +23,29 @@ export default function TwoCardBox({ sendObjectInfo }) {
         overflowY: 'scroll',
       }}
     >
-      {TwoDfigures.map(x => [x, dispatch, sendObjectInfo]).map(makeCard)}
+      {TwoDfigures.map(x => [x, dispatch, sendObjectInfo, TwoDfigures]).map(
+        makeCard,
+      )}
     </Stack>
   );
 }
 
-function makeCard([TwoDfigure, dispatch, sendObjectInfo], i) {
+function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
   const headerColor = TwoDfigure.color;
 
   const onCardMouseDown = () => {
     dispatch(setTwoDFigure.emphasizeFigure(TwoDfigure.figureId));
+
+    // TODO 부채
+    const copy = [...TwoDfigures];
+    const index = copy.findIndex(x => x.figureId === TwoDfigure.figureId);
+
+    const newTwoDFigure = { ...copy[index] };
+
+    newTwoDFigure.thick += 10;
+    copy[index] = newTwoDFigure;
+
+    sendObjectInfo('GRAPH', JSON.stringify(copy));
   };
 
   const onCardDoubleClick = () => {
@@ -41,6 +54,17 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo], i) {
 
   const onCardMouseUp = () => {
     dispatch(setTwoDFigure.deemphasizeFigure(TwoDfigure.figureId));
+
+    // TODO 부채
+    const copy = [...TwoDfigures];
+    const index = copy.findIndex(x => x.figureId === TwoDfigure.figureId);
+
+    const newTwoDFigure = { ...copy[index] };
+
+    newTwoDFigure.thick -= 10;
+    copy[index] = newTwoDFigure;
+
+    sendObjectInfo('GRAPH', JSON.stringify(copy));
   };
 
   const onDelBtnClick = () => {
@@ -50,6 +74,17 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo], i) {
 
   const onCardMouseLeave = () => {
     dispatch(setTwoDFigure.resetThick(TwoDfigure.figureId));
+
+    // TODO 부채
+    const copy = [...TwoDfigures];
+    const index = copy.findIndex(x => x.figureId === TwoDfigure.figureId);
+
+    const newTwoDFigure = { ...copy[index] };
+
+    newTwoDFigure.thick = 3;
+    copy[index] = newTwoDFigure;
+
+    sendObjectInfo('GRAPH', JSON.stringify(copy));
   };
 
   return (
@@ -77,7 +112,9 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo], i) {
         onDoubleClick={onCardDoubleClick}
       >
         <Row className="flex justify-content-between align-content-center">
+
           <Col lg={12}>{resolveInfo(TwoDfigure)}</Col>
+
         </Row>
       </Card.Body>
     </Card>
@@ -104,16 +141,23 @@ function makeInfo(TwoDfigure) {
 
 function makeFormulaFormat(TwoDfigure) {
   const { firstProps, secondProps, thirdProps } = TwoDfigure;
+  let formula;
   switch (TwoDfigure.type) {
     case 'Line':
-      return LineFormulaFormat(firstProps, secondProps);
+      formula = LineFormulaFormat(firstProps, secondProps);
+      break;
     case 'TwoD':
-      return TwoDFormulaFormat(firstProps, secondProps, thirdProps);
+      formula = TwoDFormulaFormat(firstProps, secondProps, thirdProps);
+      break;
     case 'Circle':
-      return CircleFormulaFormat(firstProps, secondProps, thirdProps);
+      formula = CircleFormulaFormat(firstProps, secondProps, thirdProps);
+      break;
     default:
       return 'error';
   }
+  formula = formula.replace(/--/g, '+');
+  formula = formula.replace(/-+/g, '-');
+  return formula;
 }
 function LineFormulaFormat(first, second) {
   let formula = 'y = ';

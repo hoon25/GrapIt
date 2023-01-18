@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import Thickness from './thickness';
-import classNames from 'class-names';
-import ColorPicker from './colorpicker';
+import React, { useEffect, useRef, useState } from 'react';
+import { fabric } from 'fabric';
 import modes from '../utils/mode';
 import './style.scss';
 import '../../../css/floatingButton.css';
@@ -12,31 +10,29 @@ import {
 } from '../../../store/isWhiteBoardSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  ArrowClockwise,
   ArrowsMove,
   ArrowUpRight,
-  Brush,
   BrushFill,
-  CardText,
-  Dash,
   DashLg,
   EraserFill,
   GraphUp,
-  PaletteFill,
   Square,
   Trash3Fill,
-  TypeUnderline,
+  Image,
   VectorPen,
 } from 'react-bootstrap-icons';
+import board from '../board';
 
 function Toolbar(props) {
   const [toolButtons, setToolButtons] = useState([]);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [showFontsize, setShowFontsize] = useState(false);
   const [toolChange, setToolChange] = useState(undefined);
+  const [image, setImage] = useState(null);
 
   const dispatch = useDispatch();
   const isWhiteBoard = useSelector(state => state.isWhiteBoard);
+  const imageInput = useRef();
 
   const Icon = {
     select: <ArrowsMove />,
@@ -76,13 +72,51 @@ function Toolbar(props) {
         {isWhiteBoard.isSelected ? <VectorPen /> : <GraphUp />}
       </label>
 
+      <a
+        className="menu-item button-3d"
+        onClick={() => {
+          console.log(props.board);
+          imageInput.current.click();
+        }}
+      >
+        <input
+          ref={imageInput}
+          value={image}
+          type="file"
+          accept="image/*"
+          hidden="true"
+          onChange={event => {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = event => {
+              const data = event.target.result;
+              fabric.Image.fromURL(data, function (img) {
+                const oImg = img
+                  .set({
+                    left: 100,
+                    top: 100,
+                    angle: 0,
+                  })
+                  .scale(0.7);
+                props.board.add(oImg).renderAll();
+              });
+            };
+            reader.readAsDataURL(file);
+            setImage(null);
+          }}
+        />
+        <Image />
+      </a>
+
       {toolButtons.map((btn, index) => (
         <a
           key={index}
           href="#"
           className="menu-item button-3d"
           title={btn.title}
-          onClick={() => {
+          onClick={e => {
+            console.log(image);
+            e.preventDefault();
             if (props.enabled === false) return;
             props.setButtonMode(btn.key);
           }}
@@ -113,7 +147,8 @@ function Toolbar(props) {
       <a
         href="#"
         className="menu-item button-3d"
-        onClick={() => {
+        onClick={e => {
+          e.preventDefault();
           props.setClear(true);
           props.sendPaintInfo(
             'PAINT',

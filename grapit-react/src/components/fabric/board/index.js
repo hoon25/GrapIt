@@ -5,7 +5,8 @@ import * as drawer from './drawer';
 import uuid from 'node-uuid';
 
 import './style.scss';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLoad } from '../../../store/loadSlice';
 
 function Board(props) {
   const dispatch = useDispatch();
@@ -29,8 +30,59 @@ function Board(props) {
     line: undefined,
     shape: undefined,
   });
-  const [currentGroup, setCurrentGroup] = useState(undefined);
+
   const fabricCanvas = useRef(null);
+
+  const load = useSelector(state => state.Load);
+  useEffect(() => {
+    if (load.first) {
+      fabric.Image.fromURL(
+        'http://localhost:3000/images/problem/cat.png',
+        function (img) {
+          const oImg = img
+            .set({
+              left: 100,
+              top: 100,
+              angle: 0,
+            })
+            .scale(0.7);
+          fabricCanvas.current.add(oImg).renderAll();
+        },
+      );
+
+      dispatch(setLoad.setFirst());
+    } else if (load.second) {
+      fabric.Image.fromURL(
+        'http://localhost:3000/images/problem/cat.png',
+        function (img) {
+          const oImg = img
+            .set({
+              left: 100,
+              top: 100,
+              angle: 0,
+            })
+            .scale(0.7);
+          fabricCanvas.current.add(oImg).renderAll();
+        },
+      );
+      dispatch(setLoad.setSecond());
+    } else if (load.third) {
+      fabric.Image.fromURL(
+        'http://localhost:3000/images/problem/cat.png',
+        function (img) {
+          const oImg = img
+            .set({
+              left: 100,
+              top: 100,
+              angle: 0,
+            })
+            .scale(0.7);
+          fabricCanvas.current.add(oImg).renderAll();
+        },
+      );
+      dispatch(setLoad.setThird());
+    }
+  }, [load]);
 
   useEffect(() => {
     console.log(props.clear);
@@ -95,6 +147,7 @@ function Board(props) {
     // fabricCanvas.current.on('object:removed', handleCanvasObjectsRemoved);
 
     fabricCanvas.current.zoom = window.zoom ? window.zoom : 1;
+    props.setBoard(fabricCanvas.current);
   }, []);
 
   useEffect(() => {
@@ -355,8 +408,8 @@ function Board(props) {
     if (enabled === false) return;
     setIsDrawing(true);
     setMouseUp(false);
-    setPosFrom({ x: options.e.offsetX, y: options.e.offsetY });
-    setPosTo({ x: options.e.offsetX, y: options.e.offsetY });
+    setPosFrom({ x: options.e.clientX, y: options.e.clientY });
+    setPosTo({ x: options.e.clientX, y: options.e.clientY });
 
     if (props.mode === 'text' || props.mode === 'polygon') {
       handleCanvasDrawing(options);

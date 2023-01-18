@@ -8,6 +8,7 @@ import camera from './store/cameraSlice';
 import TwoDfigure from './store/TwoDfigureSlice';
 import TwoDInput from './store/TwoDInputSlice';
 import Draw from './store/DrawSlice';
+import Load from './store/loadSlice';
 
 export default configureStore({
   reducer: {
@@ -20,6 +21,7 @@ export default configureStore({
     TwoDfigure: TwoDfigure.reducer,
     TwoDInput: TwoDInput.reducer,
     Draw: Draw.reducer,
+    Load: Load.reducer,
   },
 });
 

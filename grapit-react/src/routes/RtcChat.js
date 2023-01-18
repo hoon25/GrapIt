@@ -26,6 +26,9 @@ function RtcChat({ chat }) {
   const [drawInfo, setDrawInfo] = useState();
   const [coordType, setCoordType] = useState('2D');
 
+  const [threeCamera, setThreeCamera] = useState({})
+  const [figureList, setFigureList] = useState([]);
+
   const dispatch = useDispatch();
   const isWhiteBoard = useSelector(state => state.isWhiteBoard);
   const towDFigureList = useSelector(state => state.TwoDfigure.TwoDfigures);
@@ -41,6 +44,7 @@ function RtcChat({ chat }) {
     pointerEvents: isWhiteBoard.isSelected ? 'none' : 'auto',
     zIndex: 10,
   };
+
 
   const whiteBoardStyle = {
     ...commonCanvasStyle,
@@ -96,10 +100,6 @@ function RtcChat({ chat }) {
     });
   }, []);
 
-  // const camera = useSelector(state => state.camera.camera);
-  // console.log(camera.camera)
-  // console.log('!')
-
   function sendObjectInfo(objectType, object) {
     if (stompClient) {
       stompClient.debug = null;
@@ -136,6 +136,10 @@ function RtcChat({ chat }) {
         if (newMessage.message !== JSON.stringify(towDFigureList)) {
           dispatch(setTwoDFigure.switchFigure(receivedGraphInfo));
         }
+      } else if (newMessage.type === 'CAMERA') {
+        setThreeCamera(JSON.parse(newMessage.message))
+      } else if (newMessage.type === 'FIGURE') {
+        setFigureList(JSON.parse(newMessage.message))
       }
     }
   }
@@ -221,10 +225,15 @@ function RtcChat({ chat }) {
                 </div>
               ) : (
                 <div style={graphStyle}>
-                  <ThreeDimensionCanvas />
-                  {/*<DataPusher />*/}
-                </div>
-              )}
+                  <ThreeDimensionCanvas
+                    sendObjectInfo={sendObjectInfo}
+                    threeCamera={threeCamera}
+                    figureList={figureList}
+                    setThreeCamera={setThreeCamera}
+                    setFigureList={setFigureList}
+                  />
+                  {/* <DataPusher /> */}
+                </div>}
 
               <div style={whiteBoardStyle}>
                 {isLoaded ? (

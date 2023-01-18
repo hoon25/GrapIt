@@ -7,7 +7,7 @@ import { useInput } from '../../hooks';
 import { generateUUID } from 'three/src/math/MathUtils';
 
 function LineInputGroup(props) {
-  const [point1Props, resetPoint1] = useInput('');
+  const [point1Props, resetPoint1] = useInput('0, 0, 0');
   const [point2Props, resetPoint2] = useInput('');
   const [colorProps, resetColor] = useInput('#ffffff');
 

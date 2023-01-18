@@ -12,7 +12,7 @@ function NavScroll() {
   let navigate = useNavigate();
   return (
     // <Navbar bg="dark" expand="lg" variant="dark">
-    <Navbar bg="white" expand="lg">
+    <Navbar style={{ width: '100%' }} bg="white" expand="lg">
       <Container fluid>
         <Navbar.Brand href="/">PytaGrapIt</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />

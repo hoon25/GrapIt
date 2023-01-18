@@ -6,10 +6,9 @@ import SphereInputGroup from './inputs/SphereInputGroup';
 import { translate } from './translate';
 
 function FigureInput(props) {
-  const [figureType, setFigureType] = useState('twoPointedLine');
-
+  // TODO Redux
   const handleSelect = e => {
-    setFigureType(e.target.value);
+    props.setFigureType(e.target.value);
   };
 
   return (
@@ -22,14 +21,32 @@ function FigureInput(props) {
             style={{ height: '2.8rem', fontSize: '1.2rem', fontWeight: 'bold' }}
             onChange={handleSelect}
           >
-            {['twoPointedLine', 'sphere', 'platonicSolid']
-              .map(x => [x, x === figureType])
+            {['twoPointedLine', 'plane']
+              .map(x => [x, x === props.figureType])
+              .map(ResolveOptionRow)}
+            <option disabled style={{ fontWeight: 'bold' }}>
+              --------------------
+            </option>
+            {['cylinder', 'cone', 'truncatedCone']
+              .map(x => [x, x === props.figureType])
+              .map(ResolveOptionRow)}
+            <option disabled style={{ fontWeight: 'bold' }}>
+              --------------------
+            </option>
+            {['prism', 'pyramid', 'frustum']
+              .map(x => [x, x === props.figureType])
+              .map(ResolveOptionRow)}
+            <option disabled style={{ fontWeight: 'bold' }}>
+              --------------------
+            </option>
+            {['sphere', 'platonicSolid']
+              .map(x => [x, x === props.figureType])
               .map(ResolveOptionRow)}
           </Form.Control>
         </Form.Group>
       </Form>
       <ResolveInputGroup
-        figureType={figureType}
+        figureType={props.figureType}
         sendObjectInfo={props.sendObjectInfo}
       />
     </div>

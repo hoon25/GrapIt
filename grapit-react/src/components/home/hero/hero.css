@@ -1,15 +1,15 @@
 .main-video {
     object-fit: cover;
     width: 100%;
-    height: 100%;
-    position: fixed;
+    height: 85%;
+    position: absolute;
     z-index: -1;
 }
 
 .hero-container {
-    /* background: url('/images/img-home.jpg') center center/cover no-repeat; */
-    height: 70vh;
-    width: 100%;
+    background: center center/cover no-repeat;
+    height: 83vh;
+    width: 99%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -27,7 +27,7 @@
 .hero-container>p {
     margin-top: 8px;
     color: #fff;
-    font-size: 32px;
+    font-size: 26px;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
@@ -65,4 +65,46 @@
     .btn {
         width: 100%;
     }
+}
+
+
+/*---------hero-------------*/
+
+.hero {
+    position: relative;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* background-size: cover;
+    background-attachment: fixed; */
+    z-index: -1;
+    width: 100%;
+    height: 90vh;
+}
+
+.heroContent {
+    max-width: 50%;
+    margin: auto;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 60px;
+    font-weight: 600;
+    color: var(--primaryColor);
+}
+
+
+/*---------hero-------------*/
+
+.heading {
+    font-size: 30px;
+    color: var(--primaryColor);
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 60px;
 }

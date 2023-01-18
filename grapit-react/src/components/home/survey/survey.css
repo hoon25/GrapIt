@@ -1,0 +1,12 @@
+.question_content_custom {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    border-left: 4px solid #18a689;
+    padding: 10px;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.question-title-answered {
+    background-color: lightblue;
+}

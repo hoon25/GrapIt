@@ -63,7 +63,7 @@ export function LogIn() {
     //         </>
     // =======
 
-    <div className="Auth-form-container">
+    <div className="Auth-form-container" data-aos="zoom-in">
       <Form className="Auth-form" onSubmit={login}>
         <div className="Auth-form-content">
           <h3 className="Auth-form-title">로그인</h3>

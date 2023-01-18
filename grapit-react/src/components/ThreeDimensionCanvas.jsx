@@ -11,11 +11,13 @@ import { data } from '../data.js';
 import { setCamera } from '../store/cameraSlice';
 import { useDispatch } from 'react-redux';
 import * as _ from 'lodash';
-import { Button } from 'react-bootstrap';
+import { Button, Stack } from 'react-bootstrap';
+import * as Icon from 'react-bootstrap-icons';
 
 function ThreeDimensionCanvas(props) {
   const cameraRef = useRef();
   const [unit, setUnit] = useState(6);
+  const [axesVisible, setAxesVisible] = useState(true);
 
   const figureStore = useSelector(state => state.figure.figures);
 
@@ -64,32 +66,62 @@ function ThreeDimensionCanvas(props) {
   }, 500);
 
   return (
-    <Canvas>
-      <color attach="background" args={['#000000']} />
-      <OrthographicCamera
-        position={[100, 50, 100]}
-        zoom={60}
-        ref={cameraRef}
-        makeDefault
-      />
-      <OrbitControls
-        enableDamping={false}
-        onChange={() => {
-          updateCamera();
-          adjustScale();
-        }}
-      />
-      <ambientLight />
-      <directionalLight position={[0, 0, 10]} intensity={0.8} />
-      <PointLights />
+    <>
+      <Canvas>
+        <color attach="background" args={['#000000']} />
+        <OrthographicCamera
+          position={[100, 50, 100]}
+          zoom={60}
+          ref={cameraRef}
+          makeDefault
+        />
+        <OrbitControls
+          enableDamping={false}
+          onChange={() => {
+            updateCamera();
+            adjustScale();
+          }}
+        />
+        <ambientLight />
+        <directionalLight position={[0, 0, 10]} intensity={0.8} />
+        <PointLights />
 
-      <Axis axis="x" length={unit * 2} />
-      <Axis axis="y" length={unit} />
-      <Axis axis="z" length={unit * 2} />
-      <gridHelper args={[unit * 4 - 2, unit * 4 - 2, '', 'gray']} />
+        {axesVisible && (
+          <>
+            <Axis axis="x" length={unit * 2} />
+            <Axis axis="y" length={unit} />
+            <Axis axis="z" length={unit * 2} />
+            <gridHelper args={[unit * 4 - 2, unit * 4 - 2, '', 'gray']} />
+          </>
+        )}
 
-      {figureStore.map((figure, i) => resolveFigures(figure, i))}
-    </Canvas>
+        {figureStore.map((figure, i) => resolveFigures(figure, i))}
+      </Canvas>
+      <Stack
+        direction="vertical"
+        gap={2}
+        style={{ position: 'absolute', bottom: 0, left: 0, zIndex: 1000 }}
+      >
+        <Button
+          onClick={() => {
+            cameraRef.current.position.set(100, 50, 100);
+            cameraRef.current.zoom = 60;
+          }}
+        >
+          <Icon.ArrowRepeat size={32} color="white" />
+        </Button>
+        <Button
+          variant={axesVisible ? 'primary' : 'secondary'}
+          onClick={() => setAxesVisible(!axesVisible)}
+        >
+          {axesVisible ? (
+            <Icon.EyeFill size={32} color="white" />
+          ) : (
+            <Icon.EyeSlashFill size={32} color="black" />
+          )}
+        </Button>
+      </Stack>
+    </>
   );
 }
 export default ThreeDimensionCanvas;

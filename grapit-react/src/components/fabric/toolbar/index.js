@@ -115,7 +115,6 @@ function Toolbar(props) {
           className="menu-item button-3d"
           title={btn.title}
           onClick={e => {
-            console.log(image);
             e.preventDefault();
             if (props.enabled === false) return;
             props.setButtonMode(btn.key);

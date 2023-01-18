@@ -36,20 +36,20 @@ function Board(props) {
   const load = useSelector(state => state.Load);
   useEffect(() => {
     if (load.first) {
-      fabric.Image.fromURL('/images/problem/problem.png', function (img) {
+      fabric.Image.fromURL('/images/problem/problem1.png', function (img) {
         const oImg = img
           .set({
             left: 0,
-            top: 630,
+            top: 650,
             angle: 0,
           })
-          .scale(0.6);
+          .scale(1);
         fabricCanvas.current.add(oImg).renderAll();
       });
 
       dispatch(setLoad.setFirst());
     } else if (load.second) {
-      fabric.Image.fromURL('/images/problem/problem.png', function (img) {
+      fabric.Image.fromURL('/images/problem/problem2.png', function (img) {
         const oImg = img
           .set({
             left: 0,
@@ -61,7 +61,7 @@ function Board(props) {
       });
       dispatch(setLoad.setSecond());
     } else if (load.third) {
-      fabric.Image.fromURL('/images/problem/problem.png', function (img) {
+      fabric.Image.fromURL('/images/problem/problem3.png', function (img) {
         const oImg = img
           .set({
             left: 0,

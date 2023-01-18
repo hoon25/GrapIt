@@ -229,11 +229,11 @@ label {
     /* margin: 20; */
     flex-wrap: wrap;
     text-align: center;
+    justify-content: center;
     /* width: auto;
     height: max-content;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     padding: 100px; */
 }

@@ -12,6 +12,7 @@ const defaultStyle = {
   border: '1px solid gray',
   width: '300px',
   height: '150px',
+  zIndex: '99'
   // display: 'inline-block',
 };
 

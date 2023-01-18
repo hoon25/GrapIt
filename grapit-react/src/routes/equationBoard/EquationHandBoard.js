@@ -268,6 +268,15 @@ export function EquationHandBoard({
           onMouseUp={event => {
             canvasEventListener(event, 'up');
           }}
+          onTouchStart={event => {
+            canvasEventListener(event, 'down');
+          }}
+          onTouchMove={event => {
+            canvasEventListener(event, 'move');
+          }}
+          onTouchEnd={event => {
+            canvasEventListener(event, 'up');
+          }}
         ></canvas>
         <Button size="sm" onClick={clearCanvas}>
           초기화

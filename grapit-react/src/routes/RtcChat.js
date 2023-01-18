@@ -180,15 +180,6 @@ function RtcChat({ chat }) {
         fluid
         style={{ height: '100%' }}
         // ref={tempRef}
-        onPointerMove={e => {
-          updateMyPresence({
-            cursor: { x: e.clientX, y: e.clientY },
-            screenInfo: { width: containerInfo[0], height: containerInfo[1] },
-          });
-        }}
-        onPointerLeave={() =>
-          updateMyPresence({ cursor: null, screenInfo: null })
-        }
       >
         {userOther.map(
           // todo 함수 분리
@@ -259,6 +250,18 @@ function RtcChat({ chat }) {
                     childHeight={childHeight}
                     sendPaintInfo={sendObjectInfo}
                     drawInfo={drawInfo}
+                    onPointerMove={e => {
+                      updateMyPresence({
+                        cursor: { x: e.clientX, y: e.clientY },
+                        screenInfo: {
+                          width: containerInfo[0],
+                          height: containerInfo[1],
+                        },
+                      });
+                    }}
+                    onPointerLeave={() =>
+                      updateMyPresence({ cursor: null, screenInfo: null })
+                    }
                   />
                 ) : (
                   ''

@@ -61,7 +61,7 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
 
     const newTwoDFigure = { ...copy[index] };
 
-    newTwoDFigure.thick -= 10;
+    newTwoDFigure.thick = 3;
     copy[index] = newTwoDFigure;
 
     sendObjectInfo('GRAPH', JSON.stringify(copy));
@@ -162,10 +162,12 @@ function makeFormulaFormat(TwoDfigure) {
   }
   formula = formula.replace(/--/g, '+');
   formula = formula.replace(/-+/g, '-');
+  formula = formula.replace(/\+-/g, '-');
+  formula = formula.replace(/-1x/g, '-x');
   return formula;
 }
 function LineFormulaFormat(first, second) {
-  let formula = 'y = ';
+  let formula = 'y=';
 
   if (first === null || first === undefined || first === 0) {
     //x계수가 없을때
@@ -177,7 +179,7 @@ function LineFormulaFormat(first, second) {
     first === 1 ? (formula += 'x') : (formula += first + 'x');
     second === null || second === 0 || second === undefined
       ? (formula += '')
-      : (formula += ' + ' + second);
+      : (formula += '+' + second);
   }
   return formula;
 }
@@ -189,20 +191,20 @@ function CircleFormulaFormat(first, second, third) {
     ? (formula += 'x^2')
     : (formula += '(x-' + first + ')^2');
   second === null || second === undefined || second === 0
-    ? (formula += ' + y^2')
-    : (formula += ' + (y-' + second + ')^2');
-  formula += ' = ' + third + '^2';
+    ? (formula += '+y^2')
+    : (formula += '+(y-' + second + ')^2');
+  formula += '=' + third + '^2';
   return formula;
 }
 
 function TwoDFormulaFormat(first, second, third) {
-  let formula = 'y = ';
+  let formula = 'y=';
   first === 1 ? (formula += 'x^2') : (formula += first + 'x^2');
   second === null || second === undefined || second === 0
     ? (formula += '')
-    : (formula += ' + ' + second + 'x ');
+    : (formula += '+' + second + 'x');
   third === null || third === undefined || third === 0
     ? (formula += '')
-    : (formula += ' + ' + third);
+    : (formula += '+' + third);
   return formula;
 }

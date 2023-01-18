@@ -37,7 +37,7 @@ function Board(props) {
   useEffect(() => {
     if (load.first) {
       fabric.Image.fromURL(
-        'http://localhost:3000/images/problem/cat.png',
+        'http://localhost:3000/images/problem/problem.png',
         function (img) {
           const oImg = img
             .set({
@@ -53,7 +53,7 @@ function Board(props) {
       dispatch(setLoad.setFirst());
     } else if (load.second) {
       fabric.Image.fromURL(
-        'http://localhost:3000/images/problem/cat.png',
+        'http://localhost:3000/images/problem/problem.png',
         function (img) {
           const oImg = img
             .set({
@@ -68,7 +68,7 @@ function Board(props) {
       dispatch(setLoad.setSecond());
     } else if (load.third) {
       fabric.Image.fromURL(
-        'http://localhost:3000/images/problem/cat.png',
+        'http://localhost:3000/images/problem/problem.png',
         function (img) {
           const oImg = img
             .set({

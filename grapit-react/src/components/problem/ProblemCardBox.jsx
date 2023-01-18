@@ -27,7 +27,7 @@ export default function ProblemCardBox({ sendObjectInfo }) {
       gap={2}
       style={{
         backgroundColor: 'whitesmoke',
-        height: '45vh',
+        height: '60vh',
         overflowY: 'scroll',
       }}
     >

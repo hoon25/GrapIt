@@ -275,7 +275,7 @@ function RtcChat({ chat }) {
                   bottom: '0px',
                 }}
               >
-                {/*<Vidu user={user} chat={chat} />*/}
+                <Vidu user={user} chat={chat} />
               </div>
             </div>
           </Col>

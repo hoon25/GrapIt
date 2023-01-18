@@ -69,7 +69,14 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
 
   const onDelBtnClick = () => {
     dispatch(setTwoDFigure.removeFigure(TwoDfigure.figureId));
-    sendObjectInfo('GRAPH', TwoDfigure);
+
+    // TODO 부채
+    const copy = [...TwoDfigures];
+    const index = copy.findIndex(x => x.figureId === TwoDfigure.figureId);
+
+    copy.splice(index, 1);
+
+    sendObjectInfo('GRAPH', JSON.stringify(copy));
   };
 
   const onCardMouseLeave = () => {
@@ -112,9 +119,7 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
         onDoubleClick={onCardDoubleClick}
       >
         <Row className="flex justify-content-between align-content-center">
-
           <Col lg={12}>{resolveInfo(TwoDfigure)}</Col>
-
         </Row>
       </Card.Body>
     </Card>

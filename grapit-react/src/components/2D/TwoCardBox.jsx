@@ -21,16 +21,29 @@ export default function TwoCardBox({ sendObjectInfo }) {
         overflowY: 'scroll',
       }}
     >
-      {TwoDfigures.map(x => [x, dispatch, sendObjectInfo]).map(makeCard)}
+      {TwoDfigures.map(x => [x, dispatch, sendObjectInfo, TwoDfigures]).map(
+        makeCard,
+      )}
     </Stack>
   );
 }
 
-function makeCard([TwoDfigure, dispatch, sendObjectInfo], i) {
+function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
   const headerColor = TwoDfigure.color;
 
   const onCardMouseDown = () => {
     dispatch(setTwoDFigure.emphasizeFigure(TwoDfigure.figureId));
+
+    // TODO 부채
+    const copy = [...TwoDfigures];
+    const index = copy.findIndex(x => x.figureId === TwoDfigure.figureId);
+
+    const newTwoDFigure = { ...copy[index] };
+
+    newTwoDFigure.thick += 10;
+    copy[index] = newTwoDFigure;
+
+    sendObjectInfo('GRAPH', JSON.stringify(copy));
   };
 
   const onCardDoubleClick = () => {
@@ -39,6 +52,17 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo], i) {
 
   const onCardMouseUp = () => {
     dispatch(setTwoDFigure.deemphasizeFigure(TwoDfigure.figureId));
+
+    // TODO 부채
+    const copy = [...TwoDfigures];
+    const index = copy.findIndex(x => x.figureId === TwoDfigure.figureId);
+
+    const newTwoDFigure = { ...copy[index] };
+
+    newTwoDFigure.thick -= 10;
+    copy[index] = newTwoDFigure;
+
+    sendObjectInfo('GRAPH', JSON.stringify(copy));
   };
 
   const onDelBtnClick = () => {
@@ -48,6 +72,17 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo], i) {
 
   const onCardMouseLeave = () => {
     dispatch(setTwoDFigure.resetThick(TwoDfigure.figureId));
+
+    // TODO 부채
+    const copy = [...TwoDfigures];
+    const index = copy.findIndex(x => x.figureId === TwoDfigure.figureId);
+
+    const newTwoDFigure = { ...copy[index] };
+
+    newTwoDFigure.thick = 3;
+    copy[index] = newTwoDFigure;
+
+    sendObjectInfo('GRAPH', JSON.stringify(copy));
   };
 
   return (
@@ -70,14 +105,9 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo], i) {
         <Row className="flex justify-content-between align-content-center">
           <Col lg={8}>{resolveInfo(TwoDfigure)}</Col>
           <Col lg={2}>
-            {/* <Stack direction="horizontal" gap={2}> */}
-            {/* <Button className="btn-sm" variant="secondary">
-              투명
-            </Button> */}
             <Button className="btn-sm" variant="danger" onClick={onDelBtnClick}>
               <Trash3Fill />
             </Button>
-            {/* </Stack> */}
           </Col>
         </Row>
       </Card.Body>

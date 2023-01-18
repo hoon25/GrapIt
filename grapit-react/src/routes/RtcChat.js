@@ -13,8 +13,10 @@ import ThreeDimensionCanvas from '../components/ThreeDimensionCanvas';
 import CoordTypeSelector from '../components/CoordTypeSelector';
 import ThreeDimensionSideBar from '../components/ThreeDimensionSideBar';
 import TwoDimensionSideBar from '../components/2D/TwoDimensionSideBar';
+import Problem from '../components/problem/Problem';
 import TwoDfigure, { setTwoDFigure } from '../store/TwoDfigureSlice';
 import { setFigure } from '../store/figureSlice';
+import ProblemSideBar from '../components/problem/ProblemSideBar';
 
 var stompClient = null;
 
@@ -25,7 +27,7 @@ function RtcChat({ chat }) {
   const [viewPointY, setViewPointY] = useState([-7, 7]);
   const [graphList, setGraphList] = useState([]);
   const [drawInfo, setDrawInfo] = useState();
-  const [coordType, setCoordType] = useState('2D');
+  const [coordType, setCoordType] = useState('problem');
 
   const [threeCamera, setThreeCamera] = useState({});
   const [figureList, setFigureList] = useState([]);
@@ -220,7 +222,11 @@ function RtcChat({ chat }) {
                 style={{ position: 'absolute', bottom: '0px', zIndex: '995' }}
               ></div>
 
-              {coordType === '2D' ? (
+              {coordType === 'problem' ? (
+                <div style={graphStyle}>
+                  <Problem />
+                </div>
+              ) : coordType === '2D' ? (
                 <div style={graphStyle}>
                   {isLoaded ? (
                     <TwoDGraph
@@ -272,7 +278,7 @@ function RtcChat({ chat }) {
                   bottom: '0px',
                 }}
               >
-                <Vidu user={user} chat={chat} />
+                {/*<Vidu user={user} chat={chat} />*/}
               </div>
             </div>
           </Col>
@@ -283,7 +289,9 @@ function RtcChat({ chat }) {
               setCoordType={setCoordType}
             />
             <Row>
-              {coordType === '2D' ? (
+              {coordType === 'problem' ? (
+                <ProblemSideBar />
+              ) : coordType === '2D' ? (
                 <TwoDimensionSideBar
                   viewPointX={viewPointX}
                   viewPointY={viewPointY}

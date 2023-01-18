@@ -16,8 +16,8 @@ function Canvas(props) {
   const [buttonMode, setButtonMode] = useState('select');
 
   const [mode, setMode] = useState();
-  const [brushColor, setBrushColor] = useState('#f44336');
-  const [brushThickness, setBrushThickness] = useState(2);
+  const [brushColor, setBrushColor] = useState('#f06292');
+  const [brushThickness, setBrushThickness] = useState(5);
 
   useEffect(() => {
     setMode(buttonMode);

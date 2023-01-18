@@ -51,17 +51,11 @@ function Chat({ chat }) {
   }, []);
 
   function onMessageReceived(payload) {
-    console.log('onMessageReceived');
-    console.log(payload);
     let newMessage = JSON.parse(payload.body);
     setContents(contents => [...contents, newMessage]);
   }
 
   function sendMessage() {
-    console.log('sendMessage');
-    console.log(messageInput);
-    console.log(stompClient);
-    console.log('메세지 전송!!!!');
     if (stompClient) {
       stompClient.send(
         '/sock/pub/chat/sendMessage',
@@ -107,12 +101,7 @@ function Chat({ chat }) {
                 <Form.Control
                   onKeyDown={handleKeyDown}
                   onChange={function (e) {
-                    console.log(stompClient);
-                    console.log('start INPUT');
-                    console.log(stompClient);
                     setMessageInput(e.target.value);
-                    console.log('end INPUT');
-                    console.log(stompClient);
                   }}
                   placeholder="메세지를 입력하세요"
                   aria-label="Recipient's username"
@@ -155,12 +144,7 @@ function Chat({ chat }) {
 }
 
 function Message({ message }) {
-  console.log(message);
-  console.log('===================');
-  console.log(message.sender);
   let user = useSelector(state => state.user);
-  console.log('===================');
-  console.log(user.nickName);
 
   if (user.nickName == message.sender) {
     return (

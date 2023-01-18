@@ -42,10 +42,10 @@ function Board(props) {
           const oImg = img
             .set({
               left: 0,
-              top: 750,
+              top: 680,
               angle: 0,
             })
-            .scale(1);
+            .scale(0.6);
           fabricCanvas.current.add(oImg).renderAll();
         },
       );
@@ -58,10 +58,10 @@ function Board(props) {
           const oImg = img
             .set({
               left: 0,
-              top: 750,
+              top: 680,
               angle: 0,
             })
-            .scale(1);
+            .scale(0.6);
           fabricCanvas.current.add(oImg).renderAll();
         },
       );
@@ -73,10 +73,10 @@ function Board(props) {
           const oImg = img
             .set({
               left: 0,
-              top: 750,
+              top: 680,
               angle: 0,
             })
-            .scale(1);
+            .scale(0.6);
           fabricCanvas.current.add(oImg).renderAll();
         },
       );
@@ -417,7 +417,6 @@ function Board(props) {
   }
 
   function handleCanvasMouseDown(options) {
-    console.log(props.mode);
     const { enabled } = props;
     if (enabled === false) return;
     setIsDrawing(true);
@@ -432,7 +431,6 @@ function Board(props) {
 
   function handleCanvasMouseUp(options) {
     const { mode } = props;
-    console.log('mouseup');
     if (mode !== 'text' && preDrawerObj !== undefined) {
       // preDrawerObj.set('id', uuid.v4());
     }
@@ -458,8 +456,6 @@ function Board(props) {
 
   function handleCanvasSelectionCreated(e) {
     const { mode, enabled } = props;
-    console.log('handleCanvasSelectionCreated');
-    console.log(e);
     if (enabled === false || e.e === undefined) return;
     const selected = [];
     let temp = [];
@@ -485,10 +481,8 @@ function Board(props) {
       );
 
       fabricCanvas.current.discardActiveObject();
-      return;
     }
 
-    console.log(e.selected);
     // let newGroup = new fabric.Group(temp, {
     //   id: uuid.v4(),
     // });

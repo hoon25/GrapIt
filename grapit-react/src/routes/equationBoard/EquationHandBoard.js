@@ -129,7 +129,7 @@ export function EquationHandBoard({
     // const copyViewPointY = [Number(b) - 3, Number(b) + 3];
     // setViewPointX(copyViewPointX);
     // setViewPointY(copyViewPointY);
-    // sendObjectInfo('GRAPH', TwoDgraphList);
+    sendObjectInfo('GRAPH', TwoDgraphList);
 
     return result;
   };
@@ -178,7 +178,7 @@ export function EquationHandBoard({
     // const copyViewPointY = [Number(b) - 3, Number(b) + 3];
     // setViewPointX(copyViewPointX);
     // setViewPointY(copyViewPointY);
-    // sendObjectInfo('GRAPH', TwoDgraphList);
+    sendObjectInfo('GRAPH', TwoDgraphList);
 
     return result;
   };

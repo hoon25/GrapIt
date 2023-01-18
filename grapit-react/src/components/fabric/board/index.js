@@ -41,11 +41,11 @@ function Board(props) {
         function (img) {
           const oImg = img
             .set({
-              left: 100,
-              top: 100,
+              left: 0,
+              top: 750,
               angle: 0,
             })
-            .scale(0.7);
+            .scale(1);
           fabricCanvas.current.add(oImg).renderAll();
         },
       );
@@ -57,11 +57,11 @@ function Board(props) {
         function (img) {
           const oImg = img
             .set({
-              left: 100,
-              top: 100,
+              left: 0,
+              top: 750,
               angle: 0,
             })
-            .scale(0.7);
+            .scale(1);
           fabricCanvas.current.add(oImg).renderAll();
         },
       );
@@ -72,11 +72,11 @@ function Board(props) {
         function (img) {
           const oImg = img
             .set({
-              left: 100,
-              top: 100,
+              left: 0,
+              top: 750,
               angle: 0,
             })
-            .scale(0.7);
+            .scale(1);
           fabricCanvas.current.add(oImg).renderAll();
         },
       );
@@ -153,8 +153,8 @@ function Board(props) {
 
     fabricCanvas.current.setDimensions(
       {
-        width: 1680,
-        height: 720,
+        width: 1920,
+        height: 1080,
       },
       { backstoreOnly: true },
     );
@@ -476,15 +476,14 @@ function Board(props) {
     });
     setSendObj(undefined);
     if (mode === 'eraser') {
-      if (selected.id !== undefined && selected.id !== null) {
-        props.sendPaintInfo(
-          'PAINT',
-          JSON.stringify({
-            action: 'remove',
-            target: selected,
-          }),
-        );
-      }
+      props.sendPaintInfo(
+        'PAINT',
+        JSON.stringify({
+          action: 'remove',
+          target: selected,
+        }),
+      );
+
       fabricCanvas.current.discardActiveObject();
       return;
     }

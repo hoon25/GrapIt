@@ -140,3 +140,14 @@ nav.fill ul li a:hover:after {
     -moz-animation: fill 1s forwards;
     opacity: 1;
 }
+
+.nav-name{
+    cursor: default;
+    display: block;
+    text-decoration: none;
+    font-weight: 800;
+    color: #827d7d;
+    text-transform: uppercase;
+    margin: 0 10px;
+    transition: all 2s;
+}

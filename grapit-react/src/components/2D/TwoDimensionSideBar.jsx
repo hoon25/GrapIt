@@ -2,10 +2,7 @@ import { Row } from 'react-bootstrap';
 import TwoDGraphInput from './TwoDGraphInput';
 import { EquationHandBoard } from '../../routes/equationBoard/EquationHandBoard';
 import TwoCardBox from './TwoCardBox';
-import CircleColorPicker from '../CircleColorPicker';
-import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import TwoDInput from '../../store/TwoDInputSlice';
 
 export default function TwoDimensionSideBar({
   viewPointX,

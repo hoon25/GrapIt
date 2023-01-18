@@ -1,21 +1,9 @@
 .card {
-    /* padding: 1rem;
+    padding: 1rem;
     background: #fff;
     border: 1px solid rgb(59, 102, 255);
     display: flex;
-    position: relative; */
-    display: -webkit-flex;
-    display: flex;
-    -webkit-justify-content: center;
-    justify-content: center;
-    -webkit-flex-wrap: wrap;
-    flex-wrap: wrap;
-    margin-top: 20px;
-    padding: 10%;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    border: 1px solid rgb(59, 102, 255);
+    position: relative;
 }
 
 h1 {

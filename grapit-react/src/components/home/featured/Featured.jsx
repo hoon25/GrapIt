@@ -10,7 +10,8 @@ const Featured = () => {
         <div className="container">
           <Heading
             title="Grap-It 제공 서비스"
-            subtitle="Get the best graph extracurricular service."
+            subtitle=" For every student,
+            Every classroom."
           />
           <FeaturedCard />
         </div>

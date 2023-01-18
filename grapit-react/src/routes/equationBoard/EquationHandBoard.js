@@ -6,11 +6,13 @@ import { Button } from 'react-bootstrap';
 import { setTwoDFigure } from '../../store/TwoDfigureSlice';
 import { generateUUID } from 'three/src/math/MathUtils';
 
+// canvas 기본 width : 300px height : 150px
+// reactive 하게 포인터를 받지 못해서 고정하지 않으면 canvas인식 오류 발생합니다.
 const defaultStyle = {
   border: '1px solid gray',
-  width: '100%',
-  height: '50%',
-  // display: 'inline-block',
+  width: '300px',
+  height: '150px',
+  display: 'inline-block',
 };
 
 export function EquationHandBoard({
@@ -42,6 +44,7 @@ export function EquationHandBoard({
     context.lineWidth = 3;
     context.strokeStyle = 'black';
     setCtx(context);
+    // console.log(canvas.current.width, canvas.current.height);
   }, []);
 
   // Mathpix SenderList 추출 [x : [], y: []]
@@ -246,6 +249,7 @@ export function EquationHandBoard({
   return (
     <>
       <div>
+        Beta☘️ 손으로 수식입력
         <canvas
           ref={canvasRef}
           style={defaultStyle}
@@ -262,8 +266,12 @@ export function EquationHandBoard({
             canvasEventListener(event, 'up');
           }}
         ></canvas>
-        <Button onClick={clearCanvas}>초기화</Button>
-        <Button onClick={submitCanvas}>생성</Button>
+        <Button size="sm" onClick={clearCanvas}>
+          초기화
+        </Button>
+        <Button size="sm" onClick={submitCanvas}>
+          생성
+        </Button>
         {latexResult && <div>{latexResult}</div>}
       </div>
     </>

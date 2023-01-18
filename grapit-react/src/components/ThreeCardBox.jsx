@@ -3,8 +3,9 @@ import { Button, Card, Col, Row, Stack } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFigure } from '../store/figureSlice';
 import { translate } from './translate';
+import * as Icon from 'react-bootstrap-icons';
 
-export default function ThreeCardBox() {
+export default function ThreeCardBox(props) {
   const figureStore = useSelector(state => state.figure.figures);
 
   const dispatch = useDispatch();
@@ -18,33 +19,85 @@ export default function ThreeCardBox() {
         overflowY: 'scroll',
       }}
     >
-      {figureStore.map(x => [x, dispatch]).map(makeCard)}
+      {figureStore
+        .map(x => [x, dispatch, props.sendObjectInfo, figureStore])
+        .map(makeCard)}
     </Stack>
   );
 }
 
-function makeCard([figure, dispatch], i) {
+function makeCard([figure, dispatch, sendObjectInfo, figureStore], i) {
   const headerColor = '#' + figure.color.toString(16);
 
-  const onCardClick = () => {
+  const toggleOpacity = () => {
     dispatch(setFigure.transparentFigure(figure.figureId));
+
+    // TODO 부채
+    const copy = [...figureStore];
+    const index = copy.findIndex(f => f.figureId === figure.figureId);
+
+    const newFigure = { ...copy[index] };
+    newFigure.transparent = !newFigure.transparent;
+
+    copy[index] = newFigure;
+
+    sendObjectInfo('FIGURE', JSON.stringify(copy));
   };
 
-  const onCardMouseDown = () => {
+  const emphasize = () => {
     dispatch(setFigure.emphasizeFigure(figure.figureId));
+
+    // TODO 부채
+    const copy = [...figureStore];
+    const index = copy.findIndex(f => f.figureId === figure.figureId);
+
+    const newFigure = { ...copy[index] };
+    if (newFigure.type === 'twoPointedLine') {
+      newFigure.thick = true;
+    } else {
+      newFigure.polish = true;
+    }
+
+    copy[index] = newFigure;
+
+    sendObjectInfo('FIGURE', JSON.stringify(copy));
   };
 
-  const onCardMouseUp = () => {
+  const deemphasize = () => {
     dispatch(setFigure.deemphasizeFigure(figure.figureId));
+
+    // TODO 부채
+    const copy = [...figureStore];
+    const index = copy.findIndex(f => f.figureId === figure.figureId);
+
+    const newFigure = { ...copy[index] };
+    if (newFigure.type === 'twoPointedLine') {
+      newFigure.thick = false;
+    } else {
+      newFigure.polish = false;
+    }
+
+    copy[index] = newFigure;
+
+    sendObjectInfo('FIGURE', JSON.stringify(copy));
   };
 
   const onDelBtnClick = () => {
     dispatch(setFigure.removeFigure(figure.figureId));
+
+    // TODO 부채
+    const copy = [...figureStore];
+    const index = copy.findIndex(f => f.figureId === figure.figureId);
+
+    copy.splice(index, 1);
+
+    sendObjectInfo('FIGURE', JSON.stringify(copy));
   };
 
   return (
     <Card key={i}>
       <Card.Header
+        className="d-flex justify-content-between"
         style={{
           fontWeight: 'bold',
           backgroundColor: headerColor,
@@ -52,24 +105,27 @@ function makeCard([figure, dispatch], i) {
         }}
       >
         {translate(figure.type)}
+        <Icon.X
+          lg={2}
+          color={contrastColor(headerColor)}
+          size="25px"
+          onClick={onDelBtnClick}
+        />
       </Card.Header>
-      <Card.Body
-        onClick={onCardClick}
-        onMouseDown={onCardMouseDown}
-        onMouseUp={onCardMouseUp}
-      >
-        <Row>
-          <Col lg={8}>{resolveInfo(figure)}</Col>
-          <Col lg={2}>
-            {/* <Stack direction="horizontal" gap={2}> */}
-            {/* <Button className="btn-sm" variant="secondary">
-              투명
-            </Button> */}
-            <Button className="btn-sm" variant="danger" onClick={onDelBtnClick}>
-              X
-            </Button>
-            {/* </Stack> */}
+      <Card.Body className="pl-1 pr-1">
+        <Row className="d-flex justify-content-between">
+          <Col onMouseDown={emphasize} onMouseUp={deemphasize}>
+            {resolveInfo(figure)}
           </Col>
+          {figure.type !== 'twoPointedLine' && (
+            <Col lg={2} className="d-flex align-items-center">
+              <Icon.EyeFill
+                color={figure.transparent ? 'lightgray' : 'black'}
+                size="30px"
+                onClick={toggleOpacity}
+              />
+            </Col>
+          )}
         </Row>
       </Card.Body>
     </Card>

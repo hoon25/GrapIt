@@ -5,7 +5,7 @@ import 'survey-core/defaultV2.min.css';
 import axios from 'axios';
 import './survey.css';
 import { data1 } from './data1';
-import { Button } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 
 StylesManager.applyTheme('defaultV2');
@@ -25,7 +25,11 @@ function SurveyComponent() {
       })
       .then(navigate('/result'));
   });
-  return <Survey model={survey}></Survey>;
+  return (
+    <Container>
+      <Survey model={survey} />
+    </Container>
+  );
 }
 
 export default SurveyComponent;

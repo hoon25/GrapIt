@@ -27,7 +27,7 @@ function ChatRoomList() {
 
   return (
     <>
-      <button class="custom-btn btn-9" onClick={handleShow}>
+      <button class="custom-btn btn-9 " style={{ width: "20rem", height: "3rem" }} onClick={handleShow}>
         방 생성하기
       </button>
       <CreateRoom

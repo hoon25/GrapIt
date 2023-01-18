@@ -5,6 +5,8 @@ import { setTwoDFigure } from '../../store/TwoDfigureSlice';
 import { MathComponent } from 'mathjax-react';
 import { Trash3Fill } from 'react-bootstrap-icons';
 import { setTwoDInput } from '../../store/TwoDInputSlice';
+import * as Icon from 'react-bootstrap-icons';
+import { translate } from '../translate';
 
 export default function TwoCardBox({ sendObjectInfo }) {
   const TwoDfigures = useSelector(state => state.TwoDfigure.TwoDfigures);
@@ -53,13 +55,20 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo], i) {
   return (
     <Card key={i}>
       <Card.Header
+        className="d-flex justify-content-between"
         style={{
           fontWeight: 'bold',
           backgroundColor: headerColor,
           color: contrastColor(headerColor),
         }}
       >
-        {TwoDfigure.type}
+        {translate(TwoDfigure.type)}
+        <Icon.X
+          lg={2}
+          color={contrastColor(headerColor)}
+          size="25px"
+          onClick={onDelBtnClick}
+        />
       </Card.Header>
       <Card.Body
         onMouseLeave={onCardMouseLeave}
@@ -68,17 +77,7 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo], i) {
         onDoubleClick={onCardDoubleClick}
       >
         <Row className="flex justify-content-between align-content-center">
-          <Col lg={8}>{resolveInfo(TwoDfigure)}</Col>
-          <Col lg={2}>
-            {/* <Stack direction="horizontal" gap={2}> */}
-            {/* <Button className="btn-sm" variant="secondary">
-              투명
-            </Button> */}
-            <Button className="btn-sm" variant="danger" onClick={onDelBtnClick}>
-              <Trash3Fill />
-            </Button>
-            {/* </Stack> */}
-          </Col>
+          <Col lg={12}>{resolveInfo(TwoDfigure)}</Col>
         </Row>
       </Card.Body>
     </Card>

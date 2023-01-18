@@ -27,7 +27,11 @@ function ChatRoomList() {
 
   return (
     <>
-      <button class="custom-btn btn-9 " style={{ width: "20rem", height: "3rem" }} onClick={handleShow}>
+      <button
+        class="custom-btn btn-9 "
+        style={{ width: '20rem', height: '3rem' }}
+        onClick={handleShow}
+      >
         방 생성하기
       </button>
       <CreateRoom
@@ -53,7 +57,8 @@ function ChatRoom({ chat, i }) {
       <div className="article">
         <tr>
           <td></td>{' '}
-          <Card style={{ width: '18rem' }} data-aos="fade-up">
+          <div className="card98" style={{ width: '18rem' }} data-aos="fade-up">
+            {/* <Card style={{ width: '18rem' }} data-aos="fade-up"> */}
             <div className="card__container">
               <td>
                 <th>#{i}</th>
@@ -77,7 +82,8 @@ function ChatRoom({ chat, i }) {
                 </Button>
               </td>
             </div>
-          </Card>
+            {/* </Card> */}
+          </div>
         </tr>
       </div>
     </>

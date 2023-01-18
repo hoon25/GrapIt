@@ -1,9 +1,18 @@
 .card {
     padding: 1rem;
     background: #fff;
+    border: 1px solid rgb(0, 0, 0);
+    display: flex;
+    position: relative;
+}
+
+.card98 {
+    padding: 1rem;
+    background: #fff;
     border: 1px solid rgb(59, 102, 255);
     display: flex;
     position: relative;
+    border-radius: 5px;
 }
 
 h1 {

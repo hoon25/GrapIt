@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import './result.css';
 function Result() {
   return (
-    <div className="box1" data-aos="zoom-in">
-      <Card>
+    <div className="box1">
+      <div className="card98" data-aos="zoom-in" style={{ width: '18rem' }}>
         <Card.Body>
           <Card.Title>
             <h5>맞춤 선생님을 찾았어요</h5>
@@ -21,8 +21,9 @@ function Result() {
             <h4>수업하러 가기</h4>
           </Link>
         </Card.Body>
-      </Card>
-      {/* style={{ width: '20rem' }} */}
+
+        {/* style={{ width: '20rem' }} */}
+      </div>
     </div>
   );
 }

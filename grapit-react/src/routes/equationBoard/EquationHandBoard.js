@@ -10,7 +10,7 @@ const defaultStyle = {
   border: '1px solid gray',
   width: '100%',
   height: '50%',
-  // display: 'inline-block',
+  display: 'inline-block',
 };
 
 export function EquationHandBoard({
@@ -42,6 +42,7 @@ export function EquationHandBoard({
     context.lineWidth = 3;
     context.strokeStyle = 'black';
     setCtx(context);
+    // console.log(canvas.current.width, canvas.current.height);
   }, []);
 
   // Mathpix SenderList 추출 [x : [], y: []]
@@ -246,6 +247,7 @@ export function EquationHandBoard({
   return (
     <>
       <div>
+        Beta☘️ 손으로 수식입력
         <canvas
           ref={canvasRef}
           style={defaultStyle}

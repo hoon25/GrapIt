@@ -26,7 +26,7 @@ function RtcChat({ chat }) {
   const [drawInfo, setDrawInfo] = useState();
   const [coordType, setCoordType] = useState('2D');
 
-  const [threeCamera, setThreeCamera] = useState({})
+  const [threeCamera, setThreeCamera] = useState({});
   const [figureList, setFigureList] = useState([]);
 
   const dispatch = useDispatch();
@@ -44,7 +44,6 @@ function RtcChat({ chat }) {
     pointerEvents: isWhiteBoard.isSelected ? 'none' : 'auto',
     zIndex: 10,
   };
-
 
   const whiteBoardStyle = {
     ...commonCanvasStyle,
@@ -137,9 +136,9 @@ function RtcChat({ chat }) {
           dispatch(setTwoDFigure.switchFigure(receivedGraphInfo));
         }
       } else if (newMessage.type === 'CAMERA') {
-        setThreeCamera(JSON.parse(newMessage.message))
+        setThreeCamera(JSON.parse(newMessage.message));
       } else if (newMessage.type === 'FIGURE') {
-        setFigureList(JSON.parse(newMessage.message))
+        setFigureList(JSON.parse(newMessage.message));
       }
     }
   }
@@ -233,7 +232,8 @@ function RtcChat({ chat }) {
                     setFigureList={setFigureList}
                   />
                   {/* <DataPusher /> */}
-                </div>}
+                </div>
+              )}
 
               <div style={whiteBoardStyle}>
                 {isLoaded ? (

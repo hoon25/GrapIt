@@ -270,7 +270,7 @@ function RtcChat({ chat }) {
                   // backgroundColor: '#FFDCDC',
                   zIndex: 1000,
                   width: '300px',
-                  height: '200px',
+                  heigh정t: '200px',
                   right: '0px',
                   bottom: '0px',
                 }}

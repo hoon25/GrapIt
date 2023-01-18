@@ -3,9 +3,10 @@ header {
     height: 10vh;
     box-shadow: 0 5px 30px rgb(0 22 84 / 10%);
     padding: 15px 0;
-    position: sticky;
+    position: center;
     top: 0;
     z-index: 99999;
+    text-align: center;
 }
 
 header img {
@@ -141,12 +142,12 @@ nav.fill ul li a:hover:after {
     opacity: 1;
 }
 
-.nav-name{
+.nav-name {
     cursor: default;
     display: block;
     text-decoration: none;
     font-weight: 800;
-    color: #827d7d;
+    color: #0019d4;
     text-transform: uppercase;
     margin: 0 10px;
     transition: all 2s;

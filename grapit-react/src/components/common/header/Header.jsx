@@ -56,22 +56,6 @@ const Header = () => {
             )}
           </ul>
         </nav>
-
-        <div className="button-flex">
-          {/* <button className='btn3'>
-              <i className='fa fa-sign-out'></i> 로그인
-            </button> */}
-        </div>
-
-        {/* <div className="toggle">
-            <button onClick={() => setNavList(!navList)}>
-              {navList ? (
-                <i className="fa fa-times"></i>
-              ) : (
-                <i className="fa fa-bars"></i>
-              )}
-            </button>
-          </div> */}
       </div>
     </>
   );

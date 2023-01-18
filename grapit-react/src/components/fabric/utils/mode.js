@@ -1,1 +1,1 @@
-export default ['select', 'pen', 'line', 'text', 'rectangle', 'eraser'];
+export default ['select', 'pen', 'line', 'eraser'];

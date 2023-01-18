@@ -5,8 +5,11 @@ import * as drawer from './drawer';
 import uuid from 'node-uuid';
 
 import './style.scss';
+import { useDispatch } from 'react-redux';
+import { setDraw } from '../../../store/DrawSlice';
 
 function Board(props) {
+  const dispatch = useDispatch();
   const [canvasId, setCanvasId] = useState(
     `fabric-whiteboard-canvas-${uuid.v4()}`,
   );
@@ -31,6 +34,14 @@ function Board(props) {
   const fabricCanvas = useRef(null);
 
   useEffect(() => {
+    console.log(props.clear);
+    if (props.clear) {
+      resetCanvas();
+      props.setClear(false);
+    }
+  }, [props.clear]);
+
+  useEffect(() => {
     if (sendObj !== undefined && mouseUp === true) {
       let action = undefined;
       if (props.mode !== 'eraser' && props.mode !== 'select') {
@@ -47,8 +58,6 @@ function Board(props) {
   }, [sendObj, mouseUp, selectedCount]);
 
   function handleCanvasObjectsAdded(options) {
-    console.log('handleCanvasObjectsAdded', options);
-    console.log(props.mode);
     if (props.mode === 'pen') {
       options.target.id = uuid.v4();
       props.sendPaintInfo(
@@ -206,10 +215,13 @@ function Board(props) {
   useEffect(() => {
     // const object = JSON.parse(props.drawInfo.target);
     if (props.drawInfo === undefined) return;
-    const objectById = getWhiteBoardObjectById(
-      fabricCanvas.current,
-      props.drawInfo.target.id,
-    );
+    let objectById;
+    if (props.drawInfo.target !== undefined) {
+      objectById = getWhiteBoardObjectById(
+        fabricCanvas.current,
+        props.drawInfo.target.id,
+      );
+    }
 
     if (props.drawInfo.action === 'add') {
       if (objectById === null) {
@@ -238,6 +250,8 @@ function Board(props) {
           fabricCanvas.current.remove(objectById);
         }
       });
+    } else if (props.drawInfo.action === 'remove-all') {
+      resetCanvas();
     } else if (props.drawInfo.action === 'pen') {
       if (objectById === null) {
         jsonToObject();
@@ -755,6 +769,10 @@ function Board(props) {
           target: options.target.toJSON(['id']),
         }),
       );
+  }
+
+  function resetCanvas() {
+    fabricCanvas.current.remove(...fabricCanvas.current.getObjects());
   }
 }
 

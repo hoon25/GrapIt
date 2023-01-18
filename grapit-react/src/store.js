@@ -7,6 +7,7 @@ import figure from './store/figureSlice';
 import camera from './store/cameraSlice';
 import TwoDfigure from './store/TwoDfigureSlice';
 import TwoDInput from './store/TwoDInputSlice';
+import Draw from './store/DrawSlice';
 
 export default configureStore({
   reducer: {
@@ -18,6 +19,7 @@ export default configureStore({
     camera: camera.reducer,
     TwoDfigure: TwoDfigure.reducer,
     TwoDInput: TwoDInput.reducer,
+    Draw: Draw.reducer,
   },
 });
 

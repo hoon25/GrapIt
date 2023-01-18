@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 
 import modes from './utils/mode';
 import './style.scss';
@@ -22,6 +22,7 @@ import './style.scss';
 import { useSelector } from 'react-redux';
 function WhiteBoard(props) {
   const isWhiteBoard = useSelector(state => state.isWhiteBoard);
+  const [clear, setClear] = useState(false);
 
   const whiteBoardStyle = {
     pointerEvents: isWhiteBoard.isSelected ? 'auto' : 'none',
@@ -41,6 +42,10 @@ function WhiteBoard(props) {
             brushThickness={props.brushThickness}
             sendPaintInfo={props.sendPaintInfo}
             drawInfo={props.drawInfo}
+            setFnReset={props.setFnReset}
+            setIsBoardLoaded={props.setIsBoardLoaded}
+            clear={clear}
+            setClear={setClear}
           />
         </div>
         <div style={{ position: 'absolute', top: '-50px', right: '130px' }}>
@@ -56,6 +61,8 @@ function WhiteBoard(props) {
             setBrushColor={props.setBrushColor}
             setBrushThickness={props.setBrushThickness}
             setButtonMode={props.setButtonMode}
+            sendPaintInfo={props.sendPaintInfo}
+            setClear={setClear}
           />
         </div>
       </div>

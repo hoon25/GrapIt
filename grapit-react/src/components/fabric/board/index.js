@@ -151,13 +151,13 @@ function Board(props) {
 
     fabricCanvas.current.zoom = window.zoom ? window.zoom : 1;
 
-    fabricCanvas.current.setDimensions(
-      {
-        width: 1920,
-        height: 1080,
-      },
-      { backstoreOnly: true },
-    );
+    // fabricCanvas.current.setDimensions(
+    //   {
+    //     width: 1920,
+    //     height: 1080,
+    //   },
+    //   { backstoreOnly: true },
+    // );
 
     props.setBoard(fabricCanvas.current);
   }, []);

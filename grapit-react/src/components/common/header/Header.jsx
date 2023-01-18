@@ -48,8 +48,11 @@ const Header = () => {
                 <Link to="/login">로그인</Link>
               </li>
             ) : (
-              <li>
-                {user.nickName} <Link to="/logout">로그아웃</Link>
+              <li className="flex">
+                <span className="nav-name">{user.nickName} </span>
+                <Link style={{ fontSize: '15px' }} to="/logout">
+                  로그아웃
+                </Link>
               </li>
             )}
           </ul>

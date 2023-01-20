@@ -20,6 +20,8 @@ import { Survey } from 'survey-react-ui';
 import 'survey-core/defaultV2.min.css';
 import Result from './components/home/survey/result';
 import Vidu from './routes/vidu/Vidu';
+import RtcChat from './routes/RtcChat';
+import DrawAlone from './routes/DrawAlone';
 
 function App() {
   let chat = useSelector(state => state.chat);
@@ -38,7 +40,7 @@ function App() {
           path="/room/:roomId"
           element={<CollaborationPage chat={chat} />}
         />
-        <Route path="/canvas" element={<Canvas />} />
+        <Route path="/draw_alone" element={<DrawAlone />} />
         <Route path="/ocr" element={<OCR />} />
         <Route path="/survey" element={<SurveyComponent />} />
         <Route path="/three" element={<ThreeCanvas />} />

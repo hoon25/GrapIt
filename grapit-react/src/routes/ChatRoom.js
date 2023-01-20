@@ -28,7 +28,7 @@ function ChatRoomList() {
   return (
     <>
       <button
-        class="custom-btn btn-9 "
+        className="custom-btn btn-9 "
         style={{ width: '20rem', height: '3rem' }}
         onClick={handleShow}
       >
@@ -61,7 +61,7 @@ function ChatRoom({ chat, i }) {
             {/* <Card style={{ width: '18rem' }} data-aos="fade-up"> */}
             <div className="card__container">
               <td>
-                <th>#{i}</th>
+                <th>#{i + 1}</th>
               </td>
 
               <td>

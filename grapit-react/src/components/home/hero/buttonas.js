@@ -20,7 +20,7 @@ export const Buttonas = ({
   const checkButtonSize = SIZES.includes(buttonSize) ? buttonSize : SIZES[0];
 
   return (
-    <Link to="/canvas" className="btn-mobile">
+    <Link to="/draw_alone" className="btn-mobile">
       <button
         className={`btn ${checkButtonStyle} ${checkButtonSize}`}
         onClick={onClick}

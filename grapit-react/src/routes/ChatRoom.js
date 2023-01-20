@@ -2,13 +2,14 @@ import { Button, Card } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setChat } from '../store/chatSlice';
 import { CreateRoom } from './CreateRoom';
 import './vidu/CreateRoom.css';
 import './ChatRoom.css';
 
 function ChatRoomList() {
+  const user = useSelector(state => state.user);
   const [chatList, setChatList] = useState([]);
   let navigate = useNavigate();
 
@@ -25,12 +26,23 @@ function ChatRoomList() {
     });
   }
 
+  function isUserLoggedIn() {
+    return user.nickName !== null;
+  }
+
   return (
     <>
       <button
         className="custom-btn btn-9 "
         style={{ width: '20rem', height: '3rem' }}
-        onClick={handleShow}
+        onClick={() => {
+          if (isUserLoggedIn()) {
+            handleShow();
+          } else {
+            alert('로그인이 필요합니다.');
+            navigate('/login');
+          }
+        }}
       >
         방 생성하기
       </button>
@@ -51,6 +63,11 @@ function ChatRoomList() {
 function ChatRoom({ chat, i }) {
   let navigate = useNavigate();
   let dispatch = useDispatch();
+  const user = useSelector(state => state.user);
+
+  function isUserLoggedIn() {
+    return user.nickName !== null;
+  }
 
   return (
     <>
@@ -73,9 +90,14 @@ function ChatRoom({ chat, i }) {
               <td>
                 <Button
                   variant="primary"
-                  onClick={function () {
-                    dispatch(setChat(chat));
-                    navigate(`/room/${chat.roomId}`);
+                  onClick={() => {
+                    if (isUserLoggedIn()) {
+                      dispatch(setChat(chat));
+                      navigate(`/room/${chat.roomId}`);
+                    } else {
+                      alert('로그인이 필요합니다.');
+                      navigate('/login');
+                    }
                   }}
                 >
                   입장하기

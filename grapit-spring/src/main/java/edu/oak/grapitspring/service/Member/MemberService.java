@@ -44,7 +44,7 @@ public class MemberService {
     private void validateDuplicateJoinEmail(Member member) {
         Optional<Member> findMember = memberRepository.findByEmail(member.getEmail());
         if (findMember.isPresent()) {
-            throw new DuplicateException("이미 존재하는 회원입니다.");
+            throw new DuplicateException("이미 존재하는 이메일입니다.");
         }
     }
 

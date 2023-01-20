@@ -35,13 +35,11 @@
 // export default Hero;
 
 import React from 'react';
-import { Link } from 'react-router-dom';
 import './hero.css';
 import { Button } from './Button';
 import './Button.css';
 import { Buttonas } from './buttonas';
 import Typewriter from 'typewriter-effect';
-// import { home } from './data1';
 
 const Hero = () => {
   return (
@@ -78,7 +76,6 @@ const Hero = () => {
           className="btns"
           buttonStyle="btn--primary"
           buttonSize="btn--large"
-          onClick={console.log('왱')}
         >
           맞춤 선생님 찾기 <i className="far fa-play-circle" />
         </Button>

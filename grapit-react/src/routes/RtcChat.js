@@ -17,6 +17,7 @@ import Problem from '../components/problem/Problem';
 import TwoDfigure, { setTwoDFigure } from '../store/TwoDfigureSlice';
 import { setFigure } from '../store/figureSlice';
 import ProblemSideBar from '../components/problem/ProblemSideBar';
+import { changeIsWhiteBoard } from '../store/isWhiteBoardSlice';
 
 var stompClient = null;
 
@@ -65,6 +66,10 @@ function RtcChat({ chat }) {
     sockjs_conn();
     setIsLoaded(true);
     // canvasParent.current.appendChild(canvas);
+    return () => {
+      dispatch(changeIsWhiteBoard.setIsWhiteBoard(false));
+      stompClient.disconnect();
+    };
   }, []);
 
   const tempRef = useRef();
@@ -282,7 +287,7 @@ function RtcChat({ chat }) {
                   bottom: '0px',
                 }}
               >
-                <Vidu user={user} chat={chat} />
+                {/*<Vidu user={user} chat={chat} />*/}
               </div>
             </div>
           </Col>

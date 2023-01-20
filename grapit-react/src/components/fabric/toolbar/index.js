@@ -4,10 +4,7 @@ import modes from '../utils/mode';
 import './style.scss';
 import '../../../css/floatingButton.css';
 import '../../../css/Button3D.css';
-import {
-  setIsWhiteBoard,
-  toggleIsWhiteBoard,
-} from '../../../store/isWhiteBoardSlice';
+import { changeIsWhiteBoard } from '../../../store/isWhiteBoardSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   ArrowsMove,
@@ -59,7 +56,7 @@ function Toolbar(props) {
       <input
         type="checkbox"
         onClick={() => {
-          dispatch(toggleIsWhiteBoard());
+          dispatch(changeIsWhiteBoard.toggleIsWhiteBoard());
         }}
         className="menu-open"
         name="menu-open"

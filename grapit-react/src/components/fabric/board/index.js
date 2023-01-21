@@ -87,7 +87,12 @@ function Board(props) {
     if (sendObj !== undefined && mouseUp === true) {
       let action = undefined;
       if (props.mode !== 'eraser' && props.mode !== 'select') {
+        console.log('sendObj', sendObj);
         if (sendObj.id !== undefined && sendObj.id !== null) {
+          // sendObj.set('width', (sendObj.width / props.width) * 1490);
+          // sendObj.set('height', (sendObj.height / props.height) * 1000);
+          // sendObj.set('left', (sendObj.left / props.width) * 1490);
+          // sendObj.set('top', (sendObj.top / props.height) * 1000);
           props.sendPaintInfo(
             'PAINT',
             JSON.stringify({
@@ -102,14 +107,23 @@ function Board(props) {
   }, [sendObj, mouseUp, selectedCount]);
 
   function handleCanvasObjectsAdded(options) {
-    if (props.mode === 'pen') {
+    if (
+      props.mode === 'pen' &&
+      (options.target.drawer === null || options.target.drawer === undefined)
+    ) {
       options.target.id = uuid.v4();
+      let copyObj = fabric.util.object.clone(options.target);
+      copyObj.set('width', (copyObj.width / props.width) * 1490);
+      copyObj.set('height', (copyObj.height / props.height) * 1000);
+      copyObj.set('left', (copyObj.width / props.width) * 1490);
+      copyObj.set('top', (copyObj.height / props.height) * 1000);
+      copyObj.set('drawer', user.nickName);
       props.sendPaintInfo(
         'PAINT',
         JSON.stringify({
           action: 'pen',
           drawer: user.nickName,
-          target: options.target.toJSON(['id', 'drawer']),
+          target: copyObj.toJSON(['id', 'drawer']),
         }),
       );
     }
@@ -124,6 +138,7 @@ function Board(props) {
       selectable: false,
       selection: false,
     });
+
     fabricCanvas.current.freeDrawingBrush.color = props.brushColor;
     fabricCanvas.current.freeDrawingBrush.width = props.brushThickness;
     fabricCanvas.current.hoverCursor = 'pointer';
@@ -260,7 +275,26 @@ function Board(props) {
       [props.drawInfo.target],
       function (enlivenedObjects) {
         enlivenedObjects.forEach(function (enlivenedObject) {
+          console.log(enlivenedObject);
           enlivenedObject.set('id', props.drawInfo.target.id);
+          enlivenedObject.set(
+            'width',
+            (enlivenedObject.width / 1490) * props.width,
+          );
+          enlivenedObject.set(
+            'height',
+            (enlivenedObject.height / 1000) * props.height,
+          );
+          enlivenedObject.set(
+            'left',
+            (enlivenedObject.left / 1490) * props.width,
+          );
+          enlivenedObject.set(
+            'top',
+            (enlivenedObject.top / 1000) * props.height,
+          );
+          enlivenedObject.set('drawer', props.drawInfo.drawer);
+          enlivenedObject.setCoords();
           fabricCanvas.current.add(enlivenedObject);
         });
       },
@@ -271,13 +305,15 @@ function Board(props) {
     // const object = JSON.parse(props.drawInfo.target);
     if (props.drawInfo === undefined) return;
     let objectById;
+    console.log('find 전');
     if (props.drawInfo.target !== undefined) {
+      console.log('find 안');
       objectById = getWhiteBoardObjectById(
         fabricCanvas.current,
         props.drawInfo.target.id,
       );
     }
-
+    console.log('find 후');
     if (props.drawInfo.action === 'add') {
       if (objectById === null) {
         jsonToObject();
@@ -308,7 +344,9 @@ function Board(props) {
     } else if (props.drawInfo.action === 'remove-all') {
       resetCanvas();
     } else if (props.drawInfo.action === 'pen') {
+      console.log(props.drawInfo);
       if (props.drawInfo.drawer !== user.nickName) {
+        console.log(objectById);
         if (objectById === null) {
           jsonToObject();
         }
@@ -381,7 +419,14 @@ function Board(props) {
   // } else if (props.drawInfo.type === 'remove') {
   // } else if (props.drawInfo.type === 'move') {
   // }
-
+  // const xPosition = (1980 - props.width) / 2;
+  // const yPosition = (1080 - props.height) / 2;
+  // const canvasStyle = {
+  //   position: 'absolute',
+  //   left: -xPosition,
+  //   top: -yPosition,
+  //   overflow: 'hidden',
+  // };
   if (props.visible === false) return <div></div>;
   return (
     <div className="fabric-whiteboard-board">
@@ -390,12 +435,15 @@ function Board(props) {
         className="fabric-whiteboard-canvas"
         width={props.width}
         height={props.height}
-        style={{ width: props.width, height: props.height }}
       />
+
       {props.enabled === false ? (
         <div
           className="fabric-whiteboard-mask"
-          style={{ width: props.width, height: props.height }}
+          style={{
+            width: props.width,
+            height: props.height,
+          }}
         />
       ) : (
         <div />

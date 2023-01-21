@@ -25,7 +25,11 @@ function Canvas(props) {
 
   return (
     <div className="questioncontent">
-      <div className="whiteboard" id="whiteboard">
+      <div
+        className="whiteboard"
+        id="whiteboard"
+        style={{ width: '100%', height: '100%' }}
+      >
         <WhiteBoard
           width={width}
           height={height}

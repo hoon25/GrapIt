@@ -26,6 +26,8 @@ function WhiteBoard(props) {
   const [board, setBoard] = useState(null);
 
   const whiteBoardStyle = {
+    width: '100%',
+    height: '100%',
     pointerEvents: isWhiteBoard.isSelected ? 'auto' : 'none',
   };
   if (props.visible) {

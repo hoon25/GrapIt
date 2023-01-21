@@ -17,6 +17,7 @@ import Problem from '../components/problem/Problem';
 import TwoDfigure, { setTwoDFigure } from '../store/TwoDfigureSlice';
 import { setFigure } from '../store/figureSlice';
 import ProblemSideBar from '../components/problem/ProblemSideBar';
+import { changeIsWhiteBoard } from '../store/isWhiteBoardSlice';
 
 var stompClient = null;
 
@@ -61,10 +62,14 @@ function RtcChat({ chat }) {
 
   useEffect(() => {
     setChildWidth(mainParent.current.clientWidth);
-    setChildHeight(mainParent.current.clientHeight);
+    setChildHeight(mainParent.current.clientWidth / 1.49);
     sockjs_conn();
     setIsLoaded(true);
     // canvasParent.current.appendChild(canvas);
+    return () => {
+      dispatch(changeIsWhiteBoard.setIsWhiteBoard(false));
+      stompClient.disconnect();
+    };
   }, []);
 
   const tempRef = useRef();
@@ -182,30 +187,23 @@ function RtcChat({ chat }) {
         // ref={tempRef}
       >
         <Row style={{ height: '100%' }}>
-          <Col
-            xs={9}
-            onPointerMove={e => {
-              console.log('hi');
-              updateMyPresence({
-                cursor: { x: e.clientX, y: e.clientY },
-                screenInfo: {
-                  width: containerInfo[0],
-                  height: containerInfo[1],
-                },
-              });
-            }}
-            onPointerLeave={() =>
-              updateMyPresence({ cursor: null, screenInfo: null })
-            }
-          >
+          <Col xs={9}>
             <div
               ref={mainParent}
               style={{ height: '100%', width: '100%', position: 'relative' }}
+              onPointerMove={e => {
+                updateMyPresence({
+                  cursor: { x: e.clientX, y: e.clientY },
+                  screenInfo: {
+                    width: childWidth,
+                    height: childHeight,
+                  },
+                });
+              }}
+              onPointerLeave={() =>
+                updateMyPresence({ cursor: null, screenInfo: null })
+              }
             >
-              <div
-                style={{ position: 'absolute', bottom: '0px', zIndex: '995' }}
-              ></div>
-
               {coordType === 'problem' ? (
                 <div style={graphStyle}>
                   <Problem />
@@ -215,7 +213,7 @@ function RtcChat({ chat }) {
                   {isLoaded ? (
                     <TwoDGraph
                       viewPointX={viewPointX}
-                      viewPointY={viewPointY}
+                      // viewPointY={viewPointY}
                       ratio={ratio}
                       setRatio={setRatio}
                       sendObjectInfo={sendObjectInfo}
@@ -260,12 +258,12 @@ function RtcChat({ chat }) {
                         name={presence.userInfo.name}
                         color={presence.userInfo.color}
                         x={
-                          presence.cursor.x *
-                          (window.innerWidth / presence.screenInfo.width)
+                          childWidth *
+                          (presence.cursor.x / presence.screenInfo.width)
                         }
                         y={
-                          presence.cursor.y *
-                          (window.innerHeight / presence.screenInfo.height)
+                          childHeight *
+                          (presence.cursor.y / presence.screenInfo.height)
                         }
                       />
                     ) : null,
@@ -282,7 +280,7 @@ function RtcChat({ chat }) {
                   bottom: '0px',
                 }}
               >
-                <Vidu user={user} chat={chat} />
+                {/*<Vidu user={user} chat={chat} />*/}
               </div>
             </div>
           </Col>

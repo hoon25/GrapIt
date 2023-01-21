@@ -36,7 +36,6 @@ export function TwoDGraph({
       setRatio(ratio + 1);
     }
   }
-
   function mouseMovingHandler(event) {
     // console.log("viewPointX[0] = "+ viewPointX[0])
     // console.log("viewPointX[1] = "+ viewPointX[1])

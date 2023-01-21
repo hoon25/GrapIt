@@ -76,7 +76,6 @@ function Board(props) {
   }, [load]);
 
   useEffect(() => {
-    console.log(props.clear);
     if (props.clear) {
       resetCanvas();
       props.setClear(false);
@@ -107,16 +106,22 @@ function Board(props) {
   }, [sendObj, mouseUp, selectedCount]);
 
   function handleCanvasObjectsAdded(options) {
+    console.log('draw 시점');
+    console.log('options', options);
+    console.log(props.width);
+    console.log(props.height);
     if (
       props.mode === 'pen' &&
       (options.target.drawer === null || options.target.drawer === undefined)
     ) {
       options.target.id = uuid.v4();
       let copyObj = fabric.util.object.clone(options.target);
-      copyObj.set('width', (copyObj.width / props.width) * 1490);
-      copyObj.set('height', (copyObj.height / props.height) * 1000);
-      copyObj.set('left', (copyObj.width / props.width) * 1490);
-      copyObj.set('top', (copyObj.height / props.height) * 1000);
+      copyObj.set('scaleX', (copyObj.scaleX / props.width) * 1490);
+      copyObj.set('scaleY', (copyObj.scaleY / props.height) * 1000);
+      copyObj.set('strokeWidth', (copyObj.strokeWidth / props.width) * 1490);
+      // copyObj.set('height', (copyObj.height / props.height) * 1000);
+      copyObj.set('left', (copyObj.left / props.width) * 1490);
+      copyObj.set('top', (copyObj.top / props.height) * 1000);
       copyObj.set('drawer', user.nickName);
       props.sendPaintInfo(
         'PAINT',
@@ -275,26 +280,50 @@ function Board(props) {
       [props.drawInfo.target],
       function (enlivenedObjects) {
         enlivenedObjects.forEach(function (enlivenedObject) {
+          console.log('add 시전');
+          console.log(props.width);
+          console.log(props.height);
           console.log(enlivenedObject);
           enlivenedObject.set('id', props.drawInfo.target.id);
           enlivenedObject.set(
-            'width',
-            (enlivenedObject.width / 1490) * props.width,
-          );
-          enlivenedObject.set(
-            'height',
-            (enlivenedObject.height / 1000) * props.height,
+            'top',
+            (enlivenedObject.top / 1000) * props.height,
           );
           enlivenedObject.set(
             'left',
             (enlivenedObject.left / 1490) * props.width,
           );
           enlivenedObject.set(
-            'top',
-            (enlivenedObject.top / 1000) * props.height,
+            'scaleX',
+            (enlivenedObject.scaleX / 1490) * props.width,
           );
+          enlivenedObject.set(
+            'scaleY',
+            (enlivenedObject.scaleY / 1000) * props.height,
+          );
+
+          if ((enlivenedObject.strokeWidth / 1490) * props.width > 4) {
+            enlivenedObject.set('strokeWidth', 3);
+          } else if ((enlivenedObject.strokeWidth / 1490) * props.width < 3) {
+            enlivenedObject.set('strokeWidth', 3);
+          } else {
+            enlivenedObject.set(
+              'strokeWidth',
+              (enlivenedObject.strokeWidth / 1490) * props.width,
+            );
+          }
+
+          // enlivenedObject.set(
+          //   'width',
+          //   (enlivenedObject.width / 1490) * props.width,
+          // );
+          // enlivenedObject.set(
+          //   'height',
+          //   (enlivenedObject.height / 1000) * props.height,
+          // );
+
           enlivenedObject.set('drawer', props.drawInfo.drawer);
-          enlivenedObject.setCoords();
+          // enlivenedObject.setCoords();
           fabricCanvas.current.add(enlivenedObject);
         });
       },
@@ -305,15 +334,12 @@ function Board(props) {
     // const object = JSON.parse(props.drawInfo.target);
     if (props.drawInfo === undefined) return;
     let objectById;
-    console.log('find 전');
     if (props.drawInfo.target !== undefined) {
-      console.log('find 안');
       objectById = getWhiteBoardObjectById(
         fabricCanvas.current,
         props.drawInfo.target.id,
       );
     }
-    console.log('find 후');
     if (props.drawInfo.action === 'add') {
       if (objectById === null) {
         jsonToObject();
@@ -344,9 +370,7 @@ function Board(props) {
     } else if (props.drawInfo.action === 'remove-all') {
       resetCanvas();
     } else if (props.drawInfo.action === 'pen') {
-      console.log(props.drawInfo);
       if (props.drawInfo.drawer !== user.nickName) {
-        console.log(objectById);
         if (objectById === null) {
           jsonToObject();
         }

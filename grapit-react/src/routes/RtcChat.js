@@ -6,8 +6,6 @@ import '../css/Canvas.css';
 import Canvas from '../components/Canvas';
 import { TwoDGraph } from './graph/TwoDGraph';
 import SockJs from 'sockjs-client';
-import { useOthers, useUpdateMyPresence } from '../config/liveblocks.config';
-import Cursor from '../components/Cursor';
 import Vidu from './vidu/Vidu';
 import ThreeDimensionCanvas from '../components/ThreeDimensionCanvas';
 import CoordTypeSelector from '../components/CoordTypeSelector';
@@ -77,9 +75,6 @@ function RtcChat({ chat }) {
     window.innerWidth,
     window.innerHeight,
   ]);
-
-  const updateMyPresence = useUpdateMyPresence();
-  const userOther = useOthers();
 
   const user = useSelector(state => state.user);
 
@@ -191,18 +186,6 @@ function RtcChat({ chat }) {
             <div
               ref={mainParent}
               style={{ height: '100%', width: '100%', position: 'relative' }}
-              onPointerMove={e => {
-                updateMyPresence({
-                  cursor: { x: e.clientX, y: e.clientY },
-                  screenInfo: {
-                    width: childWidth,
-                    height: childHeight,
-                  },
-                });
-              }}
-              onPointerLeave={() =>
-                updateMyPresence({ cursor: null, screenInfo: null })
-              }
             >
               {coordType === 'problem' ? (
                 <div style={graphStyle}>
@@ -247,26 +230,6 @@ function RtcChat({ chat }) {
                   />
                 ) : (
                   ''
-                )}
-
-                {userOther.map(
-                  // todo 함수 분리
-                  ({ connectionId, presence }) =>
-                    presence.cursor ? (
-                      <Cursor
-                        key={connectionId}
-                        name={presence.userInfo.name}
-                        color={presence.userInfo.color}
-                        x={
-                          childWidth *
-                          (presence.cursor.x / presence.screenInfo.width)
-                        }
-                        y={
-                          childHeight *
-                          (presence.cursor.y / presence.screenInfo.height)
-                        }
-                      />
-                    ) : null,
                 )}
               </div>
               <div

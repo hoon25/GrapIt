@@ -6,7 +6,7 @@ import CircleInputGroup from './input/CircleInputGroup';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTwoDInput } from '../../store/TwoDInputSlice';
 
-export default function TwoDGraphInput({ sendObjectInfo }) {
+export default function 경TwoDGraphInput({ sendObjectInfo }) {
   const TwoDInputType = useSelector(state => state.TwoDInput.type);
   const dispatch = useDispatch();
   const handleSelect = e => {
@@ -21,7 +21,7 @@ export default function TwoDGraphInput({ sendObjectInfo }) {
   };
 
   return (
-    <div>
+    <div style={{ padding: '0px' }}>
       <Form>
         <Form.Group>
           <Form.Control

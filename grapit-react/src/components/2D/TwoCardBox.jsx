@@ -19,7 +19,7 @@ export default function TwoCardBox({ sendObjectInfo }) {
       gap={2}
       style={{
         backgroundColor: 'whitesmoke',
-        height: '45vh',
+        height: '50vh',
         overflowY: 'scroll',
       }}
     >

@@ -290,7 +290,7 @@ function RtcChat({ chat }) {
               coordType={coordType}
               setCoordType={setCoordType}
             />
-            <Row>
+            <Row style={{ flexDirection: 'column' }}>
               {coordType === 'problem' ? (
                 <ProblemSideBar />
               ) : coordType === '2D' ? (

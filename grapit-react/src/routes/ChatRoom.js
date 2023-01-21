@@ -21,7 +21,6 @@ function ChatRoomList() {
   function getAllChatRoom() {
     axios.get('/api/room').then(res => {
       setChatList(res.data);
-      console.log(res.data);
     });
   }
 
@@ -39,52 +38,42 @@ function ChatRoomList() {
         handleClose={handleClose}
         handleShow={handleShow}
       />
-      <tbody className="article1">
-        {chatList.map((chat, i) => (
-          <ChatRoom chat={chat} i={i} />
+      <div className="article1">
+        {chatList.map((chat, index) => (
+          <div key={index}>
+            <ChatRoom chat={chat} />
+          </div>
         ))}
-      </tbody>
+      </div>
     </>
   );
 }
 
-function ChatRoom({ chat, i }) {
+function ChatRoom({ chat, index }) {
   let navigate = useNavigate();
   let dispatch = useDispatch();
 
   return (
     <>
       <div className="article">
-        <tr>
-          <td></td>{' '}
-          <div className="card98" style={{ width: '18rem' }} data-aos="fade-up">
-            {/* <Card style={{ width: '18rem' }} data-aos="fade-up"> */}
-            <div className="card__container">
-              <td>
-                <th>#{i + 1}</th>
-              </td>
+        <div className="card98" style={{ width: '18rem' }} data-aos="fade-up">
+          <div className="card__container">
+            <span style={{ fontWeight: 'bold' }}> {chat.roomName} </span>
 
-              <td>
-                {' '}
-                <th> {chat.roomName} </th>
-              </td>
-
-              <td>선생님 닉네임: {chat.roomCreatorNickName}</td>
-              <td>
-                <Button
-                  variant="primary"
-                  onClick={function () {
-                    dispatch(setChat(chat));
-                    navigate(`/room/${chat.roomId}`);
-                  }}
-                >
-                  입장하기
-                </Button>
-              </td>
+            <span>선생님 : {chat.roomCreatorNickName}</span>
+            <div>
+              <Button
+                variant="primary"
+                onClick={function () {
+                  dispatch(setChat(chat));
+                  navigate(`/room/${chat.roomId}`);
+                }}
+              >
+                입장하기
+              </Button>
             </div>
-            {/* </Card> */}
           </div>
-        </tr>
+        </div>
       </div>
     </>
   );

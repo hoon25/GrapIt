@@ -1,7 +1,9 @@
 package edu.oak.grapitsocket.message;
 
-import edu.oak.grapitsocket.domain.GraphBase;
-import edu.oak.grapitsocket.repository.GraphRedisRepository;
+import edu.oak.grapitsocket.domain.MessageBase;
+import edu.oak.grapitsocket.repository.MessageRedisRepository;
+import edu.oak.grapitsocket.service.MessageResponseDTO;
+import edu.oak.grapitsocket.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -12,16 +14,14 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-import java.util.Optional;
-
-
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-public class ChatController {
+public class MessageController {
 
     private final SimpMessageSendingOperations template;
-    private final GraphRedisRepository graphRedisRepository;
+    private final MessageRedisRepository graphRedisRepository;
+    private final MessageService messageService;
 
     //Client가 SEND할 수 있는 경로
     //stompConfig에서 설정한 applicationDestinationPrefixes와 @MessageMapping 경로가 병합됨
@@ -33,30 +33,20 @@ public class ChatController {
         headerAccessor.getSessionAttributes().put("userNickName", chat.getSender());
         headerAccessor.getSessionAttributes().put("roomId", chat.getRoomId());
 
-        chat.setMessage(chat.getSender() + " 님 입장!!");
+        chat.setData(chat.getSender() + " 님 입장!!");
         template.convertAndSend("/api/sub/chat/room/" + chat.getRoomId(), chat);
     }
 
     @MessageMapping("/chat/sendMessage")
-    public void sendMessage(@Payload MessageRequestDTO chat, SimpMessageHeaderAccessor headerAccessor) {
+    public void sendMessage(@Payload MessageRequestDTO request, SimpMessageHeaderAccessor headerAccessor) {
         System.out.println("ChatController.sendMessage");
-        System.out.println("chat.getSender() = " + chat.getSender());
-        System.out.println("chat.getMessage() = " + chat.getMessage());
+        System.out.println("chat.getSender() = " + request.getSender());
+        System.out.println("chat.getMessage() = " + request.getData());
 
-//        chat.setMessage(chat.getMessage());
-        GraphBase graphBase = GraphBase.builder().roomId(chat.getRoomId()).type("2D").data(chat.getMessage()).build();
-        // front가 항상 다주는게아니고, 저장하면 저장할 애만, 삭제면 삭제하는애만, 움직이면 움직인 애랑 값만
-        graphRedisRepository.save(graphBase);
-        System.out.println("Redis 저장 완료");
-        System.out.println(graphBase);
+        MessageResponseDTO responseDTO = messageService.addComponet(request);
+        System.out.println("responseDTO.toString() = " + responseDTO.toString());
 
-        Optional<GraphBase> redisGraphBase = graphRedisRepository.findById(graphBase.getRoomId());
-        System.out.println("Redis 로드 완료");
-        System.out.println(redisGraphBase.get());
-        chat.setMessage(redisGraphBase.get().getData());
-
-
-        template.convertAndSend("/sock/sub/chat/room/" + chat.getRoomId(), chat);
+        template.convertAndSend("/sock/sub/chat/room/" + responseDTO.getRoomId(), responseDTO);
     }
 
     @EventListener
@@ -70,7 +60,7 @@ public class ChatController {
         if (userNickName != null) {
             log.info("User Disconnected : " + userNickName);
             MessageRequestDTO chat = MessageRequestDTO.builder().roomId(roomId).sender(userNickName)
-                .message(userNickName + " 님이 퇴장하셨습니다.")
+                .data(userNickName + " 님이 퇴장하셨습니다.")
                 .build();
             template.convertAndSend("/sock/sub/chat/room/" + roomId, chat);
         }

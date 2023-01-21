@@ -2,6 +2,7 @@ package edu.oak.grapitsocket.domain;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
@@ -9,21 +10,28 @@ import org.springframework.data.redis.core.RedisHash;
 @Getter
 @ToString
 @RedisHash(value = "component") // timeToLive
-public class GraphBase {
+@NoArgsConstructor
+public class MessageBase {
 
     @Id
-    private final String roomId;
+    private String roomId;
 
-    private final String type;
+    private MessageType type;
 
-    private final String data;
+    private String data;
+
+    private String time;
+
+    private String sender;
 
 
     @Builder
-    public GraphBase(String roomId, String type, String data) {
+    public MessageBase(String roomId, MessageType type, String data, String time, String sender) {
         this.roomId = roomId;
         this.type = type;
         this.data = data;
+        this.time = time;
+        this.sender = sender;
     }
 }
 

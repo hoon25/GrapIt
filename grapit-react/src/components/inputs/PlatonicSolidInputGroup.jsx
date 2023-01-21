@@ -33,7 +33,7 @@ function PlatonicSolidInputGroup(props) {
 
     const copy = [...figureList, newFigure];
     //TODO 한개씩 추가로 나중에 바꾸기
-    props.sendObjectInfo('FIGURE', JSON.stringify(copy));
+    props.sendObjectInfo('FIGURE3D', JSON.stringify(copy));
   };
   return (
     <Form onSubmit={onSubmit}>

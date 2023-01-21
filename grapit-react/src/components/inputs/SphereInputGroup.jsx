@@ -32,7 +32,7 @@ function SphereInputGroup(props) {
 
     const copy = [...figureList, newFigure];
     //TODO 한개씩 추가로 나중에 바꾸기
-    props.sendObjectInfo('FIGURE', JSON.stringify(copy));
+    props.sendObjectInfo('FIGURE3D', JSON.stringify(copy));
     // useMemo 를 사용해서 point1, point2 를 저장해두고
     // point1, point2 가 바뀔때만 계산하도록 하면 좋을듯
   };

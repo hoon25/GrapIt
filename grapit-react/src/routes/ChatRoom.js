@@ -2,13 +2,14 @@ import { Button, Card } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setChat } from '../store/chatSlice';
 import { CreateRoom } from './CreateRoom';
 import './vidu/CreateRoom.css';
 import './ChatRoom.css';
 
 function ChatRoomList() {
+  const user = useSelector(state => state.user);
   const [chatList, setChatList] = useState([]);
   let navigate = useNavigate();
 
@@ -21,7 +22,12 @@ function ChatRoomList() {
   function getAllChatRoom() {
     axios.get('/api/room').then(res => {
       setChatList(res.data);
+      console.log(res.data);
     });
+  }
+
+  function isUserLoggedIn() {
+    return user.nickName !== null;
   }
 
   return (
@@ -29,7 +35,14 @@ function ChatRoomList() {
       <button
         className="custom-btn btn-9 "
         style={{ width: '20rem', height: '3rem' }}
-        onClick={handleShow}
+        onClick={() => {
+          if (isUserLoggedIn()) {
+            handleShow();
+          } else {
+            alert('로그인이 필요합니다.');
+            navigate('/login');
+          }
+        }}
       >
         방 생성하기
       </button>
@@ -52,6 +65,11 @@ function ChatRoomList() {
 function ChatRoom({ chat, index }) {
   let navigate = useNavigate();
   let dispatch = useDispatch();
+  const user = useSelector(state => state.user);
+
+  function isUserLoggedIn() {
+    return user.nickName !== null;
+  }
 
   return (
     <>
@@ -60,21 +78,26 @@ function ChatRoom({ chat, index }) {
           <div className="card__container">
             <span style={{ fontWeight: 'bold' }}> {chat.roomName} </span>
 
-            <span>선생님 : {chat.roomCreatorNickName}</span>
-            <div>
-              <Button
-                variant="primary"
-                onClick={function () {
-                  dispatch(setChat(chat));
-                  navigate(`/room/${chat.roomId}`);
-                }}
-              >
-                입장하기
-              </Button>
+              <span>선생님 닉네임: {chat.roomCreatorNickName}</span>
+              <div>
+                <Button
+                  variant="primary"
+                  onClick={() => {
+                    if (isUserLoggedIn()) {
+                      dispatch(setChat(chat));
+                      navigate(`/room/${chat.roomId}`);
+                    } else {
+                      alert('로그인이 필요합니다.');
+                      navigate('/login');
+                    }
+                  }}
+                >
+                  입장하기
+                </Button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
     </>
   );
 }

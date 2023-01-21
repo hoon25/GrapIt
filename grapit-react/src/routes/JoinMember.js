@@ -1,6 +1,7 @@
 import { Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function JoinMember() {
   const [form, setForm] = useState({
@@ -10,14 +11,24 @@ function JoinMember() {
     name: '',
     nickname: '',
   });
+  let navigate = useNavigate();
 
   const joinMember = e => {
-    axios.post('/api/join', {
-      email: form.email,
-      password: form.password,
-      name: form.name,
-      nickName: form.nickname,
-    });
+    e.preventDefault();
+    axios
+      .post('/api/join', {
+        email: form.email,
+        password: form.password,
+        name: form.name,
+        nickName: form.nickname,
+      })
+      .then(res => {
+        alert('회원가입이 완료되었습니다.');
+        navigate('/');
+      })
+      .catch(err => {
+        alert(err.response.data);
+      });
   };
 
   return (
@@ -33,7 +44,7 @@ function JoinMember() {
           We'll never share your email with anyone else.
         </Form.Text>
       </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicPassword">
+      <Form.Group className="mb-3" controlId="formBasicPassword1">
         <Form.Label>비밀번호</Form.Label>
         <Form.Control
           type="password"
@@ -41,7 +52,7 @@ function JoinMember() {
           placeholder="Password"
         />
       </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicPassword">
+      <Form.Group className="mb-3" controlId="formBasicPassword2">
         <Form.Label>비밀번호 확인</Form.Label>
         <Form.Control
           type="password"

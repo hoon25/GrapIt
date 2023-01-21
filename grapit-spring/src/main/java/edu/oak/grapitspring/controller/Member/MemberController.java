@@ -1,6 +1,7 @@
 package edu.oak.grapitspring.controller.Member;
 
 
+import edu.oak.grapitspring.common.exception.DuplicateException;
 import edu.oak.grapitspring.domain.Member;
 import edu.oak.grapitspring.service.Member.MemberService;
 import lombok.Builder;
@@ -56,10 +57,14 @@ public class MemberController {
 
     @PostMapping("/join")
     public ResponseEntity join(@RequestBody JoinRequestDTO request) {
-        memberService.join(request);
+        try {
+            memberService.join(request);
+        }catch (DuplicateException e) {
+            log.info("Err Message : {}", e.getMessage());
+            return ResponseEntity.status(409).body(e.getMessage());
+        }
         return ResponseEntity.ok().build();
     }
-
 
     @Data
     @Builder

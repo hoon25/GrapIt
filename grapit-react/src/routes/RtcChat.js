@@ -24,8 +24,8 @@ var stompClient = null;
 function RtcChat({ chat }) {
   const [ratio, setRatio] = useState(1);
   // viewPoint 초기값
-  const [viewPointX, setViewPointX] = useState([-3, 3]);
-  // const [viewPointY, setViewPointY] = useState([-3, 3]);
+  const [viewPointX, setViewPointX] = useState([-7, 7]);
+  const [viewPointY, setViewPointY] = useState([-7, 7]);
   const [graphList, setGraphList] = useState([]);
   const [drawInfo, setDrawInfo] = useState();
   const [coordType, setCoordType] = useState('problem');
@@ -296,7 +296,7 @@ function RtcChat({ chat }) {
               ) : coordType === '2D' ? (
                 <TwoDimensionSideBar
                   viewPointX={viewPointX}
-                  // viewPointY={viewPointY}
+                  viewPointY={viewPointY}
                   sendObjectInfo={sendObjectInfo}
                 />
               ) : (

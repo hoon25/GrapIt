@@ -4,19 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { LogIn, LogOut } from './routes/LogIn';
 import ChatRoom from './routes/ChatRoom';
-import Chat from './routes/Chat';
-import RTC from './routes/RTC';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { CollaborationPage } from './routes/CollaborationPage';
 import Home from './components/home/Home';
-import Canvas from './components/Canvas';
 import Header from './components/common/header/Header';
 import OCR from './routes/ocr/OCR';
 import JoinMember from './routes/JoinMember';
 import SurveyComponent from './components/home/survey/survey';
 import ThreeCanvas from './components/ThreeCanvas';
 import BaseCanvas from './components/BaseCanvas';
-import { Survey } from 'survey-react-ui';
 import 'survey-core/defaultV2.min.css';
 import Result from './components/home/survey/result';
 import Vidu from './routes/vidu/Vidu';
@@ -36,10 +31,7 @@ function App() {
         <Route path="/logout" element={<LogOut />} />
         <Route path="/join" element={<JoinMember />} />
         <Route path="/room" element={<ChatRoom />} />
-        <Route
-          path="/room/:roomId"
-          element={<CollaborationPage chat={chat} />}
-        />
+        <Route path="/room/:roomId" element={<RtcChat chat={chat} />} />
         <Route path="/draw_alone" element={<DrawAlone />} />
         <Route path="/ocr" element={<OCR />} />
         <Route path="/survey" element={<SurveyComponent />} />

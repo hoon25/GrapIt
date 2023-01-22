@@ -302,8 +302,8 @@ function Board(props) {
             (enlivenedObject.scaleY / 1000) * props.height,
           );
 
-          if ((enlivenedObject.strokeWidth / 1490) * props.width > 4) {
-            enlivenedObject.set('strokeWidth', 3);
+          if ((enlivenedObject.strokeWidth / 1490) * props.width > 10) {
+            enlivenedObject.set('strokeWidth', 10);
           } else if ((enlivenedObject.strokeWidth / 1490) * props.width < 3) {
             enlivenedObject.set('strokeWidth', 3);
           } else {

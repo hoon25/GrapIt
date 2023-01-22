@@ -9,3 +9,14 @@
 .fabric-whiteboard-colorpicker-hide {
   display: none !important;
 }
+
+.whiteboard-colorpicker{
+  position: fixed;
+  flex-direction: column;
+  background: white;
+  border-radius: 10px;
+  border: 2px solid #e1e1e1;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}

@@ -9,7 +9,7 @@ const isWhiteBoard = createSlice({
     // },
     toggleIsWhiteBoard(state) {
       state.isSelected = !state.isSelected;
-    }
+    },
   },
 });
 

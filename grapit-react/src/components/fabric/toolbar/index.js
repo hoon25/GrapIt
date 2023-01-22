@@ -35,7 +35,6 @@ function Toolbar(props) {
   const toggleState = () => {
     setIsEnabled(prevState => !prevState);
   };
-  const inputRef = useRef(null);
 
   const Icon = {
     select: <ArrowsMove />,
@@ -55,6 +54,10 @@ function Toolbar(props) {
       });
     });
     setToolButtons(toolButtons);
+
+    return () => {
+      setIsEnabled(false);
+    };
   }, []);
 
   return (
@@ -69,7 +72,6 @@ function Toolbar(props) {
             <ArrowsMove />
           </div>
           <input
-            ref={inputRef}
             id="toggle-menu"
             name="toggle-menu"
             type="checkbox"
@@ -78,7 +80,6 @@ function Toolbar(props) {
             onClick={() => {
               toggleState();
               dispatch(changeIsWhiteBoard.toggleIsWhiteBoard());
-              console.log(inputRef);
             }}
           />
 

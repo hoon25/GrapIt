@@ -19,17 +19,16 @@ import {
   VectorPen,
   PencilFill,
 } from 'react-bootstrap-icons';
+import ColorPicker from './colorpicker';
 
 function Toolbar(props) {
   const [toolButtons, setToolButtons] = useState([]);
   const [showColorPicker, setShowColorPicker] = useState(false);
-  const [showFontsize, setShowFontsize] = useState(false);
-  const [toolChange, setToolChange] = useState(undefined);
   const [image, setImage] = useState(null);
 
   const dispatch = useDispatch();
-  const isWhiteBoard = useSelector(state => state.isWhiteBoard);
   const imageInput = useRef();
+  const toolbox = useRef();
 
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleState = () => {
@@ -66,12 +65,16 @@ function Toolbar(props) {
         <div
           className={`toggle-menu ${isEnabled ? 'open' : 'close'}`}
           style={{ zIndex: '999' }}
+          onClick={() => {
+            toolbox.current.blur();
+          }}
         >
           <div className="icons">
             <PencilFill />
             <ArrowsMove />
           </div>
           <input
+            ref={toolbox}
             id="toggle-menu"
             name="toggle-menu"
             type="checkbox"
@@ -152,41 +155,14 @@ function Toolbar(props) {
         </div>
       </label>
 
-      {/*<a href="#" className="menu-item button-3d">*/}
-      {/*  <li*/}
-      {/*    className="tool"*/}
-      {/*    title="brush"*/}
-      {/*    onClick={() => {*/}
-      {/*      if (props.enabled === false) return;*/}
-      {/*      setShowColorPicker(!showColorPicker);*/}
-      {/*    }}*/}
-      {/*  >*/}
-      {/*    <i className="toolbar-ul-brush" />*/}
-      {/*  </li>*/}
-      {/*  <PaletteFill />*/}
-      {/*  <ColorPicker*/}
-      {/*    visible={showColorPicker}*/}
-      {/*    color={props.brushColor}*/}
-      {/*    colors={props.brushColors}*/}
-      {/*    setBrushColor={props.setBrushColor}*/}
-      {/*  />*/}
-      {/*</a>*/}
-      {/*<a href="#" className="menu-item button-3d">*/}
-      {/*  <label className="menu-item button-3d">*/}
-      {/*    <span className="hamburger hamburger-1"></span>*/}
-      {/*    <span className="hamburger hamburger-2"></span>*/}
-      {/*    <span className="hamburger hamburger-3"></span>*/}
-      {/*  </label>*/}
-
-      {/*  <Thickness*/}
-      {/*    visible={props.showToolbar}*/}
-      {/*    enabled={props.enabled}*/}
-      {/*    brushColor={props.brushColor}*/}
-      {/*    brushThickness={props.brushThickness}*/}
-      {/*    brushThicknessRange={props.brushThicknessRange}*/}
-      {/*    setBrushThickness={props.setBrushThickness}*/}
-      {/*  />*/}
-      {/*</a>*/}
+      <ColorPicker
+        buttonMode={props.buttonMode}
+        visible={showColorPicker}
+        color={props.brushColor}
+        setBrushColor={props.setBrushColor}
+        setBrushThickness={props.setBrushThickness}
+        brushThickness={props.brushThickness}
+      />
     </div>
   );
 }

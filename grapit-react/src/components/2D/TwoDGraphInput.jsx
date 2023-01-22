@@ -6,7 +6,7 @@ import CircleInputGroup from './input/CircleInputGroup';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTwoDInput } from '../../store/TwoDInputSlice';
 
-export default function 경TwoDGraphInput({ sendObjectInfo }) {
+export default function TwoDGraphInput({ sendObjectInfo }) {
   const TwoDInputType = useSelector(state => state.TwoDInput.type);
   const dispatch = useDispatch();
   const handleSelect = e => {

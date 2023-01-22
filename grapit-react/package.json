@@ -20,6 +20,7 @@
         "fabric-whiteboard": "^1.0.19",
         "framer-motion": "^8.4.2",
         "http-proxy-middleware": "^2.0.6",
+        "leva": "^0.9.34",
         "lodash": "^4.17.21",
         "mafs": "^0.8.0",
         "mathjax-react": "^2.0.1",

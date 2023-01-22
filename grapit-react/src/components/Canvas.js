@@ -13,7 +13,7 @@ let tempRoom;
 function Canvas(props) {
   const [width, setWidth] = useState(props.childWidth.toString());
   const [height, setHeight] = useState(props.childHeight.toString());
-  const [buttonMode, setButtonMode] = useState('select');
+  const [buttonMode, setButtonMode] = useState('pen');
 
   const [mode, setMode] = useState();
   const [brushColor, setBrushColor] = useState('#f06292');

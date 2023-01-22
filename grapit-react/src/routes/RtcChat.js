@@ -92,42 +92,41 @@ function RtcChat({ chat }) {
   // 동기화 소켓 통신
   const Stomp = require('stompjs/lib/stomp.js').Stomp;
 
-  function sockConnectAndSubsribe() {
-    stompClient.connect({ reconnect_delay: 5000 }, frame => {
-      if (stompClient.connected) {
-        stompClient.subscribe(
-          // '/sock/sub/chat/room/' + chat.roomId,
-          '/sock/sub/chat' + location.pathname,
-          rerenderGraph,
-        );
-        console.log('stompClient connect success');
-      } else {
-        console.log('Failed to connect, retrying...');
-      }
-    });
-  }
-
   const sockjs_conn = function () {
     // socket 접속로직
-    var socket = new SockJs('/sock/ws-stomp');
+    const socket = new SockJs('/sock/ws-stomp');
     // stomp 연결로직
     stompClient = Stomp.over(socket);
-    sockConnectAndSubsribe();
+
+    stompClient.connect(
+      { reconnect_delay: 5000 },
+      frame => {
+        if (stompClient.connected) {
+          stompClient.subscribe(
+            // '/sock/sub/chat/room/' + chat.roomId,
+            '/sock/sub/chat' + location.pathname,
+            rerenderGraph,
+          );
+          console.log('stompClient connect success');
+        } else {
+          console.log('Failed to connect, retrying...');
+        }
+      },
+      () => {
+        console.log('stompClient disconnected, connect retrying...');
+        sockjs_conn();
+      },
+    );
   };
 
   function sendObjectInfo(objectType, object) {
-    const connect = stompClient.connected;
-    while (!connect) {
-      sockConnectAndSubsribe();
-    }
-
     if (stompClient) {
       stompClient.debug = null;
       stompClient.send(
         '/sock/pub/chat/sendMessage',
         {},
         JSON.stringify({
-          roomId: chat.roomId,
+          roomId: location.pathname.replace(/\D/g, ''),
           sender: user.nickName,
           message: object,
           type: objectType,

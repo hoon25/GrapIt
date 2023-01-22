@@ -2,7 +2,7 @@
 .button-3d svg{
     display: block;
     flex: 1;
-    padding: 0;
+    padding: 3px;
     text-align: center;
 }
 
@@ -11,8 +11,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     text-align: center;
 
     color:#ecf0f1;

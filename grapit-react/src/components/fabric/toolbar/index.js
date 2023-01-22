@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { fabric } from 'fabric';
 import modes from '../utils/mode';
 import './style.scss';
-import '../../../css/floatingButton.css';
 import '../../../css/Button3D.css';
+import '../../../css/switchStyles.css';
 import { changeIsWhiteBoard } from '../../../store/isWhiteBoardSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -17,8 +17,8 @@ import {
   Trash3Fill,
   Image,
   VectorPen,
+  PencilFill,
 } from 'react-bootstrap-icons';
-import board from '../board';
 
 function Toolbar(props) {
   const [toolButtons, setToolButtons] = useState([]);
@@ -31,9 +31,15 @@ function Toolbar(props) {
   const isWhiteBoard = useSelector(state => state.isWhiteBoard);
   const imageInput = useRef();
 
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleState = () => {
+    setIsEnabled(prevState => !prevState);
+  };
+  const inputRef = useRef(null);
+
   const Icon = {
     select: <ArrowsMove />,
-    pen: <BrushFill />,
+    pen: <PencilFill />,
     line: <DashLg />,
     arrow: <ArrowUpRight />,
     rectangle: <Square />,
@@ -52,108 +58,98 @@ function Toolbar(props) {
   }, []);
 
   return (
-    <div className="menu">
-      <input
-        type="checkbox"
-        onClick={() => {
-          dispatch(changeIsWhiteBoard.toggleIsWhiteBoard());
-        }}
-        className="menu-open"
-        name="menu-open"
-        id="menu-open"
-      />
-      <label
-        className="menu-item button-3d menu-open-button"
-        htmlFor="menu-open"
-      >
-        {isWhiteBoard.isSelected ? <VectorPen /> : <GraphUp />}
-      </label>
-
-      <a
-        className="menu-item button-3d"
-        onClick={() => {
-          console.log(props.board);
-          imageInput.current.click();
-        }}
-      >
-        <input
-          ref={imageInput}
-          value={image}
-          type="file"
-          accept="image/*"
-          hidden={true}
-          onChange={event => {
-            const file = event.target.files[0];
-            const reader = new FileReader();
-            reader.onload = event => {
-              const data = event.target.result;
-              fabric.Image.fromURL(data, function (img) {
-                const oImg = img
-                  .set({
-                    left: 100,
-                    top: 100,
-                    angle: 0,
-                  })
-                  .scale(0.7);
-                props.board.add(oImg).renderAll();
-              });
-            };
-            reader.readAsDataURL(file);
-            setImage(null);
-          }}
-        />
-        <Image />
-      </a>
-
-      {toolButtons.map((btn, index) => (
-        <a
-          key={index}
-          href="#"
-          className="menu-item button-3d"
-          title={btn.title}
-          onClick={e => {
-            e.preventDefault();
-            if (props.enabled === false) return;
-            props.setButtonMode(btn.key);
-          }}
+    <div>
+      <label className="toggle-menu-wrapper" htmlFor="toggle-menu">
+        <div
+          className={`toggle-menu ${isEnabled ? 'open' : 'close'}`}
+          style={{ zIndex: '999' }}
         >
-          {/*<li*/}
-          {/*  className={classNames(*/}
-          {/*    'tool',*/}
-          {/*    btn.key === props.buttonMode ? 'active' : '',*/}
-          {/*  )}*/}
-          {/*  // data={btn.key}*/}
-          {/*  title={btn.title}*/}
-          {/*  onClick={() => {*/}
-          {/*    if (props.enabled === false) return;*/}
-          {/*    props.setButtonMode(btn.key);*/}
-          {/*  }}*/}
-          {/*>*/}
-          {Icon[btn.key]}
-          {/*  <i*/}
-          {/*    className={classNames(*/}
-          {/*      `toolbar-ul-${btn.key}`,*/}
-          {/*      btn.key === props.buttonMode ? 'active' : '',*/}
-          {/*    )}*/}
-          {/*  />*/}
-          {/*</li>*/}
-        </a>
-      ))}
+          <div className="icons">
+            <PencilFill />
+            <ArrowsMove />
+          </div>
+          <input
+            ref={inputRef}
+            id="toggle-menu"
+            name="toggle-menu"
+            type="checkbox"
+            className="toggle-checkbox"
+            checked={isEnabled}
+            onClick={() => {
+              toggleState();
+              dispatch(changeIsWhiteBoard.toggleIsWhiteBoard());
+              console.log(inputRef);
+            }}
+          />
 
-      <a
-        href="#"
-        className="menu-item button-3d"
-        onClick={e => {
-          e.preventDefault();
-          props.setClear(true);
-          props.sendPaintInfo(
-            'PAINT',
-            JSON.stringify({ action: 'remove-all' }),
-          );
-        }}
-      >
-        <Trash3Fill />
-      </a>
+          <a
+            className="toggle-child button-3d"
+            onClick={() => {
+              console.log(props.board);
+              imageInput.current.click();
+            }}
+          >
+            <input
+              ref={imageInput}
+              value={image}
+              type="file"
+              accept="image/*"
+              hidden={true}
+              onChange={event => {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+                reader.onload = event => {
+                  const data = event.target.result;
+                  fabric.Image.fromURL(data, function (img) {
+                    const oImg = img
+                      .set({
+                        left: 100,
+                        top: 100,
+                        angle: 0,
+                      })
+                      .scale(0.7);
+                    props.board.add(oImg).renderAll();
+                  });
+                };
+                reader.readAsDataURL(file);
+                setImage(null);
+              }}
+            />
+            <Image />
+          </a>
+
+          {toolButtons.map((btn, index) => (
+            <a
+              key={index}
+              href="#"
+              className="toggle-child button-3d"
+              title={btn.title}
+              onClick={e => {
+                e.preventDefault();
+                if (props.enabled === false) return;
+                props.setButtonMode(btn.key);
+              }}
+            >
+              {Icon[btn.key]}
+            </a>
+          ))}
+
+          <a
+            href="#"
+            className="toggle-child button-3d"
+            onClick={e => {
+              e.preventDefault();
+              props.setClear(true);
+              props.sendPaintInfo(
+                'PAINT',
+                JSON.stringify({ action: 'remove-all' }),
+              );
+            }}
+          >
+            <Trash3Fill />
+          </a>
+        </div>
+      </label>
 
       {/*<a href="#" className="menu-item button-3d">*/}
       {/*  <li*/}

@@ -138,6 +138,11 @@ function RtcChat({ chat }) {
         if (newMessage.sender !== user.nickName) {
           setThreeCamera(JSON.parse(newMessage.data));
         }
+        break;
+      case 'RATIO2D':
+        if (newMessage.sender !== user.nickName) {
+          setRatio(Number(newMessage.data));
+        }
     }
 
     // if (newMessage.sender !== user.nickName) {

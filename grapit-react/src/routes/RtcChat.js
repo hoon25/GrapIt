@@ -16,6 +16,7 @@ import TwoDfigure, { setTwoDFigure } from '../store/TwoDfigureSlice';
 import { setFigure } from '../store/figureSlice';
 import ProblemSideBar from '../components/problem/ProblemSideBar';
 import { changeIsWhiteBoard } from '../store/isWhiteBoardSlice';
+import { useLocation } from 'react-router-dom';
 
 var stompClient = null;
 
@@ -24,7 +25,6 @@ function RtcChat({ chat }) {
   // viewPoint 초기값
   const [viewPointX, setViewPointX] = useState([-7, 7]);
   const [viewPointY, setViewPointY] = useState([-7, 7]);
-  const [graphList, setGraphList] = useState([]);
   const [drawInfo, setDrawInfo] = useState();
   const [coordType, setCoordType] = useState('problem');
 
@@ -34,6 +34,8 @@ function RtcChat({ chat }) {
   const dispatch = useDispatch();
   const isWhiteBoard = useSelector(state => state.isWhiteBoard);
   const towDFigureList = useSelector(state => state.TwoDfigure.TwoDfigures);
+
+  const location = useLocation();
 
   const commonCanvasStyle = {
     height: '100%',
@@ -90,15 +92,12 @@ function RtcChat({ chat }) {
   // 동기화 소켓 통신
   const Stomp = require('stompjs/lib/stomp.js').Stomp;
 
-  const sockjs_conn = function () {
-    // socket 접속로직
-    var socket = new SockJs('/sock/ws-stomp');
-    // stomp 연결로직
-    stompClient = Stomp.over(socket);
+  function sockConnectAndSubsribe() {
     stompClient.connect({ reconnect_delay: 5000 }, frame => {
       if (stompClient.connected) {
         stompClient.subscribe(
-          '/sock/sub/chat/room/' + chat.roomId,
+          // '/sock/sub/chat/room/' + chat.roomId,
+          '/sock/sub/chat' + location.pathname,
           rerenderGraph,
         );
         console.log('stompClient connect success');
@@ -106,9 +105,22 @@ function RtcChat({ chat }) {
         console.log('Failed to connect, retrying...');
       }
     });
+  }
+
+  const sockjs_conn = function () {
+    // socket 접속로직
+    var socket = new SockJs('/sock/ws-stomp');
+    // stomp 연결로직
+    stompClient = Stomp.over(socket);
+    sockConnectAndSubsribe();
   };
 
   function sendObjectInfo(objectType, object) {
+    const connect = stompClient.connected;
+    while (!connect) {
+      sockConnectAndSubsribe();
+    }
+
     if (stompClient) {
       stompClient.debug = null;
       stompClient.send(

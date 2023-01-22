@@ -50,7 +50,6 @@ public class MessageController {
         }
 
 
-
         MessageResponseDTO responseDTO = null;
         switch (request.getMethod()) {
             case "ADD":

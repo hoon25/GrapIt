@@ -16,16 +16,19 @@ export default function TwoDInputGroup({ sendObjectInfo }) {
   const onSubmit = e => {
     e.preventDefault();
 
+    const UUID = generateUUID();
     const newTwoD = {
-      figureId: generateUUID(),
+      uniqueId: UUID,
+      figureId: UUID,
       type: 'TwoD',
       color: TwoDInput.color,
       firstProps: Number(TwoDInput.firstProps),
       secondProps: Number(TwoDInput.secondProps),
       thirdProps: Number(TwoDInput.thirdProps),
+      thick: 3,
     };
 
-    dispatch(setTwoDFigure.addFigure(newTwoD));
+    // dispatch(setTwoDFigure.addFigure(newTwoD));
     dispatch(
       setTwoDInput.resetProps({
         firstProps: '',
@@ -33,9 +36,9 @@ export default function TwoDInputGroup({ sendObjectInfo }) {
         color: '#ffffff',
       }),
     );
-    const copy = [...TwoDFigureList, newTwoD];
+    // const copy = [...TwoDFigureList, newTwoD];
     //TODO 한개씩 추가로 나중에 바꾸기
-    sendObjectInfo('GRAPH', '', JSON.stringify(copy));
+    sendObjectInfo('GRAPH2D', 'ADD', JSON.stringify(newTwoD));
   };
 
   return (

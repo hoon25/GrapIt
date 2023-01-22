@@ -34,7 +34,7 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
   const headerColor = TwoDfigure.color;
 
   const onCardMouseDown = () => {
-    dispatch(setTwoDFigure.emphasizeFigure(TwoDfigure.figureId));
+    // dispatch(setTwoDFigure.emphasizeFigure(TwoDfigure.figureId));
 
     // TODO 부채
     const copy = [...TwoDfigures];
@@ -42,10 +42,10 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
 
     const newTwoDFigure = { ...copy[index] };
 
-    newTwoDFigure.thick += 10;
-    copy[index] = newTwoDFigure;
+    newTwoDFigure.thick = 13;
+    // copy[index] = newTwoDFigure;
 
-    sendObjectInfo('GRAPH', '', JSON.stringify(copy));
+    sendObjectInfo('GRAPH2D', 'UPDATE', JSON.stringify(newTwoDFigure));
   };
 
   const onCardDoubleClick = () => {
@@ -53,7 +53,7 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
   };
 
   const onCardMouseUp = () => {
-    dispatch(setTwoDFigure.deemphasizeFigure(TwoDfigure.figureId));
+    // dispatch(setTwoDFigure.deemphasizeFigure(TwoDfigure.figureId));
 
     // TODO 부채
     const copy = [...TwoDfigures];
@@ -62,21 +62,21 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
     const newTwoDFigure = { ...copy[index] };
 
     newTwoDFigure.thick = 3;
-    copy[index] = newTwoDFigure;
+    // copy[index] = newTwoDFigure;
 
-    sendObjectInfo('GRAPH', '', JSON.stringify(copy));
+    sendObjectInfo('GRAPH2D', 'UPDATE', JSON.stringify(newTwoDFigure));
   };
 
   const onDelBtnClick = () => {
-    dispatch(setTwoDFigure.removeFigure(TwoDfigure.figureId));
+    // dispatch(setTwoDFigure.removeFigure(TwoDfigure.figureId));
 
     // TODO 부채
     const copy = [...TwoDfigures];
     const index = copy.findIndex(x => x.figureId === TwoDfigure.figureId);
 
-    copy.splice(index, 1);
+    // copy.splice(index, 1);
 
-    sendObjectInfo('GRAPH', '', JSON.stringify(copy));
+    sendObjectInfo('GRAPH2D', 'DELETE', JSON.stringify(copy[index]));
   };
 
   const onCardMouseLeave = () => {
@@ -89,9 +89,9 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
     const newTwoDFigure = { ...copy[index] };
 
     newTwoDFigure.thick = 3;
-    copy[index] = newTwoDFigure;
+    // copy[index] = newTwoDFigure;
 
-    sendObjectInfo('GRAPH', '', JSON.stringify(copy));
+    sendObjectInfo('GRAPH2D', 'UPDATE', JSON.stringify(newTwoDFigure));
   };
 
   return (

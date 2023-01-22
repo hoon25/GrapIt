@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.oak.grapitsocket.domain.MessageBase;
 import edu.oak.grapitsocket.domain.MessageData;
 import edu.oak.grapitsocket.domain.MessageDataFigure3D;
+import edu.oak.grapitsocket.domain.MessageDataGraph2D;
 import edu.oak.grapitsocket.message.MessageRequestDTO;
 import edu.oak.grapitsocket.repository.MessageRedisRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,10 @@ public class MessageService {
             case FIGURE3D:
                 prefix = "_FIGURE3D";
                 messageDataClass = MessageDataFigure3D.class;
+                break;
+            case GRAPH2D:
+                prefix = "_GRAPH2D";
+                messageDataClass = MessageDataGraph2D.class;
                 break;
         }
 
@@ -70,6 +75,11 @@ public class MessageService {
             case FIGURE3D:
                 prefix = "_FIGURE3D";
                 messageDataClass = MessageDataFigure3D.class;
+                break;
+            case GRAPH2D:
+                prefix = "_GRAPH2D";
+                messageDataClass = MessageDataGraph2D.class;
+                break;
         }
 
         // component-list있는지 확인

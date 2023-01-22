@@ -17,14 +17,18 @@ export default function LineInputGroup({ sendObjectInfo }) {
   const dispatch = useDispatch();
   const onSubmit = e => {
     e.preventDefault();
+
+    const UUID = generateUUID();
     const newLine = {
-      figureId: generateUUID(),
+      uniqueId: UUID,
+      figureId: UUID,
       type: 'Line',
       color: TwoDInput.color,
       firstProps: Number(TwoDInput.firstProps),
       secondProps: Number(TwoDInput.secondProps),
+      thick: 3,
     };
-    dispatch(setTwoDFigure.addFigure(newLine));
+    // dispatch(setTwoDFigure.addFigure(newLine));
     dispatch(
       setTwoDInput.resetProps({
         firstProps: '',
@@ -32,9 +36,9 @@ export default function LineInputGroup({ sendObjectInfo }) {
         color: '#ffffff',
       }),
     );
-    const copy = [...TwoDFigureList, newLine];
+    // const copy = [...TwoDFigureList, newLine];
     //TODO 한개씩 추가로 나중에 바꾸기
-    sendObjectInfo('GRAPH', '', JSON.stringify(copy));
+    sendObjectInfo('GRAPH2D', 'ADD', JSON.stringify(newLine));
   };
 
   return (

@@ -143,6 +143,11 @@ function RtcChat({ chat }) {
         if (newMessage.sender !== user.nickName) {
           setRatio(Number(newMessage.data));
         }
+        break;
+      case 'GRAPH2D':
+        dispatch(setTwoDFigure.switchFigure(newMessage.data));
+        break;
+
     }
 
     // if (newMessage.sender !== user.nickName) {

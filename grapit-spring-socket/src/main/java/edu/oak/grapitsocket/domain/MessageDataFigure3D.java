@@ -31,6 +31,14 @@ public class MessageDataFigure3D extends MessageData {
     // PlatonicSolid
     private String length;
 
+    // common
+    private Boolean thick;
+
+    // common
+    private Boolean transparent;
+
+    private Boolean polish;
+
     @Builder
     public MessageDataFigure3D(String uniqueId, String figureId, String type, Integer color, List<String> point1, List<String> point2, List<String> position, String radius, String length) {
         super(uniqueId);

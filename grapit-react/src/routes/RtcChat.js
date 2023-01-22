@@ -127,10 +127,19 @@ function RtcChat({ chat }) {
 
   // sendGraphInfo()
   function rerenderGraph(payload) {
-
     const newMessage = JSON.parse(payload.body);
     console.log(newMessage);
-    dispatch(setFigure.switchFigure(newMessage.data));
+
+    switch (newMessage.type) {
+      case 'FIGURE3D':
+        dispatch(setFigure.switchFigure(newMessage.data));
+        break;
+      case 'CAMERA3D':
+        if (newMessage.sender !== user.nickName) {
+          setThreeCamera(JSON.parse(newMessage.data));
+        }
+    }
+
     // if (newMessage.sender !== user.nickName) {
     //   if (newMessage.type === 'RATIO') {
     //     setRatio(Number(newMessage.data));

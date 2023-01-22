@@ -39,7 +39,7 @@ function makeCard(
   const headerColor = '#' + figure.color.toString(16);
 
   const toggleOpacity = () => {
-    dispatch(setFigure.transparentFigure(figure.figureId));
+    // dispatch(setFigure.transparentFigure(figure.figureId));
 
     // TODO 부채
     const copy = [...figureStore];
@@ -48,13 +48,13 @@ function makeCard(
     const newFigure = { ...copy[index] };
     newFigure.transparent = !newFigure.transparent;
 
-    copy[index] = newFigure;
+    // copy[index] = newFigure;
 
-    sendObjectInfo('FIGURE3D', 'UPDATE', JSON.stringify(copy));
+    sendObjectInfo('FIGURE3D', 'UPDATE', JSON.stringify(newFigure));
   };
 
   const emphasize = () => {
-    dispatch(setFigure.emphasizeFigure(figure.figureId));
+    // dispatch(setFigure.emphasizeFigure(figure.figureId));
 
     // TODO 부채
     const copy = [...figureStore];
@@ -67,13 +67,13 @@ function makeCard(
       newFigure.polish = true;
     }
 
-    copy[index] = newFigure;
+    // copy[index] = newFigure;
 
-    sendObjectInfo('FIGURE3D', '', JSON.stringify(copy));
+    sendObjectInfo('FIGURE3D', 'UPDATE', JSON.stringify(newFigure));
   };
 
   const deemphasize = () => {
-    dispatch(setFigure.deemphasizeFigure(figure.figureId));
+    // dispatch(setFigure.deemphasizeFigure(figure.figureId));
 
     // TODO 부채
     const copy = [...figureStore];
@@ -86,21 +86,22 @@ function makeCard(
       newFigure.polish = false;
     }
 
-    copy[index] = newFigure;
+    // copy[index] = newFigure;
 
-    sendObjectInfo('FIGURE3D', '', JSON.stringify(copy));
+    sendObjectInfo('FIGURE3D', 'UPDATE', JSON.stringify(newFigure));
   };
 
   const onDelBtnClick = () => {
-    dispatch(setFigure.removeFigure(figure.figureId));
-
-    // TODO 부채
+    // dispatch(setFigure.removeFigure(figure.figureId));
+    //
+    // // TODO 부채
     const copy = [...figureStore];
     const index = copy.findIndex(f => f.figureId === figure.figureId);
 
-    copy.splice(index, 1);
+    // copy.splice(index, 1);
 
-    sendObjectInfo('FIGURE3D', '', JSON.stringify(copy));
+
+    sendObjectInfo('FIGURE3D', 'DELETE', JSON.stringify(copy[index]));
   };
 
   const applyFigure = () => {

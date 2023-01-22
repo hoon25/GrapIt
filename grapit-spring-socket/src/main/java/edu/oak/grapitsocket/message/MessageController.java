@@ -34,6 +34,7 @@ public class MessageController {
         template.convertAndSend("/api/sub/chat/room/" + chat.getRoomId(), chat);
     }
 
+
     @MessageMapping("/chat/sendMessage")
     public void sendMessage(@Payload MessageRequestDTO request, SimpMessageHeaderAccessor headerAccessor) throws Exception {
         System.out.println("ChatController.sendMessage");
@@ -47,13 +48,14 @@ public class MessageController {
                 responseDTO = messageService.addComponent(request);
                 break;
             case "DELETE":
+                responseDTO = messageService.deleteComponent(request);
                 break;
             default:
                 break;
         }
 
         responseDTO.setMethod(request.getMethod());
-        System.out.println("responseDTO.toString() = " + responseDTO.toString());
+        System.out.println("responseDTO.toString() = " + responseDTO);
         template.convertAndSend("/sock/sub/chat/room/" + responseDTO.getRoomId(), responseDTO);
     }
 

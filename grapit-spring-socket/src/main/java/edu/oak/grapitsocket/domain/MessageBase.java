@@ -18,19 +18,16 @@ public class MessageBase {
 
     private MessageType type;
 
-    private String data;
-
-    private String time;
+    private MessageData data;
 
     private String sender;
 
 
     @Builder
-    public MessageBase(String roomId, MessageType type, String data, String time, String sender) {
+    public MessageBase(String roomId, MessageType type, MessageData data, String sender) {
         this.roomId = roomId;
         this.type = type;
         this.data = data;
-        this.time = time;
         this.sender = sender;
     }
 }

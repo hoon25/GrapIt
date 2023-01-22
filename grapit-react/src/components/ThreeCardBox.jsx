@@ -50,7 +50,7 @@ function makeCard(
 
     copy[index] = newFigure;
 
-    sendObjectInfo('FIGURE', JSON.stringify(copy));
+    sendObjectInfo('FIGURE3D', 'UPDATE', JSON.stringify(copy));
   };
 
   const emphasize = () => {
@@ -69,7 +69,7 @@ function makeCard(
 
     copy[index] = newFigure;
 
-    sendObjectInfo('FIGURE', JSON.stringify(copy));
+    sendObjectInfo('FIGURE3D', '', JSON.stringify(copy));
   };
 
   const deemphasize = () => {
@@ -88,7 +88,7 @@ function makeCard(
 
     copy[index] = newFigure;
 
-    sendObjectInfo('FIGURE', JSON.stringify(copy));
+    sendObjectInfo('FIGURE3D', '', JSON.stringify(copy));
   };
 
   const onDelBtnClick = () => {
@@ -100,7 +100,7 @@ function makeCard(
 
     copy.splice(index, 1);
 
-    sendObjectInfo('FIGURE', JSON.stringify(copy));
+    sendObjectInfo('FIGURE3D', '', JSON.stringify(copy));
   };
 
   const applyFigure = () => {

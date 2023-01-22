@@ -1,5 +1,6 @@
 package edu.oak.grapitsocket.service;
 
+import edu.oak.grapitsocket.domain.MessageData;
 import edu.oak.grapitsocket.domain.MessageType;
 import lombok.Builder;
 import lombok.Data;
@@ -10,15 +11,15 @@ public class MessageResponseDTO {
     private MessageType type;
     private String roomId;
     private String sender;
-    private String data;
-    private String time;
+    private MessageData data;
+    private String method;
 
     @Builder
-    public MessageResponseDTO(MessageType type, String roomId, String sender, String data, String time) {
+    public MessageResponseDTO(MessageType type, String roomId, String sender, MessageData data, String method) {
         this.type = type;
         this.roomId = roomId;
         this.sender = sender;
         this.data = data;
-        this.time = time;
+        this.method = method;
     }
 }

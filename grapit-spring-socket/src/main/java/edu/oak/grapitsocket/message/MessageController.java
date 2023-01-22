@@ -1,6 +1,5 @@
 package edu.oak.grapitsocket.message;
 
-import edu.oak.grapitsocket.domain.MessageBase;
 import edu.oak.grapitsocket.repository.MessageRedisRepository;
 import edu.oak.grapitsocket.service.MessageResponseDTO;
 import edu.oak.grapitsocket.service.MessageService;
@@ -33,15 +32,15 @@ public class MessageController {
         headerAccessor.getSessionAttributes().put("userNickName", chat.getSender());
         headerAccessor.getSessionAttributes().put("roomId", chat.getRoomId());
 
-        chat.setData(chat.getSender() + " 님 입장!!");
+//        chat.setData(chat.getSender() + " 님 입장!!");
         template.convertAndSend("/api/sub/chat/room/" + chat.getRoomId(), chat);
     }
 
     @MessageMapping("/chat/sendMessage")
     public void sendMessage(@Payload MessageRequestDTO request, SimpMessageHeaderAccessor headerAccessor) {
         System.out.println("ChatController.sendMessage");
-        System.out.println("chat.getSender() = " + request.getSender());
-        System.out.println("chat.getMessage() = " + request.getData());
+        System.out.println("request.toString() = " + request.toString());
+
 
         MessageResponseDTO responseDTO = messageService.addComponet(request);
         System.out.println("responseDTO.toString() = " + responseDTO.toString());
@@ -60,7 +59,7 @@ public class MessageController {
         if (userNickName != null) {
             log.info("User Disconnected : " + userNickName);
             MessageRequestDTO chat = MessageRequestDTO.builder().roomId(roomId).sender(userNickName)
-                .data(userNickName + " 님이 퇴장하셨습니다.")
+//                .data(userNickName + " 님이 퇴장하셨습니다.")
                 .build();
             template.convertAndSend("/sock/sub/chat/room/" + roomId, chat);
         }

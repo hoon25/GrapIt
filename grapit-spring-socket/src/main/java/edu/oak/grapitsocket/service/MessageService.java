@@ -2,10 +2,8 @@ package edu.oak.grapitsocket.service;
 
 import edu.oak.grapitsocket.domain.MessageBase;
 import edu.oak.grapitsocket.message.MessageRequestDTO;
-import edu.oak.grapitsocket.repository.MessageRedisRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.ListOperations;
-import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -22,23 +20,21 @@ public class MessageService {
     // if key exists append value to the end of the list or create a new list
     public MessageResponseDTO addComponet(MessageRequestDTO requestDTO) {
         MessageBase messageBase = MessageBase.builder()
-                .roomId(requestDTO.getRoomId())
-                .type(requestDTO.getType())
-                .data(requestDTO.getMessage())
-                .time(requestDTO.getTime())
-                .sender(requestDTO.getSender())
-                .build();
+            .roomId(requestDTO.getRoomId())
+            .type(requestDTO.getType())
+            .data(requestDTO.getData())
+            .sender(requestDTO.getSender())
+            .build();
         System.out.println("messageBase = " + messageBase.toString());
         ListOperations<String, MessageBase> stringMessageBaseListOperations = redisTemplate.opsForList();
         stringMessageBaseListOperations.rightPush(messageBase.getRoomId(), messageBase);
-        System.out.println("here!");
+
 
         return MessageResponseDTO.builder()
             .roomId(messageBase.getRoomId())
             .type(messageBase.getType())
-            .time(messageBase.getTime())
             .sender(messageBase.getSender())
-            .message(getAllComponent(messageBase.getRoomId(), stringMessageBaseListOperations))
+//            .message(getAllComponent(messageBase.getRoomId(), stringMessageBaseListOperations))
             .build();
     }
 

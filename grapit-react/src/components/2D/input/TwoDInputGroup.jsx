@@ -35,7 +35,7 @@ export default function TwoDInputGroup({ sendObjectInfo }) {
     );
     const copy = [...TwoDFigureList, newTwoD];
     //TODO 한개씩 추가로 나중에 바꾸기
-    sendObjectInfo('GRAPH', JSON.stringify(copy));
+    sendObjectInfo('GRAPH', '', JSON.stringify(copy));
   };
 
   return (

@@ -108,7 +108,7 @@ function RtcChat({ chat }) {
     });
   };
 
-  function sendObjectInfo(objectType, object) {
+  function sendObjectInfo(objectType, method, object) {
     if (stompClient) {
       stompClient.debug = null;
       stompClient.send(
@@ -119,6 +119,7 @@ function RtcChat({ chat }) {
           sender: user.nickName,
           data: object,
           type: objectType,
+          method: method,
         }),
       );
     }

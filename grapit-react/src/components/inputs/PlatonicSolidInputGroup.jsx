@@ -31,9 +31,9 @@ function PlatonicSolidInputGroup(props) {
     resetLength();
     resetColor();
 
-    const copy = [...figureList, newFigure];
+    const copy = newFigure;
     //TODO 한개씩 추가로 나중에 바꾸기
-    props.sendObjectInfo('FIGURE3D', JSON.stringify(copy));
+    props.sendObjectInfo('FIGURE3D', 'ADD', copy);
   };
   return (
     <Form onSubmit={onSubmit}>

@@ -45,7 +45,7 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
     newTwoDFigure.thick += 10;
     copy[index] = newTwoDFigure;
 
-    sendObjectInfo('GRAPH', JSON.stringify(copy));
+    sendObjectInfo('GRAPH', '', JSON.stringify(copy));
   };
 
   const onCardDoubleClick = () => {
@@ -64,7 +64,7 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
     newTwoDFigure.thick = 3;
     copy[index] = newTwoDFigure;
 
-    sendObjectInfo('GRAPH', JSON.stringify(copy));
+    sendObjectInfo('GRAPH', '', JSON.stringify(copy));
   };
 
   const onDelBtnClick = () => {
@@ -76,7 +76,7 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
 
     copy.splice(index, 1);
 
-    sendObjectInfo('GRAPH', JSON.stringify(copy));
+    sendObjectInfo('GRAPH', '', JSON.stringify(copy));
   };
 
   const onCardMouseLeave = () => {
@@ -91,7 +91,7 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
     newTwoDFigure.thick = 3;
     copy[index] = newTwoDFigure;
 
-    sendObjectInfo('GRAPH', JSON.stringify(copy));
+    sendObjectInfo('GRAPH', '', JSON.stringify(copy));
   };
 
   return (

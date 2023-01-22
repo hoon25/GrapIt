@@ -74,7 +74,9 @@ export function EquationHandBoard({
 
         const onCheck = () => {
           if (res.data.latex_styled !== undefined) {
-            if (window.confirm('입력한 수식이 맞나요? \n' + res.data.latex_styled)) {
+            if (
+              window.confirm('입력한 수식이 맞나요? \n' + res.data.latex_styled)
+            ) {
               let latex = res.data.latex_styled.replace(/\s+/g, '');
               setLatexResult(latex);
               getGraphArgFromLatex(latex);
@@ -82,9 +84,9 @@ export function EquationHandBoard({
               alert('다시 입력해주세요');
               clearCanvas();
             }
-          }else{
-          alert('인식하지 못했습니다. 다시 입력해주세요');
-          clearCanvas();
+          } else {
+            alert('인식하지 못했습니다. 다시 입력해주세요');
+            clearCanvas();
           }
         };
         onCheck();
@@ -144,7 +146,7 @@ export function EquationHandBoard({
     // const copyViewPointY = [Number(b) - 3, Number(b) + 3];
     // setViewPointX(copyViewPointX);
     // setViewPointY(copyViewPointY);
-    sendObjectInfo('GRAPH', TwoDgraphList);
+    sendObjectInfo('GRAPH', 'ADD', TwoDgraphList);
 
     return result;
   };
@@ -193,7 +195,8 @@ export function EquationHandBoard({
     // const copyViewPointY = [Number(b) - 3, Number(b) + 3];
     // setViewPointX(copyViewPointX);
     // setViewPointY(copyViewPointY);
-    sendObjectInfo('GRAPH', TwoDgraphList);
+    //!!TODO 변경 예정
+    sendObjectInfo('GRAPH', 'ADD', TwoDgraphList);
 
     return result;
   };

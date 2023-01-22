@@ -16,8 +16,10 @@ function PlatonicSolidInputGroup(props) {
   const onSubmit = e => {
     e.preventDefault();
 
+    const UUID = generateUUID();
     const newFigure = {
-      figureId: generateUUID(),
+      uniqueId: UUID,
+      figureId: UUID,
       type: figureTypeProps.value,
       position: positionProps.value.split(',').map(x => Number(x)),
       length: Number(lengthProps.value),
@@ -33,7 +35,7 @@ function PlatonicSolidInputGroup(props) {
 
     const copy = newFigure;
     //TODO 한개씩 추가로 나중에 바꾸기
-    props.sendObjectInfo('FIGURE3D', 'ADD', copy);
+    props.sendObjectInfo('FIGURE3D', 'ADD', JSON.stringify(copy));
   };
   return (
     <Form onSubmit={onSubmit}>
@@ -67,4 +69,5 @@ function PlatonicSolidInputGroup(props) {
     </Form>
   );
 }
+
 export default PlatonicSolidInputGroup;

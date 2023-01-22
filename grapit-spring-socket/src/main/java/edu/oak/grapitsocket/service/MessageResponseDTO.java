@@ -11,11 +11,11 @@ public class MessageResponseDTO {
     private MessageType type;
     private String roomId;
     private String sender;
-    private MessageData data;
+    private String data;
     private String method;
 
     @Builder
-    public MessageResponseDTO(MessageType type, String roomId, String sender, MessageData data, String method) {
+    public MessageResponseDTO(MessageType type, String roomId, String sender, String data, String method) {
         this.type = type;
         this.roomId = roomId;
         this.sender = sender;

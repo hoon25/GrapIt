@@ -17,8 +17,10 @@ function LineInputGroup(props) {
   const onSubmit = e => {
     e.preventDefault();
 
+    const UUID = generateUUID();
     const newFigure = {
-      figureId: generateUUID(),
+      uniqueId: UUID,
+      figureId: UUID,
       type: 'twoPointedLine',
       color: parseInt('0x' + colorProps.value.slice(1)),
       point1: point1Props.value.split(',').map(x => Number(x)),
@@ -33,7 +35,7 @@ function LineInputGroup(props) {
 
     const copy = newFigure;
     //TODO 한개씩 추가로 나중에 바꾸기
-    props.sendObjectInfo('FIGURE3D', 'ADD', copy);
+    props.sendObjectInfo('FIGURE3D', 'ADD', JSON.stringify(copy));
     // useMemo 를 사용해서 point1, point2 를 저장해두고
     // point1, point2 가 바뀔때만 계산하도록 하면 좋을듯
   };

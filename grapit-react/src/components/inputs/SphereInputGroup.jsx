@@ -16,8 +16,10 @@ function SphereInputGroup(props) {
   const onSubmit = e => {
     e.preventDefault();
 
+    const UUID = generateUUID();
     const newFigure = {
-      figureId: generateUUID(),
+      uniqueId: UUID,
+      figureId: UUID,
       type: 'sphere',
       color: parseInt('0x' + colorProps.value.slice(1)),
       position: positionProps.value.split(',').map(x => Number(x)),
@@ -32,7 +34,7 @@ function SphereInputGroup(props) {
 
     const copy = newFigure;
     //TODO 한개씩 추가로 나중에 바꾸기
-    props.sendObjectInfo('FIGURE3D', 'ADD', copy);
+    props.sendObjectInfo('FIGURE3D', 'ADD', JSON.stringify(copy));
     // useMemo 를 사용해서 point1, point2 를 저장해두고
     // point1, point2 가 바뀔때만 계산하도록 하면 좋을듯
   };
@@ -56,4 +58,5 @@ function SphereInputGroup(props) {
     </Form>
   );
 }
+
 export default SphereInputGroup;

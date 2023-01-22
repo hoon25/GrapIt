@@ -1,6 +1,5 @@
 package edu.oak.grapitsocket.message;
 
-import edu.oak.grapitsocket.repository.MessageRedisRepository;
 import edu.oak.grapitsocket.service.MessageResponseDTO;
 import edu.oak.grapitsocket.service.MessageService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,6 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 public class MessageController {
 
     private final SimpMessageSendingOperations template;
-    private final MessageRedisRepository graphRedisRepository;
     private final MessageService messageService;
 
     //Client가 SEND할 수 있는 경로
@@ -37,14 +35,25 @@ public class MessageController {
     }
 
     @MessageMapping("/chat/sendMessage")
-    public void sendMessage(@Payload MessageRequestDTO request, SimpMessageHeaderAccessor headerAccessor) {
+    public void sendMessage(@Payload MessageRequestDTO request, SimpMessageHeaderAccessor headerAccessor) throws Exception {
         System.out.println("ChatController.sendMessage");
         System.out.println("request.toString() = " + request.toString());
+        MessageResponseDTO responseDTO = null;
+        switch (request.getMethod()) {
+            case "ADD":
+                responseDTO = messageService.addComponet(request);
+                break;
+            case "UPDATE":
+                responseDTO = messageService.addComponet(request);
+                break;
+            case "DELETE":
+                break;
+            default:
+                break;
+        }
 
-
-        MessageResponseDTO responseDTO = messageService.addComponet(request);
+        responseDTO.setMethod(request.getMethod());
         System.out.println("responseDTO.toString() = " + responseDTO.toString());
-
         template.convertAndSend("/sock/sub/chat/room/" + responseDTO.getRoomId(), responseDTO);
     }
 
@@ -64,5 +73,4 @@ public class MessageController {
             template.convertAndSend("/sock/sub/chat/room/" + roomId, chat);
         }
     }
-
 }

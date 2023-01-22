@@ -1,5 +1,8 @@
 package edu.oak.grapitsocket.domain;
 
+import lombok.ToString;
+
+@ToString
 public enum MessageType {
 
     ENTER,

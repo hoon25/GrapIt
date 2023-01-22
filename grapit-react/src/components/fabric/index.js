@@ -52,7 +52,14 @@ function WhiteBoard(props) {
             setBoard={setBoard}
           />
         </div>
-        <div style={{ position: 'absolute', top: '-50px', right: '130px' }}>
+        <div
+          style={{
+            position: 'absolute',
+            top: '0px',
+            right: '0px',
+            zIndex: '999',
+          }}
+        >
           <ToolBar
             visible={props.showToolbar}
             enabled={props.enableToolbar}

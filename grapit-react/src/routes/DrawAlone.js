@@ -12,8 +12,6 @@ import TwoDimensionSideBar from '../components/2D/TwoDimensionSideBar';
 import Problem from '../components/problem/Problem';
 import ProblemSideBar from '../components/problem/ProblemSideBar';
 
-var stompClient = null;
-
 function DrawAlone() {
   const [ratio, setRatio] = useState(1);
   // viewPoint 초기값
@@ -43,7 +41,6 @@ function DrawAlone() {
 
   const whiteBoardStyle = {
     ...commonCanvasStyle,
-    // pointerEvents: isWhiteBoard.isSelected ? 'auto' : 'none',
   };
 
   const mainParent = useRef();

@@ -52,9 +52,12 @@
 
 .ratio-slider-container{
     display: flex;
-    position: relative;
+
+    position: absolute;
+    top: 45px;
+    right: 0px;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     align-items: start;
     align-content: start;
 }

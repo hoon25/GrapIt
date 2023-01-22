@@ -7,9 +7,9 @@ public enum MessageType {
 
     ENTER,
     LEAVE,
-    GRAPH,
     PAINT,
-    RATIO,
+    RATIO2D,
+    GRAPH2D,
     CAMERA3D,
     FIGURE3D // 3D 도형 component
 

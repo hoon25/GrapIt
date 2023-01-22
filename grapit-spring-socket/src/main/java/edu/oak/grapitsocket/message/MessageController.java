@@ -1,5 +1,6 @@
 package edu.oak.grapitsocket.message;
 
+import edu.oak.grapitsocket.domain.MessageType;
 import edu.oak.grapitsocket.service.MessageResponseDTO;
 import edu.oak.grapitsocket.service.MessageService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,8 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
+
+import static edu.oak.grapitsocket.domain.MessageType.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -39,6 +42,15 @@ public class MessageController {
     public void sendMessage(@Payload MessageRequestDTO request, SimpMessageHeaderAccessor headerAccessor) throws Exception {
         System.out.println("ChatController.sendMessage");
         System.out.println("request.toString() = " + request.toString());
+
+        // fabric, canvas, camera, scope는 direct 소켓 송수신
+        if (request.getType() == PAINT || request.getType() == RATIO2D || request.getType() == CAMERA3D) {
+            template.convertAndSend("/sock/sub/chat/room/" + request.getRoomId(), request);
+            return;
+        }
+
+
+
         MessageResponseDTO responseDTO = null;
         switch (request.getMethod()) {
             case "ADD":

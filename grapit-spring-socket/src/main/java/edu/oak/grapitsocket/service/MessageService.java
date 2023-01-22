@@ -3,7 +3,6 @@ package edu.oak.grapitsocket.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.oak.grapitsocket.domain.MessageBase;
 import edu.oak.grapitsocket.domain.MessageData;
-import edu.oak.grapitsocket.domain.MessageDataCamera3D;
 import edu.oak.grapitsocket.domain.MessageDataFigure3D;
 import edu.oak.grapitsocket.message.MessageRequestDTO;
 import edu.oak.grapitsocket.repository.MessageRedisRepository;

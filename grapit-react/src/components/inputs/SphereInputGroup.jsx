@@ -26,7 +26,7 @@ function SphereInputGroup(props) {
       radius: Number(radiusProps.value),
     };
 
-    dispatch(setFigure.addFigure(newFigure));
+    // dispatch(setFigure.addFigure(newFigure));
 
     resetPosition();
     resetRadius();

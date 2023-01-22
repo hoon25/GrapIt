@@ -127,34 +127,37 @@ function RtcChat({ chat }) {
 
   // sendGraphInfo()
   function rerenderGraph(payload) {
+
     const newMessage = JSON.parse(payload.body);
-    if (newMessage.sender !== user.nickName) {
-      if (newMessage.type === 'RATIO') {
-        setRatio(Number(newMessage.data));
-      } else if (newMessage.type === 'PAINT') {
-        setDrawInfo(JSON.parse(newMessage.data));
-      } else if (newMessage.type === 'GRAPH') {
-        const receivedGraphInfo = JSON.parse(newMessage.data);
-
-        if (receivedGraphInfo.length === 0) {
-          dispatch(setTwoDFigure.switchFigure([]));
-        }
-        if (newMessage.message !== JSON.stringify(towDFigureList)) {
-          dispatch(setTwoDFigure.switchFigure(receivedGraphInfo));
-        }
-      } else if (newMessage.type === 'CAMERA') {
-        setThreeCamera(JSON.parse(newMessage.data));
-      } else if (newMessage.type === 'FIGURE') {
-        const receivedFigureInfo = JSON.parse(newMessage.data);
-
-        if (receivedFigureInfo.length === 0) {
-          dispatch(setFigure.switchFigure([]));
-        }
-        if (newMessage.message !== JSON.stringify(towDFigureList)) {
-          dispatch(setFigure.switchFigure(receivedFigureInfo));
-        }
-      }
-    }
+    console.log(newMessage);
+    dispatch(setFigure.switchFigure(newMessage.data));
+    // if (newMessage.sender !== user.nickName) {
+    //   if (newMessage.type === 'RATIO') {
+    //     setRatio(Number(newMessage.data));
+    //   } else if (newMessage.type === 'PAINT') {
+    //     setDrawInfo(JSON.parse(newMessage.data));
+    //   } else if (newMessage.type === 'GRAPH') {
+    //     const receivedGraphInfo = JSON.parse(newMessage.data);
+    //
+    //     if (receivedGraphInfo.length === 0) {
+    //       dispatch(setTwoDFigure.switchFigure([]));
+    //     }
+    //     if (newMessage.message !== JSON.stringify(towDFigureList)) {
+    //       dispatch(setTwoDFigure.switchFigure(receivedGraphInfo));
+    //     }
+    //   } else if (newMessage.type === 'CAMERA') {
+    //     setThreeCamera(JSON.parse(newMessage.data));
+    //   } else if (newMessage.type === 'FIGURE') {
+    //     const receivedFigureInfo = JSON.parse(newMessage.data);
+    //
+    //     if (receivedFigureInfo.length === 0) {
+    //       dispatch(setFigure.switchFigure([]));
+    //     }
+    //     if (newMessage.message !== JSON.stringify(towDFigureList)) {
+    //       dispatch(setFigure.switchFigure(receivedFigureInfo));
+    //     }
+    //   }
+    // }
   }
 
   //=====================================================
@@ -186,7 +189,6 @@ function RtcChat({ chat }) {
           <Col
             xs={9}
             onPointerMove={e => {
-              console.log('hi');
               updateMyPresence({
                 cursor: { x: e.clientX, y: e.clientY },
                 screenInfo: {

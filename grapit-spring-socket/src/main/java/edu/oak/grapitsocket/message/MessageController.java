@@ -41,10 +41,10 @@ public class MessageController {
         MessageResponseDTO responseDTO = null;
         switch (request.getMethod()) {
             case "ADD":
-                responseDTO = messageService.addComponet(request);
+                responseDTO = messageService.addComponent(request);
                 break;
             case "UPDATE":
-                responseDTO = messageService.addComponet(request);
+                responseDTO = messageService.addComponent(request);
                 break;
             case "DELETE":
                 break;

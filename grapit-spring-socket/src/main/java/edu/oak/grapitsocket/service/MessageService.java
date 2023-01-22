@@ -9,7 +9,9 @@ import edu.oak.grapitsocket.repository.MessageRedisRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -21,7 +23,7 @@ public class MessageService {
 
 
     // if key exists append value to the end of the list or create a new list
-    public MessageResponseDTO addComponet(MessageRequestDTO requestDTO) throws Exception {
+    public MessageResponseDTO addComponent(MessageRequestDTO requestDTO) throws Exception {
         String prefix = null;
         Class<? extends MessageData> messageDataClass = null;
 
@@ -55,7 +57,7 @@ public class MessageService {
             .type(messageBase.getType())
             .roomId(messageBase.getRoomId())
             .sender(messageBase.getSender())
-            .data(messageBase.getData().toString())
+            .data(new ArrayList(messageBase.getData().values()))
             .build();
     }
 

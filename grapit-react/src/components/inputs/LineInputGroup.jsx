@@ -27,7 +27,7 @@ function LineInputGroup(props) {
       point2: point2Props.value.split(',').map(x => Number(x)),
     };
 
-    dispatch(setFigure.addFigure(newFigure));
+    // dispatch(setFigure.addFigure(newFigure));
 
     resetPoint1();
     resetPoint2();

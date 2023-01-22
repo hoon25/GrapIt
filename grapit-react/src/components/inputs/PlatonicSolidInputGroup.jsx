@@ -26,7 +26,7 @@ function PlatonicSolidInputGroup(props) {
       color: parseInt('0x' + colorProps.value.slice(1)),
     };
 
-    dispatch(setFigure.addFigure(newFigure));
+    // dispatch(setFigure.addFigure(newFigure));
 
     resetFigureType();
     resetPosition();

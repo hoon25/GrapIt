@@ -14,7 +14,7 @@ public class MessageDataFigure3D extends MessageData {
 
     private String type;
 
-    private String color;
+    private Integer color;
 
     // line
     private List<String> point1;
@@ -32,7 +32,7 @@ public class MessageDataFigure3D extends MessageData {
     private String length;
 
     @Builder
-    public MessageDataFigure3D(String uniqueId, String figureId, String type, String color, List<String> point1, List<String> point2, List<String> position, String radius, String length) {
+    public MessageDataFigure3D(String uniqueId, String figureId, String type, Integer color, List<String> point1, List<String> point2, List<String> position, String radius, String length) {
         super(uniqueId);
         this.figureId = figureId;
         this.type = type;

@@ -146,6 +146,7 @@ function Toolbar(props) {
               props.setClear(true);
               props.sendPaintInfo(
                 'PAINT',
+                '',
                 JSON.stringify({ action: 'remove-all' }),
               );
             }}

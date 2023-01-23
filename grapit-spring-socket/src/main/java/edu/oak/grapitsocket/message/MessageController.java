@@ -1,6 +1,8 @@
 package edu.oak.grapitsocket.message;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.oak.grapitsocket.domain.MessageType;
+import edu.oak.grapitsocket.service.EnterResponseDTO;
 import edu.oak.grapitsocket.service.MessageResponseDTO;
 import edu.oak.grapitsocket.service.MessageService;
 import lombok.RequiredArgsConstructor;
@@ -22,19 +24,23 @@ public class MessageController {
 
     private final SimpMessageSendingOperations template;
     private final MessageService messageService;
+    private final ObjectMapper objectMapper;
 
     //Client가 SEND할 수 있는 경로
     //stompConfig에서 설정한 applicationDestinationPrefixes와 @MessageMapping 경로가 병합됨
     //"/sub/chat/enterUser"
     @MessageMapping("/chat/enterUser")
-    public void enterUser(@Payload MessageRequestDTO chat, SimpMessageHeaderAccessor headerAccessor) {
-        log.info("enterUser : " + chat.getSender());
+    public void enterUser(@Payload MessageRequestDTO request, SimpMessageHeaderAccessor headerAccessor) throws Exception {
+        log.info("enterUser : " + request.getSender());
 
-        headerAccessor.getSessionAttributes().put("userNickName", chat.getSender());
-        headerAccessor.getSessionAttributes().put("roomId", chat.getRoomId());
+        headerAccessor.getSessionAttributes().put("userNickName", request.getSender());
+        headerAccessor.getSessionAttributes().put("roomId", request.getRoomId());
 
-//        chat.setData(chat.getSender() + " 님 입장!!");
-        template.convertAndSend("/api/sub/chat/room/" + chat.getRoomId(), chat);
+        EnterResponseDTO enterResponseDTO = messageService.getAllComponent(request);
+        log.info(enterResponseDTO.toString());
+
+//        objectMapper.writeValueAsString(enterResponseDTO)
+        template.convertAndSend("/sock/sub/chat/room/" + request.getRoomId(), enterResponseDTO);
     }
 
 

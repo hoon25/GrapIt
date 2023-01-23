@@ -102,6 +102,15 @@ function RtcChat({ chat }) {
           rerenderGraph,
         );
         console.log('stompClient connect success');
+        stompClient.send(
+          '/sock/pub/chat/enterUser',
+          {},
+          JSON.stringify({
+            roomId: chat.roomId,
+            sender: user.nickName,
+            type: 'ENTER',
+          }),
+        );
       } else {
         console.log('Failed to connect, retrying...');
       }
@@ -131,6 +140,11 @@ function RtcChat({ chat }) {
     console.log(newMessage);
 
     switch (newMessage.type) {
+      case 'PAINT':
+        if (newMessage.sender !== user.nickName) {
+          setDrawInfo(JSON.parse(newMessage.data));
+        }
+        break;
       case 'FIGURE3D':
         dispatch(setFigure.switchFigure(newMessage.data));
         break;
@@ -139,15 +153,17 @@ function RtcChat({ chat }) {
           setThreeCamera(JSON.parse(newMessage.data));
         }
         break;
+      case 'GRAPH2D':
+        dispatch(setTwoDFigure.switchFigure(newMessage.data));
+        break;
       case 'RATIO2D':
         if (newMessage.sender !== user.nickName) {
           setRatio(Number(newMessage.data));
         }
+      case 'ENTER':
+        dispatch(setTwoDFigure.switchFigure(newMessage.data.graph2D));
+        dispatch(setFigure.switchFigure(newMessage.data.figure3D));
         break;
-      case 'GRAPH2D':
-        dispatch(setTwoDFigure.switchFigure(newMessage.data));
-        break;
-
     }
 
     // if (newMessage.sender !== user.nickName) {

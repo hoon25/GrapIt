@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -110,6 +112,36 @@ public class MessageService {
     }
 
     public void updateComponent() {
+
+    }
+
+    public EnterResponseDTO getAllComponent(MessageRequestDTO requestDTO) throws Exception {
+        String prefix = null;
+        Map<String, List<MessageData>> dataListMap = new HashMap<>();
+
+        prefix = "_FIGURE3D";
+        MessageBase messageBase = messageRedisRepository.findById(requestDTO.getRoomId() + prefix).orElse(new MessageBase());
+        HashMap<String, MessageData> data = messageBase.getData();
+        if (data == null) {
+            data = new HashMap<String, MessageData>();
+        }
+        dataListMap.put("figure3D", new ArrayList(data.values()));
+
+        prefix = "_GRAPH2D";
+        MessageBase messageBase2 = messageRedisRepository.findById(requestDTO.getRoomId() + prefix).orElse(new MessageBase());
+        HashMap<String, MessageData> data2 = messageBase2.getData();
+        if (data2 == null) {
+            data2 = new HashMap<String, MessageData>();
+        }
+        dataListMap.put("graph2D", new ArrayList(data2.values()));
+
+
+        return EnterResponseDTO.builder()
+            .type(requestDTO.getType())
+            .roomId(requestDTO.getRoomId())
+            .sender(requestDTO.getSender())
+            .data(dataListMap)
+            .build();
 
     }
 

@@ -17,6 +17,7 @@ import { setFigure } from '../store/figureSlice';
 import ProblemSideBar from '../components/problem/ProblemSideBar';
 import { changeIsWhiteBoard } from '../store/isWhiteBoardSlice';
 import { useLocation } from 'react-router-dom';
+import Loading from '../components/common/Loading';
 
 var stompClient = null;
 
@@ -68,11 +69,11 @@ function RtcChat({ chat }) {
     // canvasParent.current.appendChild(canvas);
     return () => {
       dispatch(changeIsWhiteBoard.setIsWhiteBoard(false));
+      setIsConnected(false);
       stompClient.disconnect();
     };
   }, []);
 
-  const tempRef = useRef();
   const [containerInfo, setContainerInfo] = useState([
     window.innerWidth,
     window.innerHeight,
@@ -107,12 +108,14 @@ function RtcChat({ chat }) {
             '/sock/sub/chat' + location.pathname,
             rerenderGraph,
           );
+          setIsConnected(true);
           console.log('stompClient connect success');
         } else {
           console.log('Failed to connect, retrying...');
         }
       },
       () => {
+        setIsConnected(false);
         console.log('stompClient disconnected, connect retrying...');
         sockjs_conn();
       },
@@ -192,6 +195,7 @@ function RtcChat({ chat }) {
         style={{ height: '100%' }}
         // ref={tempRef}
       >
+        {isConnected ? null : <Loading isConnected={isConnected} />}
         <Row style={{ height: '100%' }}>
           <Col xs={9}>
             <div
@@ -254,7 +258,7 @@ function RtcChat({ chat }) {
                   bottom: '0px',
                 }}
               >
-                {/*<Vidu user={user} chat={chat} />*/}
+                <Vidu user={user} chat={chat} />
               </div>
             </div>
           </Col>

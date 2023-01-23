@@ -1,4 +1,3 @@
-import '../css/floatingButton.css';
 import { setUser } from '../store/userSlice';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

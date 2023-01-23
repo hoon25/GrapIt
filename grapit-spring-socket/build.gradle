@@ -26,6 +26,10 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'org.projectlombok:lombok:1.18.20'
 
+    // redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+
     //lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

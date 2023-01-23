@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const camera = createSlice({
   name: 'camera',
   initialState: {
-    camera: {}
+    camera: {},
   },
   reducers: {
     updateCamera(state, action) {

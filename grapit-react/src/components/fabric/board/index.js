@@ -94,6 +94,7 @@ function Board(props) {
           // sendObj.set('top', (sendObj.top / props.height) * 1000);
           props.sendPaintInfo(
             'PAINT',
+            '',
             JSON.stringify({
               count: selectedCount,
               action: 'add',
@@ -125,6 +126,7 @@ function Board(props) {
       copyObj.set('drawer', user.nickName);
       props.sendPaintInfo(
         'PAINT',
+        '',
         JSON.stringify({
           action: 'pen',
           drawer: user.nickName,
@@ -537,6 +539,7 @@ function Board(props) {
     if (mode === 'eraser') {
       props.sendPaintInfo(
         'PAINT',
+        '',
         JSON.stringify({
           action: 'remove',
           target: selected,
@@ -599,6 +602,7 @@ function Board(props) {
         if (obj.id !== undefined && obj.id !== null) {
           props.sendPaintInfo(
             'PAINT',
+            '',
             JSON.stringify({
               action: 'modify',
               target: obj.toJSON(['id']),
@@ -890,6 +894,7 @@ function Board(props) {
       if (options.target.id !== undefined && options.target.id !== null) {
         props.sendPaintInfo(
           'PAINT',
+          '',
           JSON.stringify({
             count: selectedCount,
             action: 'move',

@@ -67,7 +67,7 @@ export function TwoDGraph({
             className="button-3d"
             style={{ position: 'relative' }}
             onClick={() => {
-              sendObjectInfo('RATIO', ratio === 0 ? 0 : ratio - 0.5);
+              sendObjectInfo('RATIO2D', '', ratio === 0 ? 0 : ratio - 0.5);
               setRatio(ratio === 0 ? 0 : ratio - 0.5);
             }}
           >
@@ -76,7 +76,7 @@ export function TwoDGraph({
           <div
             className="button-3d mt-3"
             onClick={() => {
-              sendObjectInfo('RATIO', ratio + 0.5);
+              sendObjectInfo('RATIO2D', '', ratio + 0.5);
               setRatio(ratio + 0.5);
             }}
           >
@@ -88,7 +88,7 @@ export function TwoDGraph({
             className="ratio-slider"
             value={ratio}
             onChange={e => {
-              sendObjectInfo('RATIO', Number(e.target.value));
+              sendObjectInfo('RATIO2D', '', Number(e.target.value));
               setRatio(Number(e.target.value));
             }}
             tooltip="auto"

@@ -4,7 +4,6 @@ import classNames from 'class-names';
 import ColorPicker from './colorpicker';
 import modes from '../utils/mode';
 import './style.scss';
-import '../../../css/floatingButton.css';
 import '../../../css/Button3D.css';
 import { setIsWhiteBoard } from '../../../store/isWhiteBoardSlice';
 import { useDispatch, useSelector } from 'react-redux';

@@ -156,6 +156,7 @@ function Toolbar(props) {
       </label>
 
       <ColorPicker
+        toolbox={toolbox}
         buttonMode={props.buttonMode}
         visible={showColorPicker}
         color={props.brushColor}

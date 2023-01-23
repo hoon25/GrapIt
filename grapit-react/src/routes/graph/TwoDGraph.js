@@ -1,11 +1,12 @@
-import { CartesianCoordinates, FunctionGraph, Mafs, Line, Circle } from 'mafs';
-import 'mafs/build/index.css';
+import { Coordinates, Mafs, Line, Circle, Debug, Plot } from 'mafs';
 import '../../css/Button3D.css';
-import React from 'react';
-import { Button, Form } from 'react-bootstrap';
-import { Inboxes, ZoomIn, ZoomOut } from 'react-bootstrap-icons';
-import { useSelect } from '@react-three/drei';
+import '../../css/TwoDGraph.css';
+import React, { useEffect, useRef, useState } from 'react';
+import { Form } from 'react-bootstrap';
+import { Dpad, Inboxes, ZoomIn, ZoomOut } from 'react-bootstrap-icons';
 import { useSelector } from 'react-redux';
+import { Leva, useControls } from 'leva';
+import ReactDOM from 'react-dom/client';
 
 export function TwoDGraph({
   viewPointX,
@@ -16,6 +17,7 @@ export function TwoDGraph({
   childWidth,
   childHeight,
 }) {
+  const [openController, setOpenController] = React.useState(false);
   const TwoDgraphList = useSelector(state => state.TwoDfigure.TwoDfigures);
   // todo store 기반으로 변경
   // 스크롤 이벤트 제어. 나중에 쓸수 있음.
@@ -36,6 +38,28 @@ export function TwoDGraph({
       setRatio(ratio + 1);
     }
   }
+
+  const controller = useRef();
+  const debug = useRef();
+  const config = useControls({
+    x: {
+      value: 32,
+      min: -50,
+      max: 50,
+      step: 0.5,
+    },
+    y: {
+      value: 32,
+      min: -50,
+      max: 50,
+      step: 0.5,
+    },
+  });
+  const levaStyle = {
+    position: 'fix',
+    top: '0',
+    left: '0',
+  };
   function mouseMovingHandler(event) {
     // console.log("viewPointX[0] = "+ viewPointX[0])
     // console.log("viewPointX[1] = "+ viewPointX[1])
@@ -52,6 +76,48 @@ export function TwoDGraph({
     // setMousePoint([event.pageX, event.pageY])
   }
 
+  const mafsContainer = useRef();
+
+  let mafsView;
+  let translateY;
+  let translateX;
+  let rangeX;
+  let rangeY;
+
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [stringX, setStringX] = useState('');
+  const [stringY, setStringY] = useState('');
+
+  const mouseDownHandler = () => {
+    mafsView = document.getElementsByClassName('MafsView')[0];
+    window.addEventListener('mousemove', () => {
+      setStringX(mafsView.children[0].children[0].children[0].innerHTML);
+      setStringY(mafsView.children[0].children[0].children[1].innerHTML);
+    });
+  };
+
+  useEffect(() => {
+    setIsLoaded(true);
+    mafsContainer.current.addEventListener('mousedown', mouseDownHandler);
+    setIsLoaded(true);
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    if (isLoaded) {
+      translateX = stringX.match(/x: \((-?\d+\.\d+), (-?\d+\.\d+)\)/);
+      translateY = stringY.match(/y: \((-?\d+\.\d+), (-?\d+\.\d+)\)/);
+      rangeX = [parseFloat(translateX[1]), parseFloat(translateX[2])];
+      rangeY = [parseFloat(translateY[1]), parseFloat(translateY[2])];
+      if (rangeX !== undefined && rangeY !== undefined) {
+        sendObjectInfo(
+          'CAMERA2D',
+          JSON.stringify({ rangeX: rangeX, rangeY: rangeY }),
+        );
+      }
+    }
+  }, [stringX, stringY]);
+
   return (
     <div style={{ position: 'relative' }}>
       <div
@@ -65,7 +131,6 @@ export function TwoDGraph({
         <div>
           <div
             className="button-3d"
-            style={{ position: 'relative' }}
             onClick={() => {
               sendObjectInfo('RATIO', ratio === 0 ? 0 : ratio - 0.5);
               setRatio(ratio === 0 ? 0 : ratio - 0.5);
@@ -82,6 +147,14 @@ export function TwoDGraph({
           >
             <ZoomOut />
           </div>
+          <div
+            className="button-3d mt-3"
+            onClick={() => {
+              setOpenController(!openController);
+            }}
+          >
+            <Dpad />
+          </div>
         </div>
         <div className="ratio-slider-container">
           <Form.Range
@@ -96,39 +169,31 @@ export function TwoDGraph({
         </div>
       </div>
       <div
-      // onMouseDown={(event) => {
-      //     // console.log("마우스 다운")
-      //     // console.log("page x = " + event.pageX)
-      //     // console.log("page y = " + event.pageY)
-      //     setMousePoint([event.pageX, event.pageY])
-      //     setMouseMovingEvent(true)
-      //     // console.log(canvasGraph)
-      //     // console.log(canvasGraph.viewBox)
-      //     // console.log(this)
-      // }}
+        className="Leva-container"
+        id="Leva-container"
+        style={{
+          position: 'absolute',
+          bottom: '0px',
+          left: '0px',
+          zindex: '10000',
+        }}
+      >
+        <Leva fill={true} hidden={!openController} />
+      </div>
 
-      // onMouseMove={(event) => {
-      //     if (mouseMovingEvent) {
-      //         mouseMovingHandler(event)
-      //
-      //     }
-      // }
-      // }
-
-      // onMouseUp={(event) => {
-      //     // console.log("마우스 업")
-      //     // console.log("page x = " + event.pageX)
-      //     // console.log("page y = " + event.pageY)
-      //     setMousePoint([event.pageX, event.pageY])
-      //     setMouseMovingEvent(false)
-      // }}
+      <div
+        ref={mafsContainer}
+        onMouseUp={() => {
+          window.removeEventListener('mousemove', mouseMovingHandler);
+        }}
       >
         <Mafs
           width={childWidth}
           height={childHeight}
           viewBox={{ x: viewPointX, y: viewPointY, padding: ratio }}
         >
-          <CartesianCoordinates
+          <Debug.ViewportInfo precision={2} />
+          <Coordinates.Cartesian
             xAxis={{ lines: Math.floor(Math.abs(ratio) / 5) + 1 }}
             yAxis={{ lines: Math.floor(Math.abs(ratio) / 5) + 1 }}
             subdivisions={
@@ -169,7 +234,7 @@ function resolveGraph(graph, index) {
     );
   } else if (type === 'TwoD') {
     return (
-      <FunctionGraph.OfX
+      <Plot.OfX
         key={index}
         color={color}
         weight={thick}

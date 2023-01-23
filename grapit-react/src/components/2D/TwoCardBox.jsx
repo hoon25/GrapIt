@@ -52,6 +52,10 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
     dispatch(setTwoDInput.setProps(TwoDfigure));
   };
 
+  const onClick = () => {
+    dispatch(setTwoDFigure.deemphasizeFigure(TwoDfigure.figureId));
+  };
+
   const onCardMouseUp = () => {
     dispatch(setTwoDFigure.deemphasizeFigure(TwoDfigure.figureId));
 
@@ -113,7 +117,7 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
         />
       </Card.Header>
       <Card.Body
-        onMouseLeave={onCardMouseLeave}
+        onClick={onClick}
         onMouseDown={onCardMouseDown}
         onMouseUp={onCardMouseUp}
         onDoubleClick={onCardDoubleClick}

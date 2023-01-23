@@ -24,8 +24,8 @@ var stompClient = null;
 function RtcChat({ chat }) {
   const [ratio, setRatio] = useState(1);
   // viewPoint 초기값
-  const [viewPointX, setViewPointX] = useState([-7, 7]);
-  const [viewPointY, setViewPointY] = useState([-7, 7]);
+  const [viewPointX, setViewPointX] = useState([-5, 5]);
+  const [viewPointY, setViewPointY] = useState([-5, 5]);
   const [drawInfo, setDrawInfo] = useState();
   const [coordType, setCoordType] = useState('problem');
 
@@ -166,6 +166,11 @@ function RtcChat({ chat }) {
         if (newMessage.message !== JSON.stringify(towDFigureList)) {
           dispatch(setFigure.switchFigure(receivedFigureInfo));
         }
+      } else if (newMessage.type === 'CAMERA2D') {
+        const receivedCamera2DInfo = JSON.parse(newMessage.message);
+        console.log(receivedCamera2DInfo);
+        setViewPointX(receivedCamera2DInfo.rangeX);
+        setViewPointY(receivedCamera2DInfo.rangeY);
       }
     }
   }
@@ -211,7 +216,7 @@ function RtcChat({ chat }) {
                   {isLoaded ? (
                     <TwoDGraph
                       viewPointX={viewPointX}
-                      // viewPointY={viewPointY}
+                      viewPointY={viewPointY}
                       ratio={ratio}
                       setRatio={setRatio}
                       sendObjectInfo={sendObjectInfo}

@@ -4,6 +4,7 @@ import { CirclePicker } from 'react-color';
 
 import './style.scss';
 import { useDispatch, useSelector } from 'react-redux';
+import { changeIsWhiteBoard } from '../../../../store/isWhiteBoardSlice';
 
 function ColorPicker(props) {
   const brushColors = [
@@ -17,7 +18,7 @@ function ColorPicker(props) {
 
   const [showColor, setShowColor] = useState(false);
   const [paintPosition, setPaintPosition] = useState({ x: 300, y: 300 });
-
+  const dispatch = useDispatch();
   const colorPickerStyle = {
     display: showColor ? 'flex' : 'none',
     top: paintPosition.y,
@@ -36,9 +37,9 @@ function ColorPicker(props) {
     window.addEventListener('keydown', e => {
       window.removeEventListener('mousemove', mouseEvent);
       if (e.key === ' ') {
-        if (props.buttonMode === 'pen') {
-          setShowColor(true);
-        }
+        setShowColor(true);
+        props.toolbox.current.click();
+        dispatch(changeIsWhiteBoard.toggleIsWhiteBoard());
       }
     });
 

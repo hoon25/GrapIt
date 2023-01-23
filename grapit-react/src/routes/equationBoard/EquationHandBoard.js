@@ -2,16 +2,24 @@ import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setGraph } from '../../store/graphSlice';
-import { Button } from 'react-bootstrap';
+import { Button, ButtonGroup } from 'react-bootstrap';
 import { setTwoDFigure } from '../../store/TwoDfigureSlice';
 import { generateUUID } from 'three/src/math/MathUtils';
 
 // canvas 기본 width : 300px height : 150px
 // reactive 하게 포인터를 받지 못해서 고정하지 않으면 canvas인식 오류 발생합니다.
-const defaultStyle = {
+
+const OCRContainerStyle = {
+  overflow: 'hidden',
   border: '1px solid gray',
+  height: '100px',
+};
+
+const defaultStyle = {
   width: '300px',
   height: '150px',
+  // width: '100%',
+  // height: '100%',
   display: 'inline-block',
 };
 
@@ -249,6 +257,39 @@ export function EquationHandBoard({
     }
   };
 
+  const canvasTouchEventListener = (event, type) => {
+    if (type === 'down') {
+      setWrite(true);
+    } else if (type === 'up') {
+      setWrite(false);
+      putMathPixSenderList(drawing_x, drawing_y);
+    }
+    if (type === 'move' && write) {
+      let x = event.targetTouches[0].clientX - event.target.offsetLeft; //x축
+      let y = event.targetTouches[0].clientY - event.target.offsetTop; //y축
+
+      if (drawing_array.length === 0) {
+        drawing_array.push({ x, y });
+        drawing_x.push(x);
+        drawing_y.push(y);
+      } else {
+        ctx.save(); //다른 스타일 또는 속성을 줄 수 있으므로 항상 save
+        ctx.beginPath();
+        ctx.moveTo(
+          drawing_array[drawing_array.length - 1].x,
+          drawing_array[drawing_array.length - 1].y,
+        );
+        ctx.lineTo(x, y);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.restore(); // 작업이 끝나면 원래 상태로 돌려놓는다.
+        drawing_array.push({ x, y });
+        drawing_x.push(x);
+        drawing_y.push(y);
+      }
+    }
+  };
+
   const clearCanvas = () => {
     ctx.save();
     ctx.clearRect(0, 0, 2580, 2580);
@@ -266,31 +307,45 @@ export function EquationHandBoard({
 
   return (
     <>
-      <div>
-        Beta☘️ 손으로 수식입력
-        <canvas
-          ref={canvasRef}
-          style={defaultStyle}
-          onMouseDown={event => {
-            canvasEventListener(event, 'down');
-          }}
-          onMouseMove={event => {
-            canvasEventListener(event, 'move');
-          }}
-          onMouseLeave={event => {
-            canvasEventListener(event, 'leave');
-          }}
-          onMouseUp={event => {
-            canvasEventListener(event, 'up');
-          }}
-        ></canvas>
-        <Button size="sm" onClick={clearCanvas}>
-          초기화
-        </Button>
-        <Button size="sm" onClick={submitCanvas}>
-          생성
-        </Button>
-        {/*{latexResult && <div>{latexResult}</div>}*/}
+      <div style={{ touchAction: 'none' }}>
+        <span>Beta☘️ 손으로 수식입력</span>
+        <div style={OCRContainerStyle}>
+          <canvas
+            ref={canvasRef}
+            style={defaultStyle}
+            onTouchStart={e => {
+              canvasTouchEventListener(e, 'down');
+            }}
+            onTouchEnd={e => {
+              canvasTouchEventListener(e, 'up');
+            }}
+            onTouchMove={e => {
+              canvasTouchEventListener(e, 'move');
+            }}
+            onMouseDown={event => {
+              canvasEventListener(event, 'down');
+            }}
+            onMouseMove={event => {
+              canvasEventListener(event, 'move');
+            }}
+            onMouseLeave={event => {
+              canvasEventListener(event, 'leave');
+            }}
+            onMouseUp={event => {
+              canvasEventListener(event, 'up');
+            }}
+          ></canvas>
+        </div>
+        <div>
+          <ButtonGroup style={{ width: '100%' }}>
+            <Button variant="secondary" onClick={clearCanvas}>
+              초기화
+            </Button>
+            <Button variant="primary" onClick={submitCanvas}>
+              생 성
+            </Button>
+          </ButtonGroup>
+        </div>
       </div>
     </>
   );

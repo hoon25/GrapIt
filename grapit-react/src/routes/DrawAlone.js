@@ -1,24 +1,16 @@
-import { useEffect, useState, ReactDOM, useRef, useLayoutEffect } from 'react';
-import { Button, Col, Container, Row, Stack } from 'react-bootstrap';
+import { useEffect, useState, useRef } from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import '../css/Rtcchat.css';
 import '../css/Canvas.css';
 import Canvas from '../components/Canvas';
 import { TwoDGraph } from './graph/TwoDGraph';
-import SockJs from 'sockjs-client';
-import { useOthers, useUpdateMyPresence } from '../config/liveblocks.config';
-import Cursor from '../components/Cursor';
-import Vidu from './vidu/Vidu';
 import ThreeDimensionCanvas from '../components/ThreeDimensionCanvas';
 import CoordTypeSelector from '../components/CoordTypeSelector';
 import ThreeDimensionSideBar from '../components/ThreeDimensionSideBar';
 import TwoDimensionSideBar from '../components/2D/TwoDimensionSideBar';
 import Problem from '../components/problem/Problem';
-import TwoDfigure, { setTwoDFigure } from '../store/TwoDfigureSlice';
-import { setFigure } from '../store/figureSlice';
 import ProblemSideBar from '../components/problem/ProblemSideBar';
-
-var stompClient = null;
 
 function DrawAlone() {
   const [ratio, setRatio] = useState(1);
@@ -49,7 +41,6 @@ function DrawAlone() {
 
   const whiteBoardStyle = {
     ...commonCanvasStyle,
-    // pointerEvents: isWhiteBoard.isSelected ? 'auto' : 'none',
   };
 
   const mainParent = useRef();

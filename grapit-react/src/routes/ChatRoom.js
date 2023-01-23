@@ -51,16 +51,18 @@ function ChatRoomList() {
         handleClose={handleClose}
         handleShow={handleShow}
       />
-      <tbody className="article1">
-        {chatList.map((chat, i) => (
-          <ChatRoom chat={chat} i={i} />
+      <div className="article1">
+        {chatList.map((chat, index) => (
+          <div key={index}>
+            <ChatRoom chat={chat} />
+          </div>
         ))}
-      </tbody>
+      </div>
     </>
   );
 }
 
-function ChatRoom({ chat, i }) {
+function ChatRoom({ chat, index }) {
   let navigate = useNavigate();
   let dispatch = useDispatch();
   const user = useSelector(state => state.user);
@@ -72,22 +74,12 @@ function ChatRoom({ chat, i }) {
   return (
     <>
       <div className="article">
-        <tr>
-          <td></td>{' '}
-          <div className="card98" style={{ width: '18rem' }} data-aos="fade-up">
-            {/* <Card style={{ width: '18rem' }} data-aos="fade-up"> */}
-            <div className="card__container">
-              <td>
-                <th>#{i + 1}</th>
-              </td>
+        <div className="card98" style={{ width: '18rem' }} data-aos="fade-up">
+          <div className="card__container">
+            <span style={{ fontWeight: 'bold' }}> {chat.roomName} </span>
 
-              <td>
-                {' '}
-                <th> {chat.roomName} </th>
-              </td>
-
-              <td>선생님 닉네임: {chat.roomCreatorNickName}</td>
-              <td>
+              <span>선생님 닉네임: {chat.roomCreatorNickName}</span>
+              <div>
                 <Button
                   variant="primary"
                   onClick={() => {
@@ -102,12 +94,10 @@ function ChatRoom({ chat, i }) {
                 >
                   입장하기
                 </Button>
-              </td>
+              </div>
             </div>
-            {/* </Card> */}
           </div>
-        </tr>
-      </div>
+        </div>
     </>
   );
 }

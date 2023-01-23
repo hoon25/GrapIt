@@ -21,7 +21,7 @@ export default function TwoDGraphInput({ sendObjectInfo }) {
   };
 
   return (
-    <div>
+    <div style={{ padding: '0px' }}>
       <Form>
         <Form.Group>
           <Form.Control

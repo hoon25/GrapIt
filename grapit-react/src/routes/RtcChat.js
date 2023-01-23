@@ -6,8 +6,6 @@ import '../css/Canvas.css';
 import Canvas from '../components/Canvas';
 import { TwoDGraph } from './graph/TwoDGraph';
 import SockJs from 'sockjs-client';
-import { useOthers, useUpdateMyPresence } from '../config/liveblocks.config';
-import Cursor from '../components/Cursor';
 import Vidu from './vidu/Vidu';
 import ThreeDimensionCanvas from '../components/ThreeDimensionCanvas';
 import CoordTypeSelector from '../components/CoordTypeSelector';
@@ -17,6 +15,9 @@ import Problem from '../components/problem/Problem';
 import TwoDfigure, { setTwoDFigure } from '../store/TwoDfigureSlice';
 import { setFigure } from '../store/figureSlice';
 import ProblemSideBar from '../components/problem/ProblemSideBar';
+import { changeIsWhiteBoard } from '../store/isWhiteBoardSlice';
+import { useLocation } from 'react-router-dom';
+import Loading from '../components/common/Loading';
 
 var stompClient = null;
 
@@ -25,7 +26,6 @@ function RtcChat({ chat }) {
   // viewPoint 초기값
   const [viewPointX, setViewPointX] = useState([-7, 7]);
   const [viewPointY, setViewPointY] = useState([-7, 7]);
-  const [graphList, setGraphList] = useState([]);
   const [drawInfo, setDrawInfo] = useState();
   const [coordType, setCoordType] = useState('problem');
 
@@ -35,6 +35,8 @@ function RtcChat({ chat }) {
   const dispatch = useDispatch();
   const isWhiteBoard = useSelector(state => state.isWhiteBoard);
   const towDFigureList = useSelector(state => state.TwoDfigure.TwoDfigures);
+
+  const location = useLocation();
 
   const commonCanvasStyle = {
     height: '100%',
@@ -61,20 +63,21 @@ function RtcChat({ chat }) {
 
   useEffect(() => {
     setChildWidth(mainParent.current.clientWidth);
-    setChildHeight(mainParent.current.clientHeight);
+    setChildHeight(mainParent.current.clientWidth / 1.49);
     sockjs_conn();
     setIsLoaded(true);
     // canvasParent.current.appendChild(canvas);
+    return () => {
+      dispatch(changeIsWhiteBoard.setIsWhiteBoard(false));
+      setIsConnected(false);
+      stompClient.disconnect();
+    };
   }, []);
 
-  const tempRef = useRef();
   const [containerInfo, setContainerInfo] = useState([
     window.innerWidth,
     window.innerHeight,
   ]);
-
-  const updateMyPresence = useUpdateMyPresence();
-  const userOther = useOthers();
 
   const user = useSelector(state => state.user);
 
@@ -92,29 +95,39 @@ function RtcChat({ chat }) {
 
   const sockjs_conn = function () {
     // socket 접속로직
-    var socket = new SockJs('/sock/ws-stomp');
+    const socket = new SockJs('/sock/ws-stomp');
     // stomp 연결로직
     stompClient = Stomp.over(socket);
-    stompClient.connect({ reconnect_delay: 5000 }, frame => {
-      if (stompClient.connected) {
-        stompClient.subscribe(
-          '/sock/sub/chat/room/' + chat.roomId,
-          rerenderGraph,
-        );
-        console.log('stompClient connect success');
-        stompClient.send(
-          '/sock/pub/chat/enterUser',
-          {},
-          JSON.stringify({
-            roomId: chat.roomId,
-            sender: user.nickName,
-            type: 'ENTER',
-          }),
-        );
-      } else {
-        console.log('Failed to connect, retrying...');
-      }
-    });
+    stompClient.connect(
+      { reconnect_delay: 5000 },
+      frame => {
+        if (stompClient.connected) {
+          stompClient.subscribe(
+            // '/sock/sub/chat/room/' + chat.roomId,
+            '/sock/sub/chat' + location.pathname,
+            rerenderGraph,
+          );
+          setIsConnected(true);
+          console.log('stompClient connect success');
+            stompClient.send(
+                '/sock/pub/chat/enterUser',
+                {},
+                JSON.stringify({
+                    roomId: chat.roomId,
+                    sender: user.nickName,
+                    type: 'ENTER',
+                }),
+            );
+        } else {
+          console.log('Failed to connect, retrying...');
+        }
+      },
+      () => {
+        setIsConnected(false);
+        console.log('stompClient disconnected, connect retrying...');
+        sockjs_conn();
+      },
+    );
   };
 
   function sendObjectInfo(objectType, method, object) {
@@ -124,7 +137,7 @@ function RtcChat({ chat }) {
         '/sock/pub/chat/sendMessage',
         {},
         JSON.stringify({
-          roomId: chat.roomId,
+          roomId: location.pathname.replace(/\D/g, ''),
           sender: user.nickName,
           data: object,
           type: objectType,
@@ -220,30 +233,13 @@ function RtcChat({ chat }) {
         style={{ height: '100%' }}
         // ref={tempRef}
       >
+        {isConnected ? null : <Loading isConnected={isConnected} />}
         <Row style={{ height: '100%' }}>
-          <Col
-            xs={9}
-            onPointerMove={e => {
-              updateMyPresence({
-                cursor: { x: e.clientX, y: e.clientY },
-                screenInfo: {
-                  width: containerInfo[0],
-                  height: containerInfo[1],
-                },
-              });
-            }}
-            onPointerLeave={() =>
-              updateMyPresence({ cursor: null, screenInfo: null })
-            }
-          >
+          <Col xs={9}>
             <div
               ref={mainParent}
               style={{ height: '100%', width: '100%', position: 'relative' }}
             >
-              <div
-                style={{ position: 'absolute', bottom: '0px', zIndex: '995' }}
-              ></div>
-
               {coordType === 'problem' ? (
                 <div style={graphStyle}>
                   <Problem />
@@ -253,7 +249,7 @@ function RtcChat({ chat }) {
                   {isLoaded ? (
                     <TwoDGraph
                       viewPointX={viewPointX}
-                      viewPointY={viewPointY}
+                      // viewPointY={viewPointY}
                       ratio={ratio}
                       setRatio={setRatio}
                       sendObjectInfo={sendObjectInfo}
@@ -288,26 +284,6 @@ function RtcChat({ chat }) {
                 ) : (
                   ''
                 )}
-
-                {userOther.map(
-                  // todo 함수 분리
-                  ({ connectionId, presence }) =>
-                    presence.cursor ? (
-                      <Cursor
-                        key={connectionId}
-                        name={presence.userInfo.name}
-                        color={presence.userInfo.color}
-                        x={
-                          presence.cursor.x *
-                          (window.innerWidth / presence.screenInfo.width)
-                        }
-                        y={
-                          presence.cursor.y *
-                          (window.innerHeight / presence.screenInfo.height)
-                        }
-                      />
-                    ) : null,
-                )}
               </div>
               <div
                 style={{
@@ -330,7 +306,7 @@ function RtcChat({ chat }) {
               coordType={coordType}
               setCoordType={setCoordType}
             />
-            <Row>
+            <Row style={{ flexDirection: 'column' }}>
               {coordType === 'problem' ? (
                 <ProblemSideBar />
               ) : coordType === '2D' ? (

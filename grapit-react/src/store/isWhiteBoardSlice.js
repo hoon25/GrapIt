@@ -4,9 +4,9 @@ const isWhiteBoard = createSlice({
   name: 'isWhiteBoard',
   initialState: { isSelected: false },
   reducers: {
-    // setIsWhiteBoard(state, action) {
-    //   state.isSelected = action.payload;
-    // },
+    setIsWhiteBoard(state, action) {
+      state.isSelected = action.payload;
+    },
     toggleIsWhiteBoard(state) {
       state.isSelected = !state.isSelected;
     },
@@ -14,6 +14,6 @@ const isWhiteBoard = createSlice({
 });
 
 // export const setIsWhiteBoard = isWhiteBoard.actions.setIsWhiteBoard;
-export const toggleIsWhiteBoard = isWhiteBoard.actions.toggleIsWhiteBoard;
+export const changeIsWhiteBoard = isWhiteBoard.actions;
 
 export default isWhiteBoard;

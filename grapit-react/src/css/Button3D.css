@@ -1,17 +1,17 @@
-.button-3d svg {
-  display: block;
-  flex: 1;
-  padding: 0;
-  text-align: center;
+.button-3d svg{
+    display: block;
+    flex: 1;
+    padding: 3px;
+    text-align: center;
 }
 
 .button-3d {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 50px;
-  height: 50px;
-  text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    text-align: center;
 
   color: #ecf0f1;
   border-radius: 50%;
@@ -48,11 +48,14 @@
   transform: rotate(90deg);
 }
 
-.ratio-slider-container {
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  justify-content: center;
-  align-items: start;
-  align-content: start;
+.ratio-slider-container{
+    display: flex;
+
+    position: absolute;
+    top: 45px;
+    right: 0px;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    align-content: start;
 }

@@ -76,7 +76,6 @@ function Board(props) {
   }, [load]);
 
   useEffect(() => {
-    console.log(props.clear);
     if (props.clear) {
       resetCanvas();
       props.setClear(false);
@@ -87,7 +86,12 @@ function Board(props) {
     if (sendObj !== undefined && mouseUp === true) {
       let action = undefined;
       if (props.mode !== 'eraser' && props.mode !== 'select') {
+        console.log('sendObj', sendObj);
         if (sendObj.id !== undefined && sendObj.id !== null) {
+          // sendObj.set('width', (sendObj.width / props.width) * 1490);
+          // sendObj.set('height', (sendObj.height / props.height) * 1000);
+          // sendObj.set('left', (sendObj.left / props.width) * 1490);
+          // sendObj.set('top', (sendObj.top / props.height) * 1000);
           props.sendPaintInfo(
             'PAINT',
             '',
@@ -103,15 +107,30 @@ function Board(props) {
   }, [sendObj, mouseUp, selectedCount]);
 
   function handleCanvasObjectsAdded(options) {
-    if (props.mode === 'pen') {
+    console.log('draw 시점');
+    console.log('options', options);
+    console.log(props.width);
+    console.log(props.height);
+    if (
+      props.mode === 'pen' &&
+      (options.target.drawer === null || options.target.drawer === undefined)
+    ) {
       options.target.id = uuid.v4();
+      let copyObj = fabric.util.object.clone(options.target);
+      copyObj.set('scaleX', (copyObj.scaleX / props.width) * 1490);
+      copyObj.set('scaleY', (copyObj.scaleY / props.height) * 1000);
+      copyObj.set('strokeWidth', (copyObj.strokeWidth / props.width) * 1490);
+      // copyObj.set('height', (copyObj.height / props.height) * 1000);
+      copyObj.set('left', (copyObj.left / props.width) * 1490);
+      copyObj.set('top', (copyObj.top / props.height) * 1000);
+      copyObj.set('drawer', user.nickName);
       props.sendPaintInfo(
         'PAINT',
         '',
         JSON.stringify({
           action: 'pen',
           drawer: user.nickName,
-          target: options.target.toJSON(['id', 'drawer']),
+          target: copyObj.toJSON(['id', 'drawer']),
         }),
       );
     }
@@ -126,6 +145,7 @@ function Board(props) {
       selectable: false,
       selection: false,
     });
+
     fabricCanvas.current.freeDrawingBrush.color = props.brushColor;
     fabricCanvas.current.freeDrawingBrush.width = props.brushThickness;
     fabricCanvas.current.hoverCursor = 'pointer';
@@ -262,7 +282,50 @@ function Board(props) {
       [props.drawInfo.target],
       function (enlivenedObjects) {
         enlivenedObjects.forEach(function (enlivenedObject) {
+          console.log('add 시전');
+          console.log(props.width);
+          console.log(props.height);
+          console.log(enlivenedObject);
           enlivenedObject.set('id', props.drawInfo.target.id);
+          enlivenedObject.set(
+            'top',
+            (enlivenedObject.top / 1000) * props.height,
+          );
+          enlivenedObject.set(
+            'left',
+            (enlivenedObject.left / 1490) * props.width,
+          );
+          enlivenedObject.set(
+            'scaleX',
+            (enlivenedObject.scaleX / 1490) * props.width,
+          );
+          enlivenedObject.set(
+            'scaleY',
+            (enlivenedObject.scaleY / 1000) * props.height,
+          );
+
+          if ((enlivenedObject.strokeWidth / 1490) * props.width > 10) {
+            enlivenedObject.set('strokeWidth', 10);
+          } else if ((enlivenedObject.strokeWidth / 1490) * props.width < 3) {
+            enlivenedObject.set('strokeWidth', 3);
+          } else {
+            enlivenedObject.set(
+              'strokeWidth',
+              (enlivenedObject.strokeWidth / 1490) * props.width,
+            );
+          }
+
+          // enlivenedObject.set(
+          //   'width',
+          //   (enlivenedObject.width / 1490) * props.width,
+          // );
+          // enlivenedObject.set(
+          //   'height',
+          //   (enlivenedObject.height / 1000) * props.height,
+          // );
+
+          enlivenedObject.set('drawer', props.drawInfo.drawer);
+          // enlivenedObject.setCoords();
           fabricCanvas.current.add(enlivenedObject);
         });
       },
@@ -279,7 +342,6 @@ function Board(props) {
         props.drawInfo.target.id,
       );
     }
-
     if (props.drawInfo.action === 'add') {
       if (objectById === null) {
         jsonToObject();
@@ -383,7 +445,14 @@ function Board(props) {
   // } else if (props.drawInfo.type === 'remove') {
   // } else if (props.drawInfo.type === 'move') {
   // }
-
+  // const xPosition = (1980 - props.width) / 2;
+  // const yPosition = (1080 - props.height) / 2;
+  // const canvasStyle = {
+  //   position: 'absolute',
+  //   left: -xPosition,
+  //   top: -yPosition,
+  //   overflow: 'hidden',
+  // };
   if (props.visible === false) return <div></div>;
   return (
     <div className="fabric-whiteboard-board">
@@ -392,12 +461,15 @@ function Board(props) {
         className="fabric-whiteboard-canvas"
         width={props.width}
         height={props.height}
-        style={{ width: props.width, height: props.height }}
       />
+
       {props.enabled === false ? (
         <div
           className="fabric-whiteboard-mask"
-          style={{ width: props.width, height: props.height }}
+          style={{
+            width: props.width,
+            height: props.height,
+          }}
         />
       ) : (
         <div />

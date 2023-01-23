@@ -13,7 +13,7 @@ let tempRoom;
 function Canvas(props) {
   const [width, setWidth] = useState(props.childWidth.toString());
   const [height, setHeight] = useState(props.childHeight.toString());
-  const [buttonMode, setButtonMode] = useState('select');
+  const [buttonMode, setButtonMode] = useState('pen');
 
   const [mode, setMode] = useState();
   const [brushColor, setBrushColor] = useState('#f06292');
@@ -25,7 +25,11 @@ function Canvas(props) {
 
   return (
     <div className="questioncontent">
-      <div className="whiteboard" id="whiteboard">
+      <div
+        className="whiteboard"
+        id="whiteboard"
+        style={{ width: '100%', height: '100%' }}
+      >
         <WhiteBoard
           width={width}
           height={height}

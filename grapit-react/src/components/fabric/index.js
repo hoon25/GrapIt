@@ -26,6 +26,8 @@ function WhiteBoard(props) {
   const [board, setBoard] = useState(null);
 
   const whiteBoardStyle = {
+    width: '100%',
+    height: '100%',
     pointerEvents: isWhiteBoard.isSelected ? 'auto' : 'none',
   };
   if (props.visible) {
@@ -50,7 +52,14 @@ function WhiteBoard(props) {
             setBoard={setBoard}
           />
         </div>
-        <div style={{ position: 'absolute', top: '-50px', right: '130px' }}>
+        <div
+          style={{
+            position: 'absolute',
+            top: '0px',
+            right: '0px',
+            zIndex: '999',
+          }}
+        >
           <ToolBar
             visible={props.showToolbar}
             enabled={props.enableToolbar}
@@ -62,6 +71,7 @@ function WhiteBoard(props) {
             brushThicknessRange={props.brushThicknessRange}
             setBrushColor={props.setBrushColor}
             setBrushThickness={props.setBrushThickness}
+            mode={props.mode}
             setButtonMode={props.setButtonMode}
             sendPaintInfo={props.sendPaintInfo}
             setClear={setClear}
@@ -87,14 +97,6 @@ WhiteBoard.defaultProps = {
   mode: modes[0],
   fontSize: 22,
   brushColor: '#f44336',
-  brushColors: [
-    '#f44336',
-    '#e91e63',
-    '#9c27b0',
-    '#673ab7',
-    '#3f51b5',
-    '#2196f3',
-  ],
   brushThickness: 2,
   brushThicknessRange: [2, 3, 4, 5, 6, 7, 8],
   onModeClick: () => {},

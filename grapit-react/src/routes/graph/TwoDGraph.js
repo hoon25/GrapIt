@@ -9,6 +9,8 @@ import { Leva, useControls } from 'leva';
 import ReactDOM from 'react-dom/client';
 
 export function TwoDGraph({
+  mover,
+  setMover,
   viewPointX,
   viewPointY,
   ratio,
@@ -21,6 +23,8 @@ export function TwoDGraph({
   const TwoDgraphList = useSelector(state => state.TwoDfigure.TwoDfigures);
   // todo store 기반으로 변경
   // 스크롤 이벤트 제어. 나중에 쓸수 있음.
+  const user = useSelector(state => state.user);
+
   function removeWindowWheel() {
     window.addEventListener('wheel', preventWheelEvent, { passive: false });
   }
@@ -38,6 +42,10 @@ export function TwoDGraph({
       setRatio(ratio + 1);
     }
   }
+
+  useEffect(() => {
+    console.log(viewPointX, viewPointY, ratio);
+  }, [viewPointX, viewPointY]);
 
   const controller = useRef();
   const debug = useRef();
@@ -60,59 +68,88 @@ export function TwoDGraph({
     top: '0',
     left: '0',
   };
-  function mouseMovingHandler(event) {
-    // console.log("viewPointX[0] = "+ viewPointX[0])
-    // console.log("viewPointX[1] = "+ viewPointX[1])
-    // console.log("mousePoint[0] = "+ mousePoint[0])
-    // console.log("mousePoint[1] = "+ mousePoint[1])
-    // console.log("pageX = "+ event.pageX)
-    // console.log((Number(mousePoint[0]) - Number(event.pageX)))
-    // console.log((Number(mousePoint[1]) - Number(event.pageX)))
-    // let firstX = viewPointX[0] + Math.floor((Number(mousePoint[0]) - Number(event.pageX))/100)
-    // let secondX = viewPointX[1] - Math.floor((Number(mousePoint[0]) - Number(event.pageX))/100)
-    // console.log(firstX)
-    // console.log(secondX)
-    // setViewPointX([firstX,secondX])
-    // setMousePoint([event.pageX, event.pageY])
-  }
+  // function mouseMovingHandler(event) {
+  // console.log("viewPointX[0] = "+ viewPointX[0])
+  // console.log("viewPointX[1] = "+ viewPointX[1])
+  // console.log("mousePoint[0] = "+ mousePoint[0])
+  // console.log("mousePoint[1] = "+ mousePoint[1])
+  // console.log("pageX = "+ event.pageX)
+  // console.log((Number(mousePoint[0]) - Number(event.pageX)))
+  // console.log((Number(mousePoint[1]) - Number(event.pageX)))
+  // let firstX = viewPointX[0] + Math.floor((Number(mousePoint[0]) - Number(event.pageX))/100)
+  // let secondX = viewPointX[1] - Math.floor((Number(mousePoint[0]) - Number(event.pageX))/100)
+  // console.log(firstX)
+  // console.log(secondX)
+  // setViewPointX([firstX,secondX])
+  // setMousePoint([event.pageX, event.pageY])
+  // }
 
   const mafsContainer = useRef();
 
-  let mafsView;
   let translateY;
   let translateX;
   let rangeX;
   let rangeY;
 
   const [isLoaded, setIsLoaded] = useState(false);
-  const [stringX, setStringX] = useState('');
-  const [stringY, setStringY] = useState('');
-
+  const [stringX, setStringX] = useState('x: (-8.94,8,94)');
+  const [stringY, setStringY] = useState('y: (-6.00,6.00)');
+  const [mafsView, setMafsView] = useState(undefined);
+  const [isEvent, setIsEvent] = useState(false);
   const mouseDownHandler = () => {
-    mafsView = document.getElementsByClassName('MafsView')[0];
-    window.addEventListener('mousemove', () => {
-      setStringX(mafsView.children[0].children[0].children[0].innerHTML);
-      setStringY(mafsView.children[0].children[0].children[1].innerHTML);
-    });
+    setIsEvent(true);
+    setMafsView(document.getElementsByClassName('MafsView')[0]);
+  };
+
+  const mouseUpHandler = () => {
+    setIsEvent(false);
   };
 
   useEffect(() => {
     setIsLoaded(true);
-    mafsContainer.current.addEventListener('mousedown', mouseDownHandler);
-    setIsLoaded(true);
-    return () => {};
-  }, []);
+  });
 
   useEffect(() => {
-    if (isLoaded) {
+    if (isEvent) {
+      mafsContainer.current.addEventListener('mousemove', mouseMovingHandler);
+    } else {
+      mafsContainer.current.removeEventListener(
+        'mousemove',
+        mouseMovingHandler,
+      );
+    }
+  }, [isEvent]);
+  const mouseMovingHandler = () => {
+    if (isEvent) {
+      setMover(user.nickName);
+      setTimeout(() => {
+        setStringX(mafsView.children[0].children[0].children[0].innerHTML);
+        setStringY(mafsView.children[0].children[0].children[1].innerHTML);
+      }, 1000);
+    }
+  };
+
+  useEffect(() => {
+    if (isLoaded && isEvent && mover === user.nickName) {
       translateX = stringX.match(/x: \((-?\d+\.\d+), (-?\d+\.\d+)\)/);
       translateY = stringY.match(/y: \((-?\d+\.\d+), (-?\d+\.\d+)\)/);
-      rangeX = [parseFloat(translateX[1]), parseFloat(translateX[2])];
-      rangeY = [parseFloat(translateY[1]), parseFloat(translateY[2])];
+      rangeX = [
+        Math.round(parseFloat(translateX[1]) * 100) / 100,
+        Math.round(parseFloat(translateX[2]) * 100) / 100,
+      ];
+      rangeY = [
+        Math.round(parseFloat(translateY[1]) * 100) / 100,
+        Math.round(parseFloat(translateY[2]) * 100) / 100,
+      ];
       if (rangeX !== undefined && rangeY !== undefined) {
         sendObjectInfo(
           'CAMERA2D',
-          JSON.stringify({ rangeX: rangeX, rangeY: rangeY }),
+          '',
+          JSON.stringify({
+            mover: user.nickName,
+            rangeX: rangeX,
+            rangeY: rangeY,
+          }),
         );
       }
     }
@@ -132,7 +169,7 @@ export function TwoDGraph({
           <div
             className="button-3d"
             onClick={() => {
-              sendObjectInfo('RATIO', ratio === 0 ? 0 : ratio - 0.5);
+              sendObjectInfo('RATIO2D', '', ratio === 0 ? 0 : ratio - 0.5);
               setRatio(ratio === 0 ? 0 : ratio - 0.5);
             }}
           >
@@ -141,27 +178,27 @@ export function TwoDGraph({
           <div
             className="button-3d mt-3"
             onClick={() => {
-              sendObjectInfo('RATIO', ratio + 0.5);
+              sendObjectInfo('RATIO2D', '', ratio + 0.5);
               setRatio(ratio + 0.5);
             }}
           >
             <ZoomOut />
           </div>
-          <div
-            className="button-3d mt-3"
-            onClick={() => {
-              setOpenController(!openController);
-            }}
-          >
-            <Dpad />
-          </div>
+          {/*<div*/}
+          {/*  className="button-3d mt-3"*/}
+          {/*  onClick={() => {*/}
+          {/*    setOpenController(!openController);*/}
+          {/*  }}*/}
+          {/*>*/}
+          {/*  <Dpad />*/}
+          {/*</div>*/}
         </div>
         <div className="ratio-slider-container">
           <Form.Range
             className="ratio-slider"
             value={ratio}
             onChange={e => {
-              sendObjectInfo('RATIO', Number(e.target.value));
+              sendObjectInfo('RATIO2D', '', Number(e.target.value));
               setRatio(Number(e.target.value));
             }}
             tooltip="auto"
@@ -183,16 +220,17 @@ export function TwoDGraph({
 
       <div
         ref={mafsContainer}
-        onMouseUp={() => {
-          window.removeEventListener('mousemove', mouseMovingHandler);
-        }}
+        onMouseDown={mouseDownHandler}
+        onMouseUp={mouseUpHandler}
       >
         <Mafs
           width={childWidth}
           height={childHeight}
           viewBox={{ x: viewPointX, y: viewPointY, padding: ratio }}
         >
-          <Debug.ViewportInfo precision={2} />
+          <Debug.ViewportInfo
+          // precision={2}
+          />
           <Coordinates.Cartesian
             xAxis={{ lines: Math.floor(Math.abs(ratio) / 5) + 1 }}
             yAxis={{ lines: Math.floor(Math.abs(ratio) / 5) + 1 }}

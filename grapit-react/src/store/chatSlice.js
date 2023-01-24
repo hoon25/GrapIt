@@ -8,9 +8,12 @@ let chat = createSlice({
       state.roomId = action.payload.roomId;
       state.roomName = action.payload.roomName;
     },
+    setRoomId(state, action) {
+      state.roomId = action.payload.roomId;
+    },
   },
 });
 
-export let { setChat } = chat.actions;
+export let { setChat, setRoomId } = chat.actions;
 
 export default chat;

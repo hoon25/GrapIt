@@ -23,12 +23,7 @@ const defaultStyle = {
   display: 'inline-block',
 };
 
-export function EquationHandBoard({
-  graphColor,
-  viewPointX,
-  viewPointY,
-  sendObjectInfo,
-}) {
+export function EquationHandBoard({ graphColor, sendObjectInfo }) {
   const TwoDgraphList = useSelector(state => state.TwoDfigure.TwoDfigures);
 
   const [ctx, setCtx] = useState();
@@ -154,7 +149,7 @@ export function EquationHandBoard({
     // const copyViewPointY = [Number(b) - 3, Number(b) + 3];
     // setViewPointX(copyViewPointX);
     // setViewPointY(copyViewPointY);
-    sendObjectInfo('GRAPH', TwoDgraphList);
+    sendObjectInfo('GRAPH', 'ADD', TwoDgraphList);
 
     return result;
   };
@@ -203,7 +198,8 @@ export function EquationHandBoard({
     // const copyViewPointY = [Number(b) - 3, Number(b) + 3];
     // setViewPointX(copyViewPointX);
     // setViewPointY(copyViewPointY);
-    sendObjectInfo('GRAPH', TwoDgraphList);
+    //!!TODO 변경 예정
+    sendObjectInfo('GRAPH', 'ADD', TwoDgraphList);
 
     return result;
   };

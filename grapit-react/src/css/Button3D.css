@@ -1,11 +1,9 @@
-
 .button-3d svg{
     display: block;
     flex: 1;
     padding: 3px;
     text-align: center;
 }
-
 
 .button-3d {
     display: flex;
@@ -15,39 +13,39 @@
     height: 40px;
     text-align: center;
 
-    color:#ecf0f1;
-    border-radius: 50%;
-    border:solid 1px #0a58ca;
-    background:#0d6efd;
-    font-size: 28px;
+  color: #ecf0f1;
+  border-radius: 50%;
+  border: solid 1px #0a58ca;
+  background: #0d6efd;
+  font-size: 28px;
 
-    -webkit-transition: all 0.1s;
-    -moz-transition: all 0.1s;
-    transition: all 0.1s;
+  -webkit-transition: all 0.1s;
+  -moz-transition: all 0.1s;
+  transition: all 0.1s;
 
-    -webkit-box-shadow: 0px 6px 0px #0b5ed7;
-    -moz-box-shadow: 0px 6px 0px #0b5ed7;
-    box-shadow: 0px 6px 0px #0b5ed7;
+  -webkit-box-shadow: 0px 6px 0px #0b5ed7;
+  -moz-box-shadow: 0px 6px 0px #0b5ed7;
+  box-shadow: 0px 6px 0px #0b5ed7;
 }
 
-.button-3d:active{
-    -webkit-box-shadow: 0px 2px 0px #0a53be;
-    -moz-box-shadow: 0px 2px 0px #0a53be;
-    box-shadow: 0px 2px 0px #0a53be;
-    /*position:relative;*/
-    top:4px;
+.button-3d:active {
+  -webkit-box-shadow: 0px 2px 0px #0a53be;
+  -moz-box-shadow: 0px 2px 0px #0a53be;
+  box-shadow: 0px 2px 0px #0a53be;
+  /*position:relative;*/
+  top: 4px;
 }
 
-.button-3d:hover{
-    background:#0b5ed7;
-    transform: scale(1.2, 1.2) translate3d(0, 0, 0);
+.button-3d:hover {
+  background: #0b5ed7;
+  transform: scale(1.2, 1.2) translate3d(0, 0, 0);
 }
 
-.ratio-slider{
-    position: absolute;
-    right: -70px;
-    width: 110px;
-    transform: rotate(90deg);
+.ratio-slider {
+  position: absolute;
+  right: -70px;
+  width: 110px;
+  transform: rotate(90deg);
 }
 
 .ratio-slider-container{

@@ -38,8 +38,6 @@ function ColorPicker(props) {
       window.removeEventListener('mousemove', mouseEvent);
       if (e.key === ' ') {
         setShowColor(true);
-        props.toolbox.current.click();
-        dispatch(changeIsWhiteBoard.toggleIsWhiteBoard());
       }
     });
 

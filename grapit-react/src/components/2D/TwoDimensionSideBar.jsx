@@ -5,11 +5,7 @@ import TwoCardBox from './TwoCardBox';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-export default function TwoDimensionSideBar({
-  viewPointX,
-  viewPointY,
-  sendObjectInfo,
-}) {
+export default function TwoDimensionSideBar({ sendObjectInfo }) {
   const inputColor = useSelector(state => state.TwoDInput.color);
   const [seeInput, setSeeInput] = useState(false);
 
@@ -31,8 +27,6 @@ export default function TwoDimensionSideBar({
           <>
             <EquationHandBoard
               graphColor={inputColor}
-              viewPointX={viewPointX}
-              viewPointY={viewPointY}
               sendObjectInfo={sendObjectInfo}
             />
             <div className="pt-3 flex justify-content-center">

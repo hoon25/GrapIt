@@ -1,0 +1,25 @@
+@import "mafs/core.css";
+
+.Leva-container label{
+  color: white;
+  font-size: 20px;
+}
+
+.Leva-container:nth-child(1) {
+  position: fixed!important;
+    top: 0!important;
+    left: 0!important;
+}
+
+#Leva-container:nth-child(1) {
+  position: fixed!important;
+    top: 0!important;
+    right: 0!important;
+}
+
+.MafsView >svg:nth-child(1) .mafs-shadow:nth-child(1) > text {
+  /*stroke: rgba(255, 255, 255, 0);*/
+  /*--mafs-fg: rgba(255, 255, 255, 0);*/
+}
+
+

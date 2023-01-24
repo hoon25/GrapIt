@@ -18,6 +18,8 @@ import ProblemSideBar from '../components/problem/ProblemSideBar';
 import { changeIsWhiteBoard } from '../store/isWhiteBoardSlice';
 import { useLocation } from 'react-router-dom';
 import Loading from '../components/common/Loading';
+import { setUser } from '../store/userSlice';
+import { setChat, setRoomId } from '../store/chatSlice';
 
 var stompClient = null;
 
@@ -34,7 +36,6 @@ function RtcChat({ chat }) {
 
   const dispatch = useDispatch();
   const isWhiteBoard = useSelector(state => state.isWhiteBoard);
-  const towDFigureList = useSelector(state => state.TwoDfigure.TwoDfigures);
 
   const location = useLocation();
 
@@ -60,6 +61,7 @@ function RtcChat({ chat }) {
   const [childHeight, setChildHeight] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
+  const [mover, setMover] = useState(null);
 
   useEffect(() => {
     setChildWidth(mainParent.current.clientWidth);
@@ -110,6 +112,15 @@ function RtcChat({ chat }) {
           );
           setIsConnected(true);
           console.log('stompClient connect success');
+          stompClient.send(
+            '/sock/pub/chat/enterUser',
+            {},
+            JSON.stringify({
+              roomId: chat.roomId,
+              sender: user.nickName,
+              type: 'ENTER',
+            }),
+          );
         } else {
           console.log('Failed to connect, retrying...');
         }
@@ -122,7 +133,7 @@ function RtcChat({ chat }) {
     );
   };
 
-  function sendObjectInfo(objectType, object) {
+  function sendObjectInfo(objectType, method, object) {
     if (stompClient) {
       stompClient.debug = null;
       stompClient.send(
@@ -131,8 +142,9 @@ function RtcChat({ chat }) {
         JSON.stringify({
           roomId: location.pathname.replace(/\D/g, ''),
           sender: user.nickName,
-          message: object,
+          data: object,
           type: objectType,
+          method: method,
         }),
       );
     }
@@ -141,38 +153,70 @@ function RtcChat({ chat }) {
   // sendGraphInfo()
   function rerenderGraph(payload) {
     const newMessage = JSON.parse(payload.body);
-    if (newMessage.sender !== user.nickName) {
-      if (newMessage.type === 'RATIO') {
-        setRatio(Number(newMessage.message));
-      } else if (newMessage.type === 'PAINT') {
-        setDrawInfo(JSON.parse(newMessage.message));
-      } else if (newMessage.type === 'GRAPH') {
-        const receivedGraphInfo = JSON.parse(newMessage.message);
-
-        if (receivedGraphInfo.length === 0) {
-          dispatch(setTwoDFigure.switchFigure([]));
+    switch (newMessage.type) {
+      case 'PAINT':
+        if (newMessage.sender !== user.nickName) {
+          setDrawInfo(JSON.parse(newMessage.data));
         }
-        if (newMessage.message !== JSON.stringify(towDFigureList)) {
-          dispatch(setTwoDFigure.switchFigure(receivedGraphInfo));
+        break;
+      case 'FIGURE3D':
+        dispatch(setFigure.switchFigure(newMessage.data));
+        break;
+      case 'CAMERA3D':
+        if (newMessage.sender !== user.nickName) {
+          setThreeCamera(JSON.parse(newMessage.data));
         }
-      } else if (newMessage.type === 'CAMERA') {
-        setThreeCamera(JSON.parse(newMessage.message));
-      } else if (newMessage.type === 'FIGURE') {
-        const receivedFigureInfo = JSON.parse(newMessage.message);
-
-        if (receivedFigureInfo.length === 0) {
-          dispatch(setFigure.switchFigure([]));
+        break;
+      case 'GRAPH2D':
+        dispatch(setTwoDFigure.switchFigure(newMessage.data));
+        break;
+      case 'RATIO2D':
+        if (newMessage.sender !== user.nickName) {
+          setRatio(Number(newMessage.data));
         }
-        if (newMessage.message !== JSON.stringify(towDFigureList)) {
-          dispatch(setFigure.switchFigure(receivedFigureInfo));
+        break;
+      case 'ENTER':
+        dispatch(setTwoDFigure.switchFigure(newMessage.data.graph2D));
+        dispatch(setFigure.switchFigure(newMessage.data.figure3D));
+        break;
+      case 'CAMERA2D':
+        if (newMessage.sender !== user.nickName) {
+          const receivedCamera2DInfo = JSON.parse(newMessage.data);
+          console.log(receivedCamera2DInfo);
+          setViewPointX(receivedCamera2DInfo.rangeX);
+          setViewPointY(receivedCamera2DInfo.rangeY);
+          setMover(receivedCamera2DInfo.mover);
         }
-      } else if (newMessage.type === 'CAMERA2D') {
-        const receivedCamera2DInfo = JSON.parse(newMessage.message);
-        console.log(receivedCamera2DInfo);
-        setViewPointX(receivedCamera2DInfo.rangeX);
-        setViewPointY(receivedCamera2DInfo.rangeY);
-      }
+        break;
     }
+
+    // if (newMessage.sender !== user.nickName) {
+    //   if (newMessage.type === 'RATIO') {
+    //     setRatio(Number(newMessage.data));
+    //   } else if (newMessage.type === 'PAINT') {
+    //     setDrawInfo(JSON.parse(newMessage.data));
+    //   } else if (newMessage.type === 'GRAPH') {
+    //     const receivedGraphInfo = JSON.parse(newMessage.data);
+    //
+    //     if (receivedGraphInfo.length === 0) {
+    //       dispatch(setTwoDFigure.switchFigure([]));
+    //     }
+    //     if (newMessage.message !== JSON.stringify(towDFigureList)) {
+    //       dispatch(setTwoDFigure.switchFigure(receivedGraphInfo));
+    //     }
+    //   } else if (newMessage.type === 'CAMERA') {
+    //     setThreeCamera(JSON.parse(newMessage.data));
+    //   } else if (newMessage.type === 'FIGURE') {
+    //     const receivedFigureInfo = JSON.parse(newMessage.data);
+    //
+    //     if (receivedFigureInfo.length === 0) {
+    //       dispatch(setFigure.switchFigure([]));
+    //     }
+    //     if (newMessage.message !== JSON.stringify(towDFigureList)) {
+    //       dispatch(setFigure.switchFigure(receivedFigureInfo));
+    //     }
+    //   }
+    // }
   }
 
   //=====================================================
@@ -215,6 +259,8 @@ function RtcChat({ chat }) {
                 <div style={graphStyle}>
                   {isLoaded ? (
                     <TwoDGraph
+                      mover={mover}
+                      setMover={setMover}
                       viewPointX={viewPointX}
                       viewPointY={viewPointY}
                       ratio={ratio}
@@ -277,11 +323,7 @@ function RtcChat({ chat }) {
               {coordType === 'problem' ? (
                 <ProblemSideBar />
               ) : coordType === '2D' ? (
-                <TwoDimensionSideBar
-                  viewPointX={viewPointX}
-                  viewPointY={viewPointY}
-                  sendObjectInfo={sendObjectInfo}
-                />
+                <TwoDimensionSideBar sendObjectInfo={sendObjectInfo} />
               ) : (
                 <ThreeDimensionSideBar sendObjectInfo={sendObjectInfo} />
               )}

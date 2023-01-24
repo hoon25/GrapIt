@@ -4,15 +4,19 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { LogIn, LogOut } from './routes/LogIn';
 import ChatRoom from './routes/ChatRoom';
-import Chat from './routes/Chat';
-import RTC from './routes/RTC';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { CollaborationPage } from './routes/CollaborationPage';
 import Home from './components/home/Home';
-import Canvas from './components/Canvas';
 import Header from './components/common/header/Header';
-import Vidu from './routes/vidu/Vidu';
+import OCR from './routes/ocr/OCR';
+import JoinMember from './routes/JoinMember';
 import SurveyComponent from './components/home/survey/survey';
+import ThreeCanvas from './components/ThreeCanvas';
+import BaseCanvas from './components/BaseCanvas';
+import 'survey-core/defaultV2.min.css';
+import Result from './components/home/survey/result';
+import Vidu from './routes/vidu/Vidu';
+import RtcChat from './routes/RtcChat';
+import DrawAlone from './routes/DrawAlone';
 
 function App() {
   let chat = useSelector(state => state.chat);
@@ -25,17 +29,17 @@ function App() {
         <Route exact path="/" element={<Home />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/logout" element={<LogOut />} />
-        <Route path="/chat" element={<ChatRoom />} />
-        <Route path="/chat/room/msg/:roomId" element={<Chat chat={chat} />} />
-        <Route path="/chat/room/rtc/:roomId" element={<RTC chat={chat} />} />
-        <Route
-          path="/chat/room/both/:roomId"
-          element={<CollaborationPage chat={chat} />}
-        />
-        <Route path="/chat/room/:roomId" element={<Chat chat={chat} />} />
-        <Route path="/canvas" element={<Canvas />} />
-        <Route path="/vidu" element={<Vidu />} />
+        <Route path="/join" element={<JoinMember />} />
+        <Route path="/room" element={<ChatRoom />} />
+        <Route path="/room/:roomId" element={<RtcChat chat={chat} />} />
+        <Route path="/draw_alone" element={<DrawAlone />} />
+        <Route path="/ocr" element={<OCR />} />
         <Route path="/survey" element={<SurveyComponent />} />
+        <Route path="/three" element={<ThreeCanvas />} />
+        <Route path="/base" element={<BaseCanvas />} />
+        <Route path="/vidu" element={<Vidu />} />
+        <Route path="/tutorfind" element={<SurveyComponent />} />
+        <Route path="/result" element={<Result />} />
       </Routes>
     </div>
   );

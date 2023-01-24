@@ -1,114 +1,103 @@
-import { Button, Table } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setChat } from '../store/chatSlice';
+import { CreateRoom } from './CreateRoom';
+import './vidu/CreateRoom.css';
+import './ChatRoom.css';
 
 function ChatRoomList() {
-  let [chatList, setChatList] = useState([]);
-  let [createRoomType, setCreateRoomType] = useState('');
+  const user = useSelector(state => state.user);
+  const [chatList, setChatList] = useState([]);
   let navigate = useNavigate();
+
+  const [createRoomShow, setCreateRoomShow] = useState(false);
+  const handleClose = () => setCreateRoomShow(false);
+  const handleShow = () => setCreateRoomShow(true);
 
   useEffect(() => getAllChatRoom(), []);
 
-  // getAllChatRoom();
-
   function getAllChatRoom() {
-    axios.get('/api/chat').then(res => {
+    axios.get('/api/room').then(res => {
       setChatList(res.data);
       console.log(res.data);
     });
   }
 
-  // axios.get("/chat").then(res => {
-  //     setChatList(res.data);
-  //     console.log(res.data)
-  // });
+  function isUserLoggedIn() {
+    return user.nickName !== null;
+  }
 
   return (
     <>
-      <input
-        type="radio"
-        name="chatRoomType"
-        value="text"
-        onClick={() => setCreateRoomType('MSG')}
-      />{' '}
-      텍스트채팅
-      <input
-        type="radio"
-        name="chatRoomType"
-        value="text"
-        onClick={() => setCreateRoomType('RTC')}
-      />{' '}
-      영상채팅
-      <input
-        type="radio"
-        name="chatRoomType"
-        value="video"
-        onClick={() => setCreateRoomType('BOTH')}
-      />{' '}
-      텍스트영상채팅
-      <Button
-        variant="danger"
-        style={{ float: 'right' }}
-        onClick={() =>
-          axios
-            .post('/api/chat/room', { chatType: createRoomType })
-            .then(() => getAllChatRoom())
-        }
+      <button
+        className="custom-btn btn-9 "
+        style={{ width: '20rem', height: '3rem' }}
+        onClick={() => {
+          if (isUserLoggedIn()) {
+            handleShow();
+          } else {
+            alert('로그인이 필요합니다.');
+            navigate('/login');
+          }
+        }}
       >
-        채팅방 생성하기
-      </Button>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>채팅방 NO</th>
-            <th>채팅방 종류</th>
-            <th>채팅방 이름</th>
-            <th>입장하기</th>
-          </tr>
-        </thead>
-        <tbody>
-          {chatList.map((chat, i) => (
-            <ChatRoom chat={chat} i={i} />
-          ))}
-        </tbody>
-      </Table>
+        방 생성하기
+      </button>
+      <CreateRoom
+        modalShow={createRoomShow}
+        handleClose={handleClose}
+        handleShow={handleShow}
+      />
+      <div className="article1">
+        {chatList.map((chat, index) => (
+          <div key={index}>
+            <ChatRoom chat={chat} />
+          </div>
+        ))}
+      </div>
     </>
   );
 }
 
-function ChatRoom({ chat, i }) {
+function ChatRoom({ chat, index }) {
   let navigate = useNavigate();
   let dispatch = useDispatch();
+  const user = useSelector(state => state.user);
+
+  function isUserLoggedIn() {
+    return user.nickName !== null;
+  }
 
   return (
     <>
-      <tr>
-        <td></td>
-        <td>{i}</td>
-        <td>{chat.chatType}</td>
-        <td>{chat.roomName}</td>
-        <td>
-          <Button
-            variant="primary"
-            onClick={function () {
-              dispatch(setChat(chat));
-              if (chat.chatType === 'MSG') {
-                navigate(`/chat/room/msg/${chat.roomId}`);
-              } else if (chat.chatType === 'RTC') {
-                navigate(`/chat/room/rtc/${chat.roomId}`);
-              } else {
-                navigate(`/chat/room/both/${chat.roomId}`);
-              }
-            }}
-          >
-            입장하기
-          </Button>
-        </td>
-      </tr>
+      <div className="article">
+        <div className="card98" style={{ width: '18rem' }} data-aos="fade-up">
+          <div className="card__container">
+            <span style={{ fontWeight: 'bold' }}> {chat.roomName} </span>
+
+              <span>선생님 닉네임: {chat.roomCreatorNickName}</span>
+              <div>
+                <Button
+                  variant="primary"
+                  onClick={() => {
+                    if (isUserLoggedIn()) {
+                      dispatch(setChat(chat));
+                      navigate(`/room/${chat.roomId}`);
+                    } else {
+                      alert('로그인이 필요합니다.');
+                      navigate('/login');
+                    }
+                  }}
+                >
+                  입장하기
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
     </>
   );
 }

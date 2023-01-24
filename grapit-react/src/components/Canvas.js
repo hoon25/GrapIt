@@ -13,11 +13,11 @@ let tempRoom;
 function Canvas(props) {
   const [width, setWidth] = useState(props.childWidth.toString());
   const [height, setHeight] = useState(props.childHeight.toString());
-  const [buttonMode, setButtonMode] = useState('select');
+  const [buttonMode, setButtonMode] = useState('pen');
 
   const [mode, setMode] = useState();
-  const [brushColor, setBrushColor] = useState('#f44336');
-  const [brushThickness, setBrushThickness] = useState(2);
+  const [brushColor, setBrushColor] = useState('#f06292');
+  const [brushThickness, setBrushThickness] = useState(5);
 
   useEffect(() => {
     setMode(buttonMode);
@@ -28,7 +28,7 @@ function Canvas(props) {
       <div
         className="whiteboard"
         id="whiteboard"
-        style={{ height: '100%', width: '100%' }}
+        style={{ width: '100%', height: '100%' }}
       >
         <WhiteBoard
           width={width}

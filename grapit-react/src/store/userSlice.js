@@ -8,9 +8,13 @@ let user = createSlice({
       state.nickName = action.payload.nickName;
       state.email = action.payload.email;
     },
+    resetUser(state, action) {
+      state.nickName = null;
+      state.email = null;
+    },
   },
 });
 
-export let { setUser } = user.actions;
+export let { setUser, resetUser } = user.actions;
 
 export default user;

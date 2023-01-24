@@ -1,16 +1,48 @@
-import React, { useEffect, useState } from 'react';
-import Thickness from './thickness';
-import classNames from 'class-names';
-import ColorPicker from './colorpicker';
-import PropTypes from 'prop-types';
+import React, { useEffect, useRef, useState } from 'react';
+import { fabric } from 'fabric';
 import modes from '../utils/mode';
 import './style.scss';
+import '../../../css/Button3D.css';
+import '../../../css/switchStyles.css';
+import { changeIsWhiteBoard } from '../../../store/isWhiteBoardSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  ArrowsMove,
+  ArrowUpRight,
+  BrushFill,
+  DashLg,
+  EraserFill,
+  GraphUp,
+  Square,
+  Trash3Fill,
+  Image,
+  VectorPen,
+  PencilFill,
+} from 'react-bootstrap-icons';
+import ColorPicker from './colorpicker';
 
 function Toolbar(props) {
   const [toolButtons, setToolButtons] = useState([]);
   const [showColorPicker, setShowColorPicker] = useState(false);
-  const [showFontsize, setShowFontsize] = useState(false);
-  const [toolChange, setToolChange] = useState(undefined);
+  const [image, setImage] = useState(null);
+
+  const dispatch = useDispatch();
+  const imageInput = useRef();
+  const toolbox = useRef();
+
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleState = () => {
+    setIsEnabled(prevState => !prevState);
+  };
+
+  const Icon = {
+    select: <ArrowsMove />,
+    pen: <PencilFill />,
+    line: <DashLg />,
+    arrow: <ArrowUpRight />,
+    rectangle: <Square />,
+    eraser: <EraserFill />,
+  };
 
   useEffect(() => {
     const toolButtons = [];
@@ -21,83 +53,119 @@ function Toolbar(props) {
       });
     });
     setToolButtons(toolButtons);
+
+    return () => {
+      setIsEnabled(false);
+    };
   }, []);
 
   return (
-    <div className="fabric-whiteboard-toolbar">
-      <ul
-        id="fabric-whiteboard-toolbar-ul"
-        className="fabric-whiteboard-toolbar-ul"
-      >
-        <li className="toolbar-ul-li" title="thickness">
-          <Thickness
-            visible={props.showToolbar}
-            enabled={props.enabled}
-            brushColor={props.brushColor}
-            brushThickness={props.brushThickness}
-            brushThicknessRange={props.brushThicknessRange}
-            setBrushThickness={props.setBrushThickness}
-          />
-        </li>
-
-        {toolButtons.map((btn, index) => (
-          <li
-            key={index}
-            className={classNames(
-              'toolbar-ul-li',
-              btn.key === props.buttonMode ? 'active' : '',
-            )}
-            // data={btn.key}
-            title={btn.title}
-            onClick={() => {
-              if (props.enabled === false) return;
-              // props.setMode(btn.key);
-              props.setButtonMode(btn.key);
-            }}
-          >
-            <i
-              className={classNames(
-                `toolbar-ul-${btn.key}`,
-                btn.key === props.buttonMode ? 'active' : '',
-              )}
-            />
-          </li>
-        ))}
-
-        <li
-          className="toolbar-ul-li"
-          title="brush"
+    <div>
+      <label className="toggle-menu-wrapper" htmlFor="toggle-menu">
+        <div
+          className={`toggle-menu ${isEnabled ? 'open' : 'close'}`}
+          style={{ zIndex: '999' }}
           onClick={() => {
-            if (props.enabled === false) return;
-            setShowColorPicker(!showColorPicker);
+            toolbox.current.blur();
           }}
         >
-          <i className="toolbar-ul-brush" />
-        </li>
+          <div className="icons">
+            <PencilFill />
+            <ArrowsMove />
+          </div>
+          <input
+            ref={toolbox}
+            id="toggle-menu"
+            name="toggle-menu"
+            type="checkbox"
+            className="toggle-checkbox"
+            checked={isEnabled}
+            onClick={() => {
+              toggleState();
+              dispatch(changeIsWhiteBoard.toggleIsWhiteBoard());
+            }}
+          />
 
-        <ColorPicker
-          visible={showColorPicker}
-          color={props.brushColor}
-          colors={props.brushColors}
-          setBrushColor={props.setBrushColor}
-        />
-      </ul>
+          <a
+            className="toggle-child button-3d"
+            onClick={() => {
+              console.log(props.board);
+              imageInput.current.click();
+            }}
+          >
+            <input
+              ref={imageInput}
+              value={image}
+              type="file"
+              accept="image/*"
+              hidden={true}
+              onChange={event => {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+                reader.onload = event => {
+                  const data = event.target.result;
+                  fabric.Image.fromURL(data, function (img) {
+                    const oImg = img
+                      .set({
+                        left: 100,
+                        top: 100,
+                        angle: 0,
+                      })
+                      .scale(0.7);
+                    props.board.add(oImg).renderAll();
+                  });
+                };
+                reader.readAsDataURL(file);
+                setImage(null);
+              }}
+            />
+            <Image />
+          </a>
+
+          {toolButtons.map((btn, index) => (
+            <a
+              key={index}
+              href="#"
+              className="toggle-child button-3d"
+              title={btn.title}
+              onClick={e => {
+                e.preventDefault();
+                if (props.enabled === false) return;
+                props.setButtonMode(btn.key);
+              }}
+            >
+              {Icon[btn.key]}
+            </a>
+          ))}
+
+          <a
+            href="#"
+            className="toggle-child button-3d"
+            onClick={e => {
+              e.preventDefault();
+              props.setClear(true);
+              props.sendPaintInfo(
+                'PAINT',
+                '',
+                JSON.stringify({ action: 'remove-all' }),
+              );
+            }}
+          >
+            <Trash3Fill />
+          </a>
+        </div>
+      </label>
+
+      <ColorPicker
+        buttonMode={props.buttonMode}
+        visible={showColorPicker}
+        color={props.brushColor}
+        setBrushColor={props.setBrushColor}
+        setBrushThickness={props.setBrushThickness}
+        brushThickness={props.brushThickness}
+      />
     </div>
   );
 }
-
-Toolbar.propTypes = {
-  visible: PropTypes.bool,
-  enabled: PropTypes.bool,
-  mode: PropTypes.oneOf(modes),
-  fontSize: PropTypes.number,
-  brushColor: PropTypes.string,
-  brushColors: PropTypes.arrayOf(PropTypes.string),
-  brushThickness: PropTypes.number,
-  brushThicknessRange: PropTypes.arrayOf(PropTypes.number),
-  onModeClick: PropTypes.func,
-  onBrushColorChange: PropTypes.func,
-  onBrushThicknessChange: PropTypes.func,
-};
 
 export default Toolbar;

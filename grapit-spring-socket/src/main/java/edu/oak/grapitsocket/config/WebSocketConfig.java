@@ -5,6 +5,7 @@ import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 
 @Configuration
 @EnableWebSocketMessageBroker
@@ -25,5 +26,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
         // 메시지를 발행하는 요청 URL => 즉 메시지 보낼 때
         registry.setApplicationDestinationPrefixes("/sock/pub");
+    }
+
+    @Override
+    public void configureWebSocketTransport(WebSocketTransportRegistration registry) {
+        registry.setMessageSizeLimit(128 * 1024);
+        registry.setSendTimeLimit(25 * 1000);
+        registry.setSendBufferSizeLimit(1024 * 1024);
+        registry.setTimeToFirstMessage(30 * 1000);
     }
 }

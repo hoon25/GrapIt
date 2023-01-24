@@ -1,8 +1,6 @@
 .fabric-whiteboard-toolbar {
   position: absolute;
 
-  left: 10px;
-  bottom: 45px;
   z-index: 499;
 
   .fabric-whiteboard-toolbar-ul {
@@ -140,4 +138,8 @@
       background-position: 0px 0px;
     }
   }
+}
+
+.thick-1 {
+  font-weight: 100;
 }

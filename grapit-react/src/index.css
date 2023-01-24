@@ -24,6 +24,7 @@ code {
 }
 
 /*for vidu /*/
+
 .React-logo {
   height: 50px;
   position: absolute;
@@ -48,6 +49,6 @@ code {
 }
 
 #title {
-  text-align: center;
-  height: 100%;
+    text-align: center;
+    height: 100%;
 }

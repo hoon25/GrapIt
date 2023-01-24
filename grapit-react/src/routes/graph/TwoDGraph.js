@@ -1,17 +1,13 @@
-import {
-  CartesianCoordinates,
-  FunctionGraph,
-  Mafs,
-  Line,
-  Circle,
-} from 'mafs';
+import { CartesianCoordinates, FunctionGraph, Mafs, Line, Circle } from 'mafs';
 import 'mafs/build/index.css';
-import React, { } from 'react';
+import '../../css/Button3D.css';
+import React from 'react';
 import { Button, Form } from 'react-bootstrap';
+import { Inboxes, ZoomIn, ZoomOut } from 'react-bootstrap-icons';
+import { useSelect } from '@react-three/drei';
 import { useSelector } from 'react-redux';
 
 export function TwoDGraph({
-  graphList,
   viewPointX,
   viewPointY,
   ratio,
@@ -20,11 +16,8 @@ export function TwoDGraph({
   childWidth,
   childHeight,
 }) {
-
-  const store = useSelector((state) => state.graph);
-
+  const TwoDgraphList = useSelector(state => state.TwoDfigure.TwoDfigures);
   // todo store 기반으로 변경
-  console.log(store)
   // 스크롤 이벤트 제어. 나중에 쓸수 있음.
   function removeWindowWheel() {
     window.addEventListener('wheel', preventWheelEvent, { passive: false });
@@ -37,20 +30,12 @@ export function TwoDGraph({
   function preventWheelEvent(e) {
     e.preventDefault();
 
-    console.log('x = ' + e.deltaX);
-    console.log('y = ' + e.deltaY);
-
     if (e.deltaY % 1 < 0 && e.deltaX === 0) {
-      console.log('축소');
       setRatio(ratio - 1);
-      console.log('현재 비율' + ratio);
     } else if (e.deltaY % 1 > 0 && e.deltaX === 0) {
-      console.log('확대');
       setRatio(ratio + 1);
-      console.log('현재 비율' + ratio);
     }
   }
-
   function mouseMovingHandler(event) {
     // console.log("viewPointX[0] = "+ viewPointX[0])
     // console.log("viewPointX[1] = "+ viewPointX[1])
@@ -67,32 +52,43 @@ export function TwoDGraph({
     // setMousePoint([event.pageX, event.pageY])
   }
 
-
-
   return (
-    <div className="test-parent">
-      <div className="test-child">
-        <Button
-          onClick={() => {
-            sendObjectInfo('RATIO', ratio - 0.5);
-            setRatio(ratio - 0.5);
-          }}
-        >
-          확대
-        </Button>
-        <Button
-          onClick={() => {
-            sendObjectInfo('RATIO', ratio + 0.5);
-            setRatio(ratio + 0.5);
-          }}
-        >
-          축소
-        </Button>
+    <div style={{ position: 'relative' }}>
+      <div
+        style={{
+          position: 'absolute',
+          display: 'flex',
+          top: '20px',
+          left: '10px',
+        }}
+      >
         <div>
+          <div
+            className="button-3d"
+            style={{ position: 'relative' }}
+            onClick={() => {
+              sendObjectInfo('RATIO2D', '', ratio === 0 ? 0 : ratio - 0.5);
+              setRatio(ratio === 0 ? 0 : ratio - 0.5);
+            }}
+          >
+            <ZoomIn />
+          </div>
+          <div
+            className="button-3d mt-3"
+            onClick={() => {
+              sendObjectInfo('RATIO2D', '', ratio + 0.5);
+              setRatio(ratio + 0.5);
+            }}
+          >
+            <ZoomOut />
+          </div>
+        </div>
+        <div className="ratio-slider-container">
           <Form.Range
+            className="ratio-slider"
             value={ratio}
             onChange={e => {
-              sendObjectInfo('RATIO', Number(e.target.value));
+              sendObjectInfo('RATIO2D', '', Number(e.target.value));
               setRatio(Number(e.target.value));
             }}
             tooltip="auto"
@@ -141,48 +137,47 @@ export function TwoDGraph({
                 : Math.floor(Math.abs(ratio) / 5) + 1
             }
           />
-          {graphList.map((graph, index) => resolveGraph(graph, index))}
+          {TwoDgraphList.map((graph, index) => resolveGraph(graph, index))}
         </Mafs>
       </div>
     </div>
   );
 }
 
-
 function resolveGraph(graph, index) {
-  const [color, type] = graph;
-  const [first, second, third] = graph.slice(2, 5).map(Number);
+  const { color, firstProps, secondProps, thirdProps, type, thick } = graph;
 
   if (type === 'Line') {
     return (
       <Line.PointAngle
         key={index}
-        point={[0, second]}
+        point={[0, secondProps]}
         color={color}
-        angle={Math.atan(first)}
-        weight={4}
+        angle={Math.atan(firstProps)}
+        weight={thick}
       />
     );
-  }
-  else if (type === 'Circle') {
+  } else if (type === 'Circle') {
     return (
       <Circle
         key={index}
-        center={[first, second]}
-        radius={third}
+        center={[firstProps, secondProps]}
+        radius={thirdProps}
         color={color}
+        weight={thick}
       />
     );
-  }
-  else if (type === 'TwoD') {
+  } else if (type === 'TwoD') {
     return (
       <FunctionGraph.OfX
         key={index}
         color={color}
+        weight={thick}
         y={x => {
           const _x = x;
-          return first * _x * _x + second * _x + third;
-        }} />
+          return firstProps * _x * _x + secondProps * _x + thirdProps;
+        }}
+      />
     );
   }
 }

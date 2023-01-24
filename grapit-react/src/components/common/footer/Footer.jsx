@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <>
       <footer>
-        <div className="container">
+        <div className="container" data-aos="fade-up" data-aos-duration="3000">
           <div className="box">
             <div className="logo">
               <h2>Do You Need Help With Anything?</h2>

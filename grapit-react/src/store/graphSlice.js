@@ -4,7 +4,7 @@ const graph = createSlice({
   name: 'graph',
   initialState: {
     graphList: [],
-    value: 0
+    value: 0,
   },
   reducers: {
     addGraph(state, action) {

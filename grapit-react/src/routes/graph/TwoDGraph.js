@@ -1,6 +1,6 @@
-import { CartesianCoordinates, FunctionGraph, Mafs, Line, Circle } from 'mafs';
-import 'mafs/build/index.css';
+import { Plot, Mafs, Line, Circle, Coordinates } from 'mafs';
 import '../../css/Button3D.css';
+import '../../css/TwoDGraph.css';
 import React from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Inboxes, ZoomIn, ZoomOut } from 'react-bootstrap-icons';
@@ -128,7 +128,7 @@ export function TwoDGraph({
           height={childHeight}
           viewBox={{ x: viewPointX, y: viewPointY, padding: ratio }}
         >
-          <CartesianCoordinates
+          <Coordinates.Cartesian
             xAxis={{ lines: Math.floor(Math.abs(ratio) / 5) + 1 }}
             yAxis={{ lines: Math.floor(Math.abs(ratio) / 5) + 1 }}
             subdivisions={
@@ -169,7 +169,7 @@ function resolveGraph(graph, index) {
     );
   } else if (type === 'TwoD') {
     return (
-      <FunctionGraph.OfX
+      <Plot.OfX
         key={index}
         color={color}
         weight={thick}

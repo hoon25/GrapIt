@@ -24,10 +24,12 @@ import { setChat, setRoomId } from '../store/chatSlice';
 var stompClient = null;
 
 function RtcChat({ chat }) {
-  const [ratio, setRatio] = useState(1);
+  const [ratio, setRatio] = useState(0);
   // viewPoint 초기값
-  const [viewPointX, setViewPointX] = useState([-5, 5]);
-  const [viewPointY, setViewPointY] = useState([-5, 5]);
+  const [viewPointX, setViewPointX] = useState([-7, 7]);
+  const [viewPointY, setViewPointY] = useState([-7, 7]);
+  const [mover, setMover] = useState(null);
+
   const [drawInfo, setDrawInfo] = useState();
   const [coordType, setCoordType] = useState('problem');
 
@@ -61,7 +63,6 @@ function RtcChat({ chat }) {
   const [childHeight, setChildHeight] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
-  const [mover, setMover] = useState(null);
 
   useEffect(() => {
     setChildWidth(mainParent.current.clientWidth);
@@ -116,7 +117,7 @@ function RtcChat({ chat }) {
             '/sock/pub/chat/enterUser',
             {},
             JSON.stringify({
-              roomId: chat.roomId,
+              roomId: location.pathname.replace(/\D/g, ''),
               sender: user.nickName,
               type: 'ENTER',
             }),
@@ -153,6 +154,8 @@ function RtcChat({ chat }) {
   // sendGraphInfo()
   function rerenderGraph(payload) {
     const newMessage = JSON.parse(payload.body);
+    console.log(newMessage);
+
     switch (newMessage.type) {
       case 'PAINT':
         if (newMessage.sender !== user.nickName) {
@@ -167,6 +170,18 @@ function RtcChat({ chat }) {
           setThreeCamera(JSON.parse(newMessage.data));
         }
         break;
+      case 'CAMERA2D':
+        if (newMessage.sender !== user.nickName) {
+          const rangeInfo = JSON.parse(newMessage.data);
+          if (rangeInfo.mover !== user.nickName) {
+            console.log('mover', rangeInfo.mover);
+            console.log('user.nickName', user.nickName);
+            setRatio(rangeInfo.ratio);
+            setViewPointX(rangeInfo.rangeX);
+            setViewPointY(rangeInfo.rangeY);
+          }
+        }
+        break;
       case 'GRAPH2D':
         dispatch(setTwoDFigure.switchFigure(newMessage.data));
         break;
@@ -178,15 +193,6 @@ function RtcChat({ chat }) {
       case 'ENTER':
         dispatch(setTwoDFigure.switchFigure(newMessage.data.graph2D));
         dispatch(setFigure.switchFigure(newMessage.data.figure3D));
-        break;
-      case 'CAMERA2D':
-        if (newMessage.sender !== user.nickName) {
-          const receivedCamera2DInfo = JSON.parse(newMessage.data);
-          console.log(receivedCamera2DInfo);
-          setViewPointX(receivedCamera2DInfo.rangeX);
-          setViewPointY(receivedCamera2DInfo.rangeY);
-          setMover(receivedCamera2DInfo.mover);
-        }
         break;
     }
 
@@ -259,10 +265,10 @@ function RtcChat({ chat }) {
                 <div style={graphStyle}>
                   {isLoaded ? (
                     <TwoDGraph
-                      mover={mover}
-                      setMover={setMover}
                       viewPointX={viewPointX}
                       viewPointY={viewPointY}
+                      mover={mover}
+                      setMover={setMover}
                       ratio={ratio}
                       setRatio={setRatio}
                       sendObjectInfo={sendObjectInfo}
@@ -323,7 +329,11 @@ function RtcChat({ chat }) {
               {coordType === 'problem' ? (
                 <ProblemSideBar />
               ) : coordType === '2D' ? (
-                <TwoDimensionSideBar sendObjectInfo={sendObjectInfo} />
+                <TwoDimensionSideBar
+                  viewPointX={viewPointX}
+                  viewPointY={viewPointY}
+                  sendObjectInfo={sendObjectInfo}
+                />
               ) : (
                 <ThreeDimensionSideBar sendObjectInfo={sendObjectInfo} />
               )}

@@ -44,7 +44,7 @@ function ThreeDimensionCanvas(props) {
         cameraRef?.current?.uuid !== undefined &&
         cameraRef.current.uuid !== id
       ) {
-        cameraRef.current.zoom = zoom;
+        cameraRef.current.zoom = (zoom * window.innerWidth) / 1490;
         cameraRef.current.position.set(...position);
         cameraRef.current.rotation.set(...rotation);
 
@@ -60,7 +60,7 @@ function ThreeDimensionCanvas(props) {
   const updateCamera = debounce(() => {
     const camera = {
       id: cameraRef.current.uuid,
-      zoom: cameraRef.current.zoom,
+      zoom: (cameraRef.current.zoom * 1490) / window.innerWidth,
       position: [...cameraRef.current.position],
       rotation: [...cameraRef.current.rotation].slice(0, 3),
     };
@@ -69,12 +69,12 @@ function ThreeDimensionCanvas(props) {
   }, 500);
 
   return (
-    <>
+    <div style={{ width: '100%', aspectRatio: 1.49 }}>
       <Canvas>
         <color attach="background" args={['#000000']} />
         <OrthographicCamera
           position={[100, 50, 100]}
-          zoom={60}
+          zoom={(60 * window.innerWidth) / 1490}
           ref={cameraRef}
           makeDefault
         />
@@ -108,7 +108,7 @@ function ThreeDimensionCanvas(props) {
         <Button
           onClick={() => {
             cameraRef.current.position.set(100, 50, 100);
-            cameraRef.current.zoom = 60;
+            cameraRef.current.zoom = (60 * window.innerWidth) / 1490;
           }}
         >
           <Icon.ArrowRepeat size={32} color="white" />
@@ -124,7 +124,7 @@ function ThreeDimensionCanvas(props) {
           )}
         </Button>
       </Stack>
-    </>
+    </div>
   );
 }
 export default ThreeDimensionCanvas;

@@ -3,10 +3,10 @@ import { Button, Card, Col, Row, Stack } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTwoDFigure } from '../../store/TwoDfigureSlice';
 import { MathComponent } from 'mathjax-react';
-import { Trash3Fill } from 'react-bootstrap-icons';
 import { setTwoDInput } from '../../store/TwoDInputSlice';
 import * as Icon from 'react-bootstrap-icons';
 import { translate } from '../translate';
+import './TwoCardBox.css';
 
 export default function TwoCardBox({ sendObjectInfo }) {
   const TwoDfigures = useSelector(state => state.TwoDfigure.TwoDfigures);
@@ -118,7 +118,7 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
         onMouseUp={onCardMouseUp}
         onDoubleClick={onCardDoubleClick}
       >
-        <Row className="flex justify-content-between align-content-center">
+        <Row className="cardBox2d flex justify-content-between align-content-center">
           <Col lg={12}>{resolveInfo(TwoDfigure)}</Col>
         </Row>
       </Card.Body>

@@ -8,6 +8,7 @@ import edu.oak.grapitsocket.domain.MessageDataGraph2D;
 import edu.oak.grapitsocket.message.MessageRequestDTO;
 import edu.oak.grapitsocket.repository.MessageRedisRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class MessageService {
 
     //    private final RedisTemplate<String, MessageBase> redisTemplate;
@@ -41,6 +43,9 @@ public class MessageService {
                 break;
         }
 
+
+        // method running time
+        long start = System.currentTimeMillis();
         // component-list있는지 확인
         MessageBase messageBase = messageRedisRepository.findById(requestDTO.getRoomId() + prefix).orElse(new MessageBase());
         HashMap<String, MessageData> data = messageBase.getData();
@@ -59,6 +64,8 @@ public class MessageService {
         messageBase.setSender(requestDTO.getSender());
         messageBase.setData(data);
         messageRedisRepository.save(messageBase);
+
+        log.info("add redis time : " + (System.currentTimeMillis() - start));
 
         return MessageResponseDTO.builder()
             .type(messageBase.getType())
@@ -116,6 +123,8 @@ public class MessageService {
     }
 
     public EnterResponseDTO getAllComponent(MessageRequestDTO requestDTO) throws Exception {
+
+
         String prefix = null;
         Map<String, List<MessageData>> dataListMap = new HashMap<>();
 

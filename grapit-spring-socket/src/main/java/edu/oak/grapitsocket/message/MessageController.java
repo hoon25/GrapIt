@@ -1,7 +1,9 @@
 package edu.oak.grapitsocket.message;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.oak.grapitsocket.domain.MessageBase;
 import edu.oak.grapitsocket.domain.MessageType;
+import edu.oak.grapitsocket.repository.MessageRedisRepository;
 import edu.oak.grapitsocket.service.EnterResponseDTO;
 import edu.oak.grapitsocket.service.MessageResponseDTO;
 import edu.oak.grapitsocket.service.MessageService;
@@ -25,6 +27,7 @@ public class MessageController {
     private final SimpMessageSendingOperations template;
     private final MessageService messageService;
     private final ObjectMapper objectMapper;
+    private final MessageRedisRepository messageRedisRepository;
 
     //Client가 SEND할 수 있는 경로
     //stompConfig에서 설정한 applicationDestinationPrefixes와 @MessageMapping 경로가 병합됨
@@ -46,12 +49,21 @@ public class MessageController {
 
     @MessageMapping("/chat/sendMessage")
     public void sendMessage(@Payload MessageRequestDTO request, SimpMessageHeaderAccessor headerAccessor) throws Exception {
-        System.out.println("ChatController.sendMessage");
         System.out.println("request.toString() = " + request.toString());
+        long start = System.currentTimeMillis();
 
         // fabric, canvas, camera, scope는 direct 소켓 송수신
         if (request.getType() == PAINT || request.getType() == RATIO2D || request.getType() == CAMERA3D) {
             template.convertAndSend("/sock/sub/chat/room/" + request.getRoomId(), request);
+            log.info("canvas method time : " + (System.currentTimeMillis() - start));
+
+            // test
+            MessageBase messageBase = new MessageBase();
+            messageBase.setRedisKey(request.getRoomId() + "_test");
+            messageBase.setRoomId(request.getRoomId());
+            messageBase.setType(request.getType());
+            messageBase.setSender(request.getData());
+            messageRedisRepository.save(messageBase);
             return;
         }
 
@@ -73,6 +85,9 @@ public class MessageController {
 
         responseDTO.setMethod(request.getMethod());
         System.out.println("responseDTO.toString() = " + responseDTO);
+
+        // method time
+        log.info("total method time : " + (System.currentTimeMillis() - start));
         template.convertAndSend("/sock/sub/chat/room/" + responseDTO.getRoomId(), responseDTO);
     }
 

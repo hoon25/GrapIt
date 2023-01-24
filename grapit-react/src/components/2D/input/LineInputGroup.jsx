@@ -7,12 +7,13 @@ import { useInput } from '../../../hooks';
 import { setTwoDFigure } from '../../../store/TwoDfigureSlice';
 import { setTwoDInput } from '../../../store/TwoDInputSlice';
 import { MathComponent } from 'mathjax-react';
+import { CirclePicker } from 'react-color';
+import React from 'react';
+import GraphColorPicker from '../../common/GraphColorPicker';
 
 export default function LineInputGroup({ sendObjectInfo }) {
   const TwoDInput = useSelector(state => state.TwoDInput);
   const TwoDFigureList = useSelector(state => state.TwoDfigure.TwoDfigures);
-
-  const [colorProps, resetColor] = useInput('#ffffff');
 
   const dispatch = useDispatch();
   const onSubmit = e => {
@@ -33,7 +34,7 @@ export default function LineInputGroup({ sendObjectInfo }) {
       setTwoDInput.resetProps({
         firstProps: '',
         secondProps: '',
-        color: '#ffffff',
+        color: '#f44336',
       }),
     );
     // const copy = [...TwoDFigureList, newLine];
@@ -76,15 +77,7 @@ export default function LineInputGroup({ sendObjectInfo }) {
         </div>
       </div>
       <FormGroup>
-        <Form.Label>색상</Form.Label>
-        <Form.Control
-          style={{ display: 'inline-block' }}
-          onChange={event => {
-            dispatch(setTwoDInput.setColor(event.target.value));
-          }}
-          value={TwoDInput.color}
-          type="color"
-        />
+        <GraphColorPicker color={TwoDInput.color} type={'2D'} />
         <Button
           style={{ display: 'inline-block', float: 'right' }}
           variant="primary"

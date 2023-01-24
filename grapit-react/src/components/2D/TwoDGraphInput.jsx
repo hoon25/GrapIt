@@ -15,7 +15,7 @@ export default function TwoDGraphInput({ sendObjectInfo }) {
       setTwoDInput.resetProps({
         firstProps: '',
         secondProps: '',
-        color: '#ffffff',
+        color: '#f44336',
       }),
     );
   };

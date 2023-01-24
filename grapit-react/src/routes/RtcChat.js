@@ -113,7 +113,7 @@ function RtcChat({ chat }) {
             '/sock/pub/chat/enterUser',
             {},
             JSON.stringify({
-              roomId: chat.roomId,
+              roomId: location.pathname.replace(/\D/g, ''),
               sender: user.nickName,
               type: 'ENTER',
             }),

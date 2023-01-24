@@ -7,6 +7,8 @@ import { useInput } from '../../../hooks';
 import { setTwoDFigure } from '../../../store/TwoDfigureSlice';
 import { MathComponent } from 'mathjax-react';
 import { setTwoDInput } from '../../../store/TwoDInputSlice';
+import GraphColorPicker from '../../common/GraphColorPicker';
+import React from 'react';
 
 export default function CircleInputGroup({ sendObjectInfo }) {
   const TwoDInput = useSelector(state => state.TwoDInput);
@@ -32,7 +34,7 @@ export default function CircleInputGroup({ sendObjectInfo }) {
       setTwoDInput.resetProps({
         firstProps: '',
         secondProps: '',
-        color: '#ffffff',
+        color: '#f44336',
       }),
     );
 
@@ -94,15 +96,7 @@ export default function CircleInputGroup({ sendObjectInfo }) {
         </div>
       </div>
       <FormGroup>
-        <Form.Label>색상</Form.Label>
-        <Form.Control
-          style={{ display: 'inline-block' }}
-          onChange={event => {
-            dispatch(setTwoDInput.setColor(event.target.value));
-          }}
-          value={TwoDInput.color}
-          type="color"
-        />
+        <GraphColorPicker color={TwoDInput.color} type={'2D'} />
         <Button
           style={{ display: 'inline-block', float: 'right' }}
           variant="primary"

@@ -109,15 +109,15 @@ function RtcChat({ chat }) {
           );
           setIsConnected(true);
           console.log('stompClient connect success');
-            stompClient.send(
-                '/sock/pub/chat/enterUser',
-                {},
-                JSON.stringify({
-                    roomId: chat.roomId,
-                    sender: user.nickName,
-                    type: 'ENTER',
-                }),
-            );
+          stompClient.send(
+            '/sock/pub/chat/enterUser',
+            {},
+            JSON.stringify({
+              roomId: chat.roomId,
+              sender: user.nickName,
+              type: 'ENTER',
+            }),
+          );
         } else {
           console.log('Failed to connect, retrying...');
         }
@@ -150,8 +150,6 @@ function RtcChat({ chat }) {
   // sendGraphInfo()
   function rerenderGraph(payload) {
     const newMessage = JSON.parse(payload.body);
-    console.log(newMessage);
-
     switch (newMessage.type) {
       case 'PAINT':
         if (newMessage.sender !== user.nickName) {

@@ -7,6 +7,8 @@ import { useInput } from '../../../hooks';
 import { setTwoDFigure } from '../../../store/TwoDfigureSlice';
 import { MathComponent } from 'mathjax-react';
 import { setTwoDInput } from '../../../store/TwoDInputSlice';
+import GraphColorPicker from '../../common/GraphColorPicker';
+import React from 'react';
 
 export default function CircleInputGroup({ sendObjectInfo }) {
   const TwoDInput = useSelector(state => state.TwoDInput);
@@ -15,27 +17,30 @@ export default function CircleInputGroup({ sendObjectInfo }) {
   const onSubmit = e => {
     e.preventDefault();
 
+    const UUID = generateUUID();
     const newCircle = {
-      figureId: generateUUID(),
+      uniqueId: UUID,
+      figureId: UUID,
       type: 'Circle',
       color: TwoDInput.color,
       firstProps: Number(TwoDInput.firstProps),
       secondProps: Number(TwoDInput.secondProps),
       thirdProps: Number(TwoDInput.thirdProps),
+      thick: 3,
     };
 
-    dispatch(setTwoDFigure.addFigure(newCircle));
+    // dispatch(setTwoDFigure.addFigure(newCircle));
     dispatch(
       setTwoDInput.resetProps({
         firstProps: '',
         secondProps: '',
-        color: '#ffffff',
+        color: '#f44336',
       }),
     );
 
-    const copy = [...TwoDFigureList, newCircle];
+    // const copy = [...TwoDFigureList, newCircle];
     //TODO 한개씩 추가로 나중에 바꾸기
-    sendObjectInfo('GRAPH', JSON.stringify(copy));
+    sendObjectInfo('GRAPH2D', 'ADD', JSON.stringify(newCircle));
   };
 
   return (
@@ -91,15 +96,7 @@ export default function CircleInputGroup({ sendObjectInfo }) {
         </div>
       </div>
       <FormGroup>
-        <Form.Label>색상</Form.Label>
-        <Form.Control
-          style={{ display: 'inline-block' }}
-          onChange={event => {
-            dispatch(setTwoDInput.setColor(event.target.value));
-          }}
-          value={TwoDInput.color}
-          type="color"
-        />
+        <GraphColorPicker color={TwoDInput.color} type={'2D'} />
         <Button
           style={{ display: 'inline-block', float: 'right' }}
           variant="primary"

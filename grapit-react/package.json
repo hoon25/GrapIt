@@ -22,7 +22,7 @@
         "http-proxy-middleware": "^2.0.6",
         "leva": "^0.9.34",
         "lodash": "^4.17.21",
-        "mafs": "^0.8.0",
+        "mafs": "^0.14.0",
         "mathjax-react": "^2.0.1",
         "mathlive": "^0.86.0",
         "node-uuid": "^1.4.8",

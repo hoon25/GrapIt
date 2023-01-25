@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setGraph } from '../../store/graphSlice';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import { setTwoDFigure } from '../../store/TwoDfigureSlice';
 import { generateUUID } from 'three/src/math/MathUtils';
 
 // canvas 기본 width : 300px height : 150px
@@ -23,12 +22,7 @@ const defaultStyle = {
   display: 'inline-block',
 };
 
-export function EquationHandBoard({
-  graphColor,
-  viewPointX,
-  viewPointY,
-  sendObjectInfo,
-}) {
+export function EquationHandBoard({ graphColor, sendObjectInfo }) {
   const TwoDgraphList = useSelector(state => state.TwoDfigure.TwoDfigures);
 
   const [ctx, setCtx] = useState();
@@ -125,36 +119,25 @@ export function EquationHandBoard({
   };
 
   const first_order_equation_parsing = latex => {
-    let result = latex.match(/y=([+-]?\d+)?(\d+)?(x)?([+-]?\d+)?/);
+    let result = latex.match(/y=([+-])?(\d+)?(x)?([+-]?\d+)?/);
     console.log(result);
-    let tmp_a1 = result[1] ? result[1] : 1;
+    let tmp_a1 = result[1] ? result[1] : '+';
     let tmp_a2 = result[2] ? result[2] : 1;
-    let a = tmp_a1 ? tmp_a1 : tmp_a2;
+    let a = tmp_a1 + tmp_a2;
     let b = result[4] ? result[4] : 0;
-    dispatch(
-      setGraph.addGraph({
-        graphColor,
-        graphType: 'Line',
-        a,
-        b,
-        thirdProps: null,
-      }),
-    );
-    dispatch(
-      setTwoDFigure.addFigure({
-        figureId: generateUUID(),
-        type: 'Line',
-        color: graphColor,
-        firstProps: Number(a),
-        secondProps: Number(b),
-      }),
-    );
 
-    // const copyViewPointX = [Number(a) - 3, Number(a) + 3];
-    // const copyViewPointY = [Number(b) - 3, Number(b) + 3];
-    // setViewPointX(copyViewPointX);
-    // setViewPointY(copyViewPointY);
-    sendObjectInfo('GRAPH', TwoDgraphList);
+    const UUID = generateUUID();
+    const newLine = {
+      uniqueId: UUID,
+      figureId: UUID,
+      type: 'Line',
+      color: graphColor,
+      firstProps: Number(a),
+      secondProps: Number(b),
+      thick: 3,
+    };
+
+    sendObjectInfo('GRAPH2D', 'ADD', JSON.stringify(newLine));
 
     return result;
   };
@@ -188,23 +171,20 @@ export function EquationHandBoard({
       }),
     );
 
-    dispatch(
-      setTwoDFigure.addFigure({
-        figureId: generateUUID(),
-        type: 'TwoD',
-        color: '#ffffff',
-        firstProps: Number(a),
-        secondProps: Number(b),
-        thirdProps: Number(c),
-      }),
-    );
-    //
-    // const copyViewPointX = [Number(a) - 3, Number(a) + 3];
-    // const copyViewPointY = [Number(b) - 3, Number(b) + 3];
-    // setViewPointX(copyViewPointX);
-    // setViewPointY(copyViewPointY);
-    sendObjectInfo('GRAPH', TwoDgraphList);
+    const UUID = generateUUID();
+    const newTwoD = {
+      uniqueId: UUID,
+      figureId: UUID,
+      type: 'TwoD',
+      color: graphColor,
+      firstProps: Number(a),
+      secondProps: Number(b),
+      thirdProps: Number(c),
+      thick: 3,
+    };
 
+    //!!TODO 변경 예정
+    sendObjectInfo('GRAPH2D', 'ADD', JSON.stringify(newTwoD));
     return result;
   };
 

@@ -36,7 +36,7 @@ function ThreeDimensionCanvas(props) {
       rotation: [...threeJsCamera.rotation].slice(0, 3),
     };
 
-    props.sendObjectInfo('CAMERA', JSON.stringify(camera));
+    props.sendObjectInfo('CAMERA3D', '', JSON.stringify(camera));
   }, 150);
 
   return (

@@ -3,10 +3,10 @@ import { Button, Card, Col, Row, Stack } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTwoDFigure } from '../../store/TwoDfigureSlice';
 import { MathComponent } from 'mathjax-react';
-import { Trash3Fill } from 'react-bootstrap-icons';
 import { setTwoDInput } from '../../store/TwoDInputSlice';
 import * as Icon from 'react-bootstrap-icons';
 import { translate } from '../translate';
+import './TwoCardBox.css';
 
 export default function TwoCardBox({ sendObjectInfo }) {
   const TwoDfigures = useSelector(state => state.TwoDfigure.TwoDfigures);
@@ -34,7 +34,7 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
   const headerColor = TwoDfigure.color;
 
   const onCardMouseDown = () => {
-    dispatch(setTwoDFigure.emphasizeFigure(TwoDfigure.figureId));
+    // dispatch(setTwoDFigure.emphasizeFigure(TwoDfigure.figureId));
 
     // TODO 부채
     const copy = [...TwoDfigures];
@@ -42,10 +42,10 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
 
     const newTwoDFigure = { ...copy[index] };
 
-    newTwoDFigure.thick += 10;
-    copy[index] = newTwoDFigure;
+    newTwoDFigure.thick = 13;
+    // copy[index] = newTwoDFigure;
 
-    sendObjectInfo('GRAPH', JSON.stringify(copy));
+    sendObjectInfo('GRAPH2D', 'UPDATE', JSON.stringify(newTwoDFigure));
   };
 
   const onCardDoubleClick = () => {
@@ -53,7 +53,7 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
   };
 
   const onCardMouseUp = () => {
-    dispatch(setTwoDFigure.deemphasizeFigure(TwoDfigure.figureId));
+    // dispatch(setTwoDFigure.deemphasizeFigure(TwoDfigure.figureId));
 
     // TODO 부채
     const copy = [...TwoDfigures];
@@ -62,21 +62,21 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
     const newTwoDFigure = { ...copy[index] };
 
     newTwoDFigure.thick = 3;
-    copy[index] = newTwoDFigure;
+    // copy[index] = newTwoDFigure;
 
-    sendObjectInfo('GRAPH', JSON.stringify(copy));
+    sendObjectInfo('GRAPH2D', 'UPDATE', JSON.stringify(newTwoDFigure));
   };
 
   const onDelBtnClick = () => {
-    dispatch(setTwoDFigure.removeFigure(TwoDfigure.figureId));
+    // dispatch(setTwoDFigure.removeFigure(TwoDfigure.figureId));
 
     // TODO 부채
     const copy = [...TwoDfigures];
     const index = copy.findIndex(x => x.figureId === TwoDfigure.figureId);
 
-    copy.splice(index, 1);
+    // copy.splice(index, 1);
 
-    sendObjectInfo('GRAPH', JSON.stringify(copy));
+    sendObjectInfo('GRAPH2D', 'DELETE', JSON.stringify(copy[index]));
   };
 
   const onCardMouseLeave = () => {
@@ -89,9 +89,9 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
     const newTwoDFigure = { ...copy[index] };
 
     newTwoDFigure.thick = 3;
-    copy[index] = newTwoDFigure;
+    // copy[index] = newTwoDFigure;
 
-    sendObjectInfo('GRAPH', JSON.stringify(copy));
+    sendObjectInfo('GRAPH2D', 'UPDATE', JSON.stringify(newTwoDFigure));
   };
 
   return (
@@ -118,7 +118,7 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
         onMouseUp={onCardMouseUp}
         onDoubleClick={onCardDoubleClick}
       >
-        <Row className="flex justify-content-between align-content-center">
+        <Row className="cardBox2d flex justify-content-between align-content-center">
           <Col lg={12}>{resolveInfo(TwoDfigure)}</Col>
         </Row>
       </Card.Body>

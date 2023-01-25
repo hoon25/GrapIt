@@ -16,24 +16,26 @@ function PlatonicSolidInputGroup(props) {
   const onSubmit = e => {
     e.preventDefault();
 
+    const UUID = generateUUID();
     const newFigure = {
-      figureId: generateUUID(),
+      uniqueId: UUID,
+      figureId: UUID,
       type: figureTypeProps.value,
       position: positionProps.value.split(',').map(x => Number(x)),
       length: Number(lengthProps.value),
       color: parseInt('0x' + colorProps.value.slice(1)),
     };
 
-    dispatch(setFigure.addFigure(newFigure));
+    // dispatch(setFigure.addFigure(newFigure));
 
     resetFigureType();
     resetPosition();
     resetLength();
     resetColor();
 
-    const copy = [...figureList, newFigure];
+    const copy = newFigure;
     //TODO 한개씩 추가로 나중에 바꾸기
-    props.sendObjectInfo('FIGURE', JSON.stringify(copy));
+    props.sendObjectInfo('FIGURE3D', 'ADD', JSON.stringify(copy));
   };
   return (
     <Form onSubmit={onSubmit}>
@@ -67,4 +69,5 @@ function PlatonicSolidInputGroup(props) {
     </Form>
   );
 }
+
 export default PlatonicSolidInputGroup;

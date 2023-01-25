@@ -18,6 +18,8 @@ import ProblemSideBar from '../components/problem/ProblemSideBar';
 import { changeIsWhiteBoard } from '../store/isWhiteBoardSlice';
 import { useLocation } from 'react-router-dom';
 import Loading from '../components/common/Loading';
+import { setCamera } from '../components/threeJsCamera';
+
 
 var stompClient = null;
 
@@ -161,7 +163,8 @@ function RtcChat({ chat }) {
         break;
       case 'CAMERA3D':
         if (newMessage.sender !== user.nickName) {
-          setThreeCamera(JSON.parse(newMessage.data));
+          const newCamera = JSON.parse(newMessage.data);
+          setCamera(newCamera)
         }
         break;
       case 'GRAPH2D':
@@ -171,9 +174,12 @@ function RtcChat({ chat }) {
         if (newMessage.sender !== user.nickName) {
           setRatio(Number(newMessage.data));
         }
+        break;
       case 'ENTER':
         dispatch(setTwoDFigure.switchFigure(newMessage.data.graph2D));
         dispatch(setFigure.switchFigure(newMessage.data.figure3D));
+        break;
+      default:
         break;
     }
 
@@ -229,7 +235,7 @@ function RtcChat({ chat }) {
       <Container
         fluid
         style={{ height: '100%' }}
-        // ref={tempRef}
+      // ref={tempRef}
       >
         {isConnected ? null : <Loading isConnected={isConnected} />}
         <Row style={{ height: '100%' }}>

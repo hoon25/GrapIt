@@ -3,9 +3,10 @@
     display: inline-block;
     width: 28px;
     height: 16px;
-    /*background-color: #8888e8;*/
+    background-color: #afafaf;
     clip-path: polygon(50% 0, 0 100%, 100% 100%,50% 0%);
-    top: -24px;
+    top: -20px;
+    left: -5px;
     padding: 0;
 }
 
@@ -14,11 +15,10 @@
     display: inline-block;
     width: 16px;
     height: 28px;
-    /*background-color: #e888a3;*/
-    background-color: red;
+    background-color: #afafaf;
 
     clip-path: polygon(0 0, 0 100%, 100% 50%);
-    left: 28px;
+    left: 23px;
     top: -14px;
     padding: 0;
 }
@@ -27,23 +27,22 @@
     position: absolute;
     width: 28px;
     height: 16px;
-    /*background-color: #f7df6c;*/
+    background-color: #afafaf;
 
     clip-path: polygon(100% 0, 0 0, 50% 100%);
-    bottom: -24px;
+    bottom: -20px;
+    left: -5px;
     padding: 0;
 }
 
 .arrow-left {
     position: absolute;
-    background-color: red;
     display: inline-block;
     width: 16px;
     height: 28px;
-    /*background-color: #8de698;*/
+    background-color: #afafaf;
     clip-path: polygon(0 50%, 100% 0%,100% 50%, 100% 100%);
-    /*clip-path: polygon(50% 100%, 50% 0, 0 50%);*/
-    left: -16px;
+    left: -21px;
     top: -14px;
     padding: 0;
 }

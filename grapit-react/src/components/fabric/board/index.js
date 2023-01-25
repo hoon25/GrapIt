@@ -118,6 +118,7 @@ function Board(props) {
   }
 
   function handleCanvasObjectsAdded(options) {
+    console.log('handleCanvasObjectsAdded', options);
     if (
       options.target.objectType === 'image' &&
       options.target.action !== 'modify' &&

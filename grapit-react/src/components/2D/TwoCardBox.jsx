@@ -103,6 +103,32 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
     sendObjectInfo('GRAPH2D', 'UPDATE', JSON.stringify(newTwoDFigure));
   };
 
+  const onArrowLeft = () => {
+    const copy = [...TwoDfigures];
+    const index = copy.findIndex(x => x.figureId === TwoDfigure.figureId);
+
+    const newTwoDFigure = { ...copy[index] };
+
+    // newTwoDFigure.firstProps -= 1;
+    newTwoDFigure.secondProps =
+      newTwoDFigure.secondProps + newTwoDFigure.firstProps * +1;
+
+    sendObjectInfo('GRAPH2D', 'UPDATE', JSON.stringify(newTwoDFigure));
+  };
+
+  const onArrowRight = () => {
+    const copy = [...TwoDfigures];
+    const index = copy.findIndex(x => x.figureId === TwoDfigure.figureId);
+
+    const newTwoDFigure = { ...copy[index] };
+
+    // newTwoDFigure.firstProps += 1;
+    newTwoDFigure.secondProps =
+      newTwoDFigure.secondProps + newTwoDFigure.firstProps * -1;
+
+    sendObjectInfo('GRAPH2D', 'UPDATE', JSON.stringify(newTwoDFigure));
+  };
+
   return (
     <Card key={i}>
       <Card.Header
@@ -132,8 +158,13 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
           >
             {resolveInfo(TwoDfigure)}
           </Col>
-          <Col lg={4}>
-            <FourButtons onArrowUp={onArrowUp} onArrowDown={onArrowDown} />
+          <Col className="flex justify-content-center" lg={4}>
+            <FourButtons
+              onArrowUp={onArrowUp}
+              onArrowDown={onArrowDown}
+              onArrowLeft={onArrowLeft}
+              onArrowRight={onArrowRight}
+            />
           </Col>
         </Row>
       </Card.Body>
@@ -143,7 +174,7 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
 
 function resolveInfo(TwoDfigure) {
   const info = makeInfo(TwoDfigure);
-  return <div>{info}</div>;
+  return <div className={TwoDfigure.type}>{info}</div>;
 }
 
 function contrastColor(colorText) {
@@ -156,6 +187,7 @@ function contrastColor(colorText) {
 
 function makeInfo(TwoDfigure) {
   const formula = makeFormulaFormat(TwoDfigure);
+
   return <MathComponent tex={formula} />;
 }
 

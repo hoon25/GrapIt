@@ -8,7 +8,7 @@ function PlatonicSolidInputGroup(props) {
   const [figureTypeProps, resetFigureType] = useInput('tetrahedron');
   const [positionProps, resetPosition] = useInput('0, 0, 0');
   const [lengthProps, resetLength] = useInput('');
-  const [colorProps, resetColor] = useInput('#000000');
+  const [colorProps, resetColor] = useInput('#ffffff');
 
   const figureList = useSelector(state => state.figure.figures);
   const dispatch = useDispatch();

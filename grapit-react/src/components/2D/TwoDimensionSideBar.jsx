@@ -18,23 +18,36 @@ export default function TwoDimensionSideBar({
     navigator.maxTouchPoints || 'ontouchstart' in document.documentElement;
 
   const sidebarTopStyle = {
-    height: isTouchDevice ? '45vh' : '35vh',
+    height: isTouchDevice ? '45vh' : '30vh',
     justifyContent: 'center',
     margin: '0px',
-    alignItems: 'center',
+    marginTop: '2.35%',
+    padding: '10px',
+    border: '1px solid #afafaf',
+    borderWidth: '1px 1px 1px 1px',
+    boxShadow: '0px 0px 5px 0px #afafaf',
+    borderRadius: '10px',
   };
 
   const sidebarBottomStyle = {
-    height: isTouchDevice ? '40vh' : '50vh',
+    height: isTouchDevice ? '40vh' : '55vh',
     backgroundColor: '#eeeeee',
     flexDirection: 'column',
     justifyContent: 'center',
     margin: '0px',
+    padding: '0px',
   };
 
   // const is
   return (
-    <Row style={{ flexDirection: 'column', margin: '0px' }}>
+    <Row
+      style={{
+        flexDirection: 'column',
+        margin: '0px',
+        paddingRight: '10%',
+        paddingLeft: '10%',
+      }}
+    >
       <Row style={sidebarTopStyle}>
         {isTouchDevice && !seeInput ? (
           <div className="pt-3">

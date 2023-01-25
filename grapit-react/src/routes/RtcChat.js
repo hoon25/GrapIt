@@ -229,17 +229,12 @@ function RtcChat({ chat }) {
     console.log('스크롤링 ');
     console.log(event);
   };
-
   return (
     <>
-      <Container
-        fluid
-        style={{ height: '100%' }}
-        // ref={tempRef}
-      >
+      <Container fluid style={{ height: '100%' }}>
         {isConnected ? null : <Loading isConnected={isConnected} />}
         <Row style={{ height: '100%' }}>
-          <Col xs={9}>
+          <Col xs={9} style={{ paddingRight: '0px' }}>
             <div
               ref={mainParent}
               style={{ height: '100%', width: '100%', position: 'relative' }}
@@ -310,7 +305,7 @@ function RtcChat({ chat }) {
               coordType={coordType}
               setCoordType={setCoordType}
             />
-            <Row style={{ flexDirection: 'column' }}>
+            <Row style={{ flexDirection: 'column', paddingLeft: '0px' }}>
               {coordType === 'problem' ? (
                 <ProblemSideBar />
               ) : coordType === '2D' ? (

@@ -86,7 +86,7 @@ export default function TwoDInputGroup({ sendObjectInfo }) {
               }}
               value={TwoDInput.thirdProps}
               type="number"
-              placeholder="상수"
+              placeholder=""
             />
           </FormGroup>
         </div>
@@ -94,7 +94,11 @@ export default function TwoDInputGroup({ sendObjectInfo }) {
       <FormGroup>
         <GraphColorPicker color={TwoDInput.color} type={'2D'} />
         <Button
-          style={{ display: 'inline-block', float: 'right' }}
+          style={{
+            display: 'inline-block',
+            float: 'right',
+            borderRadius: '10px',
+          }}
           variant="primary"
           type="submit"
         >

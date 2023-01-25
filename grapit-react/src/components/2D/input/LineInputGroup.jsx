@@ -44,11 +44,11 @@ export default function LineInputGroup({ sendObjectInfo }) {
 
   return (
     <Form onSubmit={onSubmit}>
-      <div className="flex justify-content-between">
-        <div className="col-3">
-          <MathComponent tex="y = " />
-        </div>
-        <div className="col-3">
+      <div className="flex justify-content-center Line pt-3 pb-3">
+        {/*<div className="col-3">*/}
+        <MathComponent tex="y = " />
+        {/*</div>*/}
+        <div className="col-3 ps-2 pe-2">
           <FormGroup>
             <Form.Control
               onChange={event => {
@@ -60,10 +60,10 @@ export default function LineInputGroup({ sendObjectInfo }) {
             />
           </FormGroup>
         </div>
-        <div className="col-3">
-          <MathComponent tex="x + " />
-        </div>
-        <div className="col-3">
+        {/*<div className="col-3">*/}
+        <MathComponent tex="x + " />
+        {/*</div>*/}
+        <div className="col-3 ps-2 pe-2">
           <FormGroup>
             <Form.Control
               onChange={event => {
@@ -79,7 +79,11 @@ export default function LineInputGroup({ sendObjectInfo }) {
       <FormGroup>
         <GraphColorPicker color={TwoDInput.color} type={'2D'} />
         <Button
-          style={{ display: 'inline-block', float: 'right' }}
+          style={{
+            display: 'inline-block',
+            float: 'right',
+            borderRadius: '10px',
+          }}
           variant="primary"
           type="submit"
         >

@@ -1,0 +1,58 @@
+.arrow-up {
+    position: absolute;
+    display: inline-block;
+    width: 28px;
+    height: 16px;
+    /*background-color: #8888e8;*/
+    clip-path: polygon(50% 0, 0 100%, 100% 100%,50% 0%);
+    top: -24px;
+    padding: 0;
+}
+
+.arrow-right {
+    position: absolute;
+    display: inline-block;
+    width: 16px;
+    height: 28px;
+    /*background-color: #e888a3;*/
+    background-color: red;
+
+    clip-path: polygon(0 0, 0 100%, 100% 50%);
+    left: 28px;
+    top: -14px;
+    padding: 0;
+}
+
+.arrow-down {
+    position: absolute;
+    width: 28px;
+    height: 16px;
+    /*background-color: #f7df6c;*/
+
+    clip-path: polygon(100% 0, 0 0, 50% 100%);
+    bottom: -24px;
+    padding: 0;
+}
+
+.arrow-left {
+    position: absolute;
+    background-color: red;
+    display: inline-block;
+    width: 16px;
+    height: 28px;
+    /*background-color: #8de698;*/
+    clip-path: polygon(0 50%, 100% 0%,100% 50%, 100% 100%);
+    /*clip-path: polygon(50% 100%, 50% 0, 0 50%);*/
+    left: -16px;
+    top: -14px;
+    padding: 0;
+}
+
+
+
+.arrow-wrapper {
+    position: relative;
+    height: auto;
+    align-items: center;
+    justify-content: center;
+}

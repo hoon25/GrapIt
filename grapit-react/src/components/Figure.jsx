@@ -23,7 +23,7 @@ export function Figure(props) {
     >
       {props.children[0]}
       {React.cloneElement(props.children[1], {
-        opacity: hovered || props.transparent ? 0.8 : 1,
+        opacity: hovered || props.transparent ? 0.7 : 1.0,
         specular: clicked || props.polish ? 0xffffff : 0x000000,
       })}
     </mesh>

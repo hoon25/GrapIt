@@ -22,6 +22,9 @@ public class MessageDataFigure3D extends MessageData {
     // line
     private List<String> point2;
 
+    // Box
+    private List<String> size;
+
     // Sphere, PlatonicSolid
     private List<String> position;
 
@@ -40,13 +43,14 @@ public class MessageDataFigure3D extends MessageData {
     private Boolean polish;
 
     @Builder
-    public MessageDataFigure3D(String uniqueId, String figureId, String type, Integer color, List<String> point1, List<String> point2, List<String> position, String radius, String length) {
+    public MessageDataFigure3D(String uniqueId, String figureId, String type, Integer color, List<String> point1, List<String> point2, List<String> size, List<String> position, String radius, String length) {
         super(uniqueId);
         this.figureId = figureId;
         this.type = type;
         this.color = color;
         this.point1 = point1;
         this.point2 = point2;
+        this.size = size;
         this.position = position;
         this.radius = radius;
         this.length = length;

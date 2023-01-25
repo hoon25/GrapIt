@@ -17,7 +17,6 @@ export function CameraControls(props) {
   } = useThree();
 
   // Ref to the controls, so that we can update them on every frame using useFrame
-  console.log(props.isMouseDown);
   const controls = useRef();
   useFrame(state => {
     if (props.isMouseDown) {

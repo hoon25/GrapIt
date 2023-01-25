@@ -43,9 +43,8 @@ export function resolveFigures(figure, i) {
 
   switch (type) {
     case 'box':
-      return (
-        <Box key={figureId} color={color} size={size} position={position} />
-      );
+    case 'plane':
+      return <Box key={figureId} {...figure} />;
     case 'cube':
       return <Cube key={figureId} {...figure} />;
     case 'sphere':

@@ -13,7 +13,7 @@ import { CameraControls } from './CustomOrbitControl';
 
 function ThreeDimensionCanvas(props) {
   const [unit, setUnit] = useState(6);
-  const [axesVisible, setAxesVisible] = useState(false);
+  const [axesVisible, setAxesVisible] = useState(true);
   const [isMouseDown, setIsMouseDown] = useState(false);
 
   const figureStore = useSelector(state => state.figure.figures);
@@ -87,9 +87,9 @@ function ThreeDimensionCanvas(props) {
           onClick={() => setAxesVisible(!axesVisible)}
         >
           {axesVisible ? (
-            <Icon.EyeFill size={32} color="white" />
+            <Icon.Grid3x3 size={32} color="white" />
           ) : (
-            <Icon.EyeSlashFill size={32} color="black" />
+            <Icon.Grid3x3 size={32} color="black" />
           )}
         </Button>
       </Stack>

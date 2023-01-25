@@ -57,7 +57,7 @@ function Board(props) {
             bottom: 0,
             angle: 0,
           })
-          .scale(0.6);
+          .scale(0.9);
         oImg.set('objectType', 'image');
         fabricCanvas.current.add(oImg).renderAll();
       });
@@ -70,7 +70,7 @@ function Board(props) {
             bottom: '1px',
             angle: 0,
           })
-          .scale(0.6);
+          .scale(1.2);
         oImg.set('objectType', 'image');
         fabricCanvas.current.add(oImg).renderAll();
       });

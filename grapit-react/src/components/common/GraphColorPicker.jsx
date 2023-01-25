@@ -3,7 +3,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { setTwoDInput } from '../../store/TwoDInputSlice';
 
-export default function GraphColorPicker({ type, color }) {
+export default function GraphColorPicker({ type, color, setColorProps }) {
   const graphColor = [
     '#f44336',
     '#e91e63',
@@ -17,10 +17,15 @@ export default function GraphColorPicker({ type, color }) {
     dispatch(setTwoDInput.setColor(color.hex));
   }
 
-  const setColor = type === '2D' ? setColor2D : '';
+  function setColor3D(color) {
+    console.log(color);
+    setColorProps(color.hex);
+  }
+
+  const setColors = type === '2D' ? setColor2D : setColor3D;
   return (
     <div className="flex justify-content-center p-3">
-      <CirclePicker colors={graphColor} color={color} onChange={setColor} />
+      <CirclePicker colors={graphColor} color={color} onChange={setColors} />
     </div>
   );
 }

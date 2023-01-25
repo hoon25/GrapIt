@@ -7,6 +7,7 @@ import { setTwoDInput } from '../../store/TwoDInputSlice';
 import * as Icon from 'react-bootstrap-icons';
 import { translate } from '../translate';
 import './TwoCardBox.css';
+import FourButtons from '../common/FourButtons';
 
 export default function TwoCardBox({ sendObjectInfo }) {
   const TwoDfigures = useSelector(state => state.TwoDfigure.TwoDfigures);
@@ -79,17 +80,51 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
     sendObjectInfo('GRAPH2D', 'DELETE', JSON.stringify(copy[index]));
   };
 
-  const onCardMouseLeave = () => {
-    dispatch(setTwoDFigure.resetThick(TwoDfigure.figureId));
-
-    // TODO 부채
+  const onArrowUp = () => {
+    console.log('onArrowUp');
     const copy = [...TwoDfigures];
     const index = copy.findIndex(x => x.figureId === TwoDfigure.figureId);
 
     const newTwoDFigure = { ...copy[index] };
 
-    newTwoDFigure.thick = 3;
-    // copy[index] = newTwoDFigure;
+    newTwoDFigure.secondProps += 1;
+
+    sendObjectInfo('GRAPH2D', 'UPDATE', JSON.stringify(newTwoDFigure));
+  };
+
+  const onArrowDown = () => {
+    const copy = [...TwoDfigures];
+    const index = copy.findIndex(x => x.figureId === TwoDfigure.figureId);
+
+    const newTwoDFigure = { ...copy[index] };
+
+    newTwoDFigure.secondProps -= 1;
+
+    sendObjectInfo('GRAPH2D', 'UPDATE', JSON.stringify(newTwoDFigure));
+  };
+
+  const onArrowLeft = () => {
+    const copy = [...TwoDfigures];
+    const index = copy.findIndex(x => x.figureId === TwoDfigure.figureId);
+
+    const newTwoDFigure = { ...copy[index] };
+
+    // newTwoDFigure.firstProps -= 1;
+    newTwoDFigure.secondProps =
+      newTwoDFigure.secondProps + newTwoDFigure.firstProps * +1;
+
+    sendObjectInfo('GRAPH2D', 'UPDATE', JSON.stringify(newTwoDFigure));
+  };
+
+  const onArrowRight = () => {
+    const copy = [...TwoDfigures];
+    const index = copy.findIndex(x => x.figureId === TwoDfigure.figureId);
+
+    const newTwoDFigure = { ...copy[index] };
+
+    // newTwoDFigure.firstProps += 1;
+    newTwoDFigure.secondProps =
+      newTwoDFigure.secondProps + newTwoDFigure.firstProps * -1;
 
     sendObjectInfo('GRAPH2D', 'UPDATE', JSON.stringify(newTwoDFigure));
   };
@@ -112,14 +147,25 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
           onClick={onDelBtnClick}
         />
       </Card.Header>
-      <Card.Body
-        onMouseLeave={onCardMouseLeave}
-        onMouseDown={onCardMouseDown}
-        onMouseUp={onCardMouseUp}
-        onDoubleClick={onCardDoubleClick}
-      >
+      <Card.Body>
         <Row className="cardBox2d flex justify-content-between align-content-center">
-          <Col lg={12}>{resolveInfo(TwoDfigure)}</Col>
+          <Col
+            className="p-0"
+            lg={8}
+            onMouseDown={onCardMouseDown}
+            onMouseUp={onCardMouseUp}
+            onDoubleClick={onCardDoubleClick}
+          >
+            {resolveInfo(TwoDfigure)}
+          </Col>
+          <Col className="flex justify-content-center" lg={4}>
+            <FourButtons
+              onArrowUp={onArrowUp}
+              onArrowDown={onArrowDown}
+              onArrowLeft={onArrowLeft}
+              onArrowRight={onArrowRight}
+            />
+          </Col>
         </Row>
       </Card.Body>
     </Card>
@@ -128,7 +174,7 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
 
 function resolveInfo(TwoDfigure) {
   const info = makeInfo(TwoDfigure);
-  return <div>{info}</div>;
+  return <div className={TwoDfigure.type}>{info}</div>;
 }
 
 function contrastColor(colorText) {
@@ -141,6 +187,7 @@ function contrastColor(colorText) {
 
 function makeInfo(TwoDfigure) {
   const formula = makeFormulaFormat(TwoDfigure);
+
   return <MathComponent tex={formula} />;
 }
 

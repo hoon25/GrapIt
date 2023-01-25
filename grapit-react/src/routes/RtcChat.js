@@ -20,7 +20,6 @@ import { useLocation } from 'react-router-dom';
 import Loading from '../components/common/Loading';
 import { setCamera } from '../components/threeJsCamera';
 
-
 var stompClient = null;
 
 function RtcChat({ chat }) {
@@ -152,6 +151,7 @@ function RtcChat({ chat }) {
   // sendGraphInfo()
   function rerenderGraph(payload) {
     const newMessage = JSON.parse(payload.body);
+    console.log(newMessage);
     switch (newMessage.type) {
       case 'PAINT':
         if (newMessage.sender !== user.nickName) {
@@ -164,7 +164,7 @@ function RtcChat({ chat }) {
       case 'CAMERA3D':
         if (newMessage.sender !== user.nickName) {
           const newCamera = JSON.parse(newMessage.data);
-          setCamera(newCamera)
+          setCamera(newCamera);
         }
         break;
       case 'GRAPH2D':
@@ -235,7 +235,7 @@ function RtcChat({ chat }) {
       <Container
         fluid
         style={{ height: '100%' }}
-      // ref={tempRef}
+        // ref={tempRef}
       >
         {isConnected ? null : <Loading isConnected={isConnected} />}
         <Row style={{ height: '100%' }}>

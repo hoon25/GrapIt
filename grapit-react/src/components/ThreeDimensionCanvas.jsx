@@ -40,7 +40,7 @@ function ThreeDimensionCanvas(props) {
   }, 150);
 
   return (
-    <div style={{ width: '100%', aspectRatio: 1.49 }}>
+    <div style={{ width: '100%', position: 'relative', aspectRatio: 1.49 }}>
       <Canvas
         camera={threeJsCamera}
         onMouseDown={() => setIsMouseDown(true)}

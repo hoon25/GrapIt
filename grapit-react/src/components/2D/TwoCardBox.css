@@ -1,4 +1,16 @@
-.cardBox2d .MathJax {
+.Line .MathJax {
     margin: 0!important;
     font-size: 1.3em;
+}
+
+.TwoD .MathJax{
+    margin-top: 0!important;
+    margin-bottom: 0!important;
+    font-size: 1.1em;
+}
+
+.Circle .MathJax{
+    margin-top: 0!important;
+    margin-bottom: 0!important;
+    font-size: 0.9em;
 }

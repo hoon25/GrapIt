@@ -4,11 +4,14 @@ import { generateUUID } from 'three/src/math/MathUtils';
 // import { figureSlice } from "../../figureSlice";
 import { setFigure } from '../../store/figureSlice';
 import { useInput } from '../../hooks';
+import { useState } from 'react';
+import GraphColorPicker from '../common/GraphColorPicker';
 
 function SphereInputGroup(props) {
   const [positionProps, resetPosition] = useInput('0, 0, 0');
   const [radiusProps, resetRadius] = useInput('');
-  const [colorProps, resetColor] = useInput('#ffffff');
+  // const [colorProps, resetColor] = useInput('#ffffff');
+  const [colorProps, setColorProps] = useState('#f44336');
 
   const figureList = useSelector(state => state.figure.figures);
   const dispatch = useDispatch();
@@ -21,7 +24,7 @@ function SphereInputGroup(props) {
       uniqueId: UUID,
       figureId: UUID,
       type: 'sphere',
-      color: parseInt('0x' + colorProps.value.slice(1)),
+      color: parseInt('0x' + colorProps.slice(1)),
       position: positionProps.value.split(',').map(x => Number(x)),
       radius: Number(radiusProps.value),
     };
@@ -30,7 +33,8 @@ function SphereInputGroup(props) {
 
     resetPosition();
     resetRadius();
-    resetColor();
+    // resetColor();
+    setColorProps('#f44336');
 
     const copy = newFigure;
     //TODO 한개씩 추가로 나중에 바꾸기
@@ -48,10 +52,15 @@ function SphereInputGroup(props) {
         <Form.Label>반지름</Form.Label>
         <Form.Control {...radiusProps} type="text" placeholder="r" />
       </FormGroup>
-      <FormGroup>
-        <Form.Label>색상</Form.Label>
-        <Form.Control {...colorProps} type="color" />
-      </FormGroup>
+      {/*<FormGroup>*/}
+      {/*  <Form.Label>색상</Form.Label>*/}
+      {/*  <Form.Control {...colorProps} type="color" />*/}
+      {/*</FormGroup>*/}
+      <GraphColorPicker
+        type={'3d'}
+        color={colorProps}
+        setColorProps={setColorProps}
+      />
       <Button variant="primary" type="submit">
         생성
       </Button>

@@ -5,11 +5,14 @@ import { setFigure } from '../../store/figureSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useInput } from '../../hooks';
 import { generateUUID } from 'three/src/math/MathUtils';
+import GraphColorPicker from '../common/GraphColorPicker';
+import { useState } from 'react';
 
 function LineInputGroup(props) {
   const [point1Props, resetPoint1] = useInput('0, 0, 0');
   const [point2Props, resetPoint2] = useInput('');
-  const [colorProps, resetColor] = useInput('#ffffff');
+  // const [colorProps, resetColor, setColor] = useInput('#ffffff');
+  const [colorProps, setColorProps] = useState('#f44336');
 
   const figureList = useSelector(state => state.figure.figures);
   const dispatch = useDispatch();
@@ -22,7 +25,7 @@ function LineInputGroup(props) {
       uniqueId: UUID,
       figureId: UUID,
       type: 'twoPointedLine',
-      color: parseInt('0x' + colorProps.value.slice(1)),
+      color: parseInt('0x' + colorProps.slice(1)),
       point1: point1Props.value.split(',').map(x => Number(x)),
       point2: point2Props.value.split(',').map(x => Number(x)),
     };
@@ -31,7 +34,8 @@ function LineInputGroup(props) {
 
     resetPoint1();
     resetPoint2();
-    resetColor();
+    setColorProps('#f44336');
+    // resetColor();
 
     const copy = newFigure;
     //TODO 한개씩 추가로 나중에 바꾸기
@@ -50,10 +54,15 @@ function LineInputGroup(props) {
         <Form.Label>점 2</Form.Label>
         <Form.Control {...point2Props} type="text" placeholder="x2, y2, z2" />
       </FormGroup>
-      <FormGroup>
-        <Form.Label>색상</Form.Label>
-        <Form.Control {...colorProps} type="color" />
-      </FormGroup>
+      <GraphColorPicker
+        type={'3d'}
+        color={colorProps}
+        setColorProps={setColorProps}
+      />
+      {/*<FormGroup>*/}
+      {/*  <Form.Label>색상</Form.Label>*/}
+      {/*  <Form.Control {...colorProps} type="color" />*/}
+      {/*</FormGroup>*/}
       <Button variant="primary" type="submit">
         생성
       </Button>

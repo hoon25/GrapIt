@@ -3,12 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { generateUUID } from 'three/src/math/MathUtils';
 import { setFigure } from '../../store/figureSlice';
 import { useInput } from '../../hooks';
+import { useState } from 'react';
+import GraphColorPicker from '../common/GraphColorPicker';
 
 function PlatonicSolidInputGroup(props) {
   const [figureTypeProps, resetFigureType] = useInput('tetrahedron');
   const [positionProps, resetPosition] = useInput('0, 0, 0');
   const [lengthProps, resetLength] = useInput('');
-  const [colorProps, resetColor] = useInput('#ffffff');
+  // const [colorProps, resetColor] = useInput('#ffffff');
+  const [colorProps, setColorProps] = useState('#f44336');
 
   const figureList = useSelector(state => state.figure.figures);
   const dispatch = useDispatch();
@@ -23,7 +26,7 @@ function PlatonicSolidInputGroup(props) {
       type: figureTypeProps.value,
       position: positionProps.value.split(',').map(x => Number(x)),
       length: Number(lengthProps.value),
-      color: parseInt('0x' + colorProps.value.slice(1)),
+      color: parseInt('0x' + colorProps.slice(1)),
     };
 
     // dispatch(setFigure.addFigure(newFigure));
@@ -31,7 +34,8 @@ function PlatonicSolidInputGroup(props) {
     resetFigureType();
     resetPosition();
     resetLength();
-    resetColor();
+    // resetColor();
+    setColorProps('#f44336');
 
     const copy = newFigure;
     //TODO 한개씩 추가로 나중에 바꾸기
@@ -59,10 +63,15 @@ function PlatonicSolidInputGroup(props) {
         <Form.Label>한 변의 길이</Form.Label>
         <Form.Control {...lengthProps} type="text" placeholder="r" />
       </FormGroup>
-      <FormGroup>
-        <Form.Label>색상</Form.Label>
-        <Form.Control {...colorProps} type="color" />
-      </FormGroup>
+      {/*<FormGroup>*/}
+      {/*  <Form.Label>색상</Form.Label>*/}
+      {/*  <Form.Control {...colorProps} type="color" />*/}
+      {/*</FormGroup>*/}
+      <GraphColorPicker
+        type={'3d'}
+        color={colorProps}
+        setColorProps={setColorProps}
+      />
       <Button variant="primary" type="submit">
         생성
       </Button>

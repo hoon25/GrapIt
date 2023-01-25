@@ -14,8 +14,9 @@ export default function ThreeCardBox(props) {
     <Stack
       gap={2}
       style={{
-        backgroundColor: 'whitesmoke',
-        height: '45vh',
+        padding: '0px',
+        // backgroundColor: 'whitesmoke',
+        height: '55vh',
         overflowY: 'scroll',
       }}
     >
@@ -117,7 +118,15 @@ function makeCard(
   };
 
   return (
-    <Card key={i}>
+    <Card
+      key={i}
+      style={{
+        border: '1px solid #afafaf',
+        borderWidth: '1px 1px 1px 1px',
+        boxShadow: '0px 0px 5px 0px #afafaf',
+        borderRadius: '10px',
+      }}
+    >
       <Card.Header
         className="d-flex justify-content-between"
         style={{
@@ -135,8 +144,9 @@ function makeCard(
         />
       </Card.Header>
       <Card.Body className="pl-1 pr-1">
-        <Row className="d-flex justify-content-between">
+        <Row className=" flex justify-content-between align-content-center">
           <Col
+            className="p-0"
             onMouseDown={emphasize}
             onMouseUp={deemphasize}
             onDoubleClick={applyFigure}

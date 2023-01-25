@@ -54,7 +54,8 @@ function Toolbar(props) {
     });
     setToolButtons(toolButtons);
     const keyDownHandler = event => {
-      if (event.key === 'q') {
+      console.log(event);
+      if (event.key === 'q' || event.key === 'ㅂ' || event.key === 'Q') {
         event.preventDefault();
         escFunction();
       }

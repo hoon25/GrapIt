@@ -44,11 +44,11 @@ export default function TwoDInputGroup({ sendObjectInfo }) {
 
   return (
     <Form onSubmit={onSubmit}>
-      <div className="flex justify-content-between p-0">
-        <div className="col-1">
-          <MathComponent tex="y = " />
-        </div>
-        <div className="col-2">
+      <div className="flex justify-content-center TwoD pt-3 pb-3">
+        {/*<div className="col-1">*/}
+        <MathComponent tex="y = " />
+        {/*</div>*/}
+        <div className="col-2 ps-1 pe-1">
           <FormGroup>
             <Form.Control
               onChange={event => {
@@ -60,10 +60,10 @@ export default function TwoDInputGroup({ sendObjectInfo }) {
             />
           </FormGroup>
         </div>
-        <div className="col-1">
-          <MathComponent tex="x^2 + " />
-        </div>
-        <div className="col-2">
+        {/*<div className="col-1">*/}
+        <MathComponent tex="x^2 + " />
+        {/*</div>*/}
+        <div className="col-2 ps-1 pe-1">
           <FormGroup>
             <Form.Control
               onChange={event => {
@@ -75,10 +75,10 @@ export default function TwoDInputGroup({ sendObjectInfo }) {
             />
           </FormGroup>
         </div>
-        <div className="col-1">
-          <MathComponent tex="x + " />
-        </div>
-        <div className="col-2">
+        {/*<div className="col-1">*/}
+        <MathComponent tex="x + " />
+        {/*</div>*/}
+        <div className="col-2 ps-1 pe-1">
           <FormGroup>
             <Form.Control
               onChange={event => {
@@ -98,6 +98,7 @@ export default function TwoDInputGroup({ sendObjectInfo }) {
             display: 'inline-block',
             float: 'right',
             borderRadius: '10px',
+            fontWeight: '800',
           }}
           variant="primary"
           type="submit"

@@ -72,7 +72,16 @@ function PlatonicSolidInputGroup(props) {
         color={colorProps}
         setColorProps={setColorProps}
       />
-      <Button variant="primary" type="submit">
+      <Button
+        style={{
+          display: 'inline-block',
+          float: 'right',
+          borderRadius: '10px',
+          fontWeight: '800',
+        }}
+        variant="primary"
+        type="submit"
+      >
         생성
       </Button>
     </Form>

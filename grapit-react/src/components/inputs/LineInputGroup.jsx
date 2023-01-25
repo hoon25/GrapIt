@@ -59,11 +59,17 @@ function LineInputGroup(props) {
         color={colorProps}
         setColorProps={setColorProps}
       />
-      {/*<FormGroup>*/}
-      {/*  <Form.Label>색상</Form.Label>*/}
-      {/*  <Form.Control {...colorProps} type="color" />*/}
-      {/*</FormGroup>*/}
-      <Button variant="primary" type="submit">
+
+      <Button
+        style={{
+          display: 'inline-block',
+          float: 'right',
+          borderRadius: '10px',
+          fontWeight: '800',
+        }}
+        variant="primary"
+        type="submit"
+      >
         생성
       </Button>
     </Form>

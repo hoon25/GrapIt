@@ -31,10 +31,10 @@ export default function TwoDimensionSideBar({
 
   const sidebarBottomStyle = {
     height: isTouchDevice ? '40vh' : '55vh',
-    backgroundColor: '#eeeeee',
     flexDirection: 'column',
     justifyContent: 'center',
     margin: '0px',
+    marginTop: '3.5%',
     padding: '0px',
   };
 

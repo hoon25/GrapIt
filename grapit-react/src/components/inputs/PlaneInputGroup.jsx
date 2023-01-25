@@ -3,11 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { generateUUID } from 'three/src/math/MathUtils';
 import { setFigure } from '../../store/figureSlice';
 import { useInput } from '../../hooks';
+import { useState } from 'react';
+import GraphColorPicker from '../common/GraphColorPicker';
 
 function PlaneInputGroup(props) {
   const [planeTypeProps, resetPlaneType] = useInput('YZ');
   const [offsetProps, resetPosition] = useInput('0');
-  const [colorProps, resetColor] = useInput('#ffffff');
+  // const [colorProps, resetColor] = useInput('#ffffff');
+  const [colorProps, setColorProps] = useState('#f44336');
 
   const figureList = useSelector(state => state.figure.figures);
   const dispatch = useDispatch();
@@ -19,8 +22,6 @@ function PlaneInputGroup(props) {
     // position={[0, 2, 0]} size={[10, 0.01, 10]} // xz plane
     // position={[2, 0, 0]} size={[0.01, 10, 10]} // yz plane
 
-    console.log('planeTypeProps.value', planeTypeProps.value);
-    console.log('offsetProps.value', offsetProps.value);
     const position =
       planeTypeProps.value === 'YZ'
         ? [Number(offsetProps.value), 0, 0]
@@ -43,12 +44,12 @@ function PlaneInputGroup(props) {
       position: position,
       size: size,
       radius: 10,
-      color: parseInt('0x' + colorProps.value.slice(1)),
+      color: parseInt('0x' + colorProps.slice(1)),
     };
 
     resetPlaneType();
     resetPosition();
-    resetColor();
+    setColorProps('#f44336');
 
     const copy = newFigure;
     //TODO 한개씩 추가로 나중에 바꾸기
@@ -70,11 +71,25 @@ function PlaneInputGroup(props) {
         <Form.Label>좌표</Form.Label>
         <Form.Control {...offsetProps} type="text" placeholder="0" />
       </FormGroup>
-      <FormGroup>
-        <Form.Label>색상</Form.Label>
-        <Form.Control {...colorProps} type="color" />
-      </FormGroup>
-      <Button variant="primary" type="submit">
+      {/*<FormGroup>*/}
+      {/*  <Form.Label>색상</Form.Label>*/}
+      {/*  <Form.Control {...colorProps} type="color" />*/}
+      {/*</FormGroup>*/}
+      <GraphColorPicker
+        type={'3d'}
+        color={colorProps}
+        setColorProps={setColorProps}
+      />
+      <Button
+        style={{
+          display: 'inline-block',
+          float: 'right',
+          borderRadius: '10px',
+          fontWeight: '800',
+        }}
+        variant="primary"
+        type="submit"
+      >
         생성
       </Button>
     </Form>

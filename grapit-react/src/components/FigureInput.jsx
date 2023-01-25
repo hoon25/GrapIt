@@ -13,10 +13,10 @@ function FigureInput(props) {
   };
 
   return (
-    <div>
+    <div style={{ padding: '0px' }}>
       <Form>
         <Form.Group>
-          <Form.Control
+          <Form.Select
             className="mb-2"
             as="select"
             style={{ height: '2.8rem', fontSize: '1.2rem', fontWeight: 'bold' }}
@@ -43,7 +43,7 @@ function FigureInput(props) {
             {['sphere', 'platonicSolid']
               .map(x => [x, x === props.figureType])
               .map(ResolveOptionRow)}
-          </Form.Control>
+          </Form.Select>
         </Form.Group>
       </Form>
       <ResolveInputGroup

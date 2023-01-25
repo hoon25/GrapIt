@@ -19,8 +19,9 @@ export default function TwoCardBox({ sendObjectInfo }) {
     <Stack
       gap={2}
       style={{
+        padding: '0px',
         backgroundColor: 'whitesmoke',
-        height: '50vh',
+        height: '55vh',
         overflowY: 'scroll',
       }}
     >
@@ -130,7 +131,12 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
   };
 
   return (
-    <Card key={i}>
+    <Card
+      key={i}
+      style={{
+        borderRadius: '10px',
+      }}
+    >
       <Card.Header
         className="d-flex justify-content-between"
         style={{

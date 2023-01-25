@@ -6,7 +6,7 @@ export default function ProblemSideBar({}) {
   const inputColor = useSelector(state => state.TwoDInput.color);
 
   return (
-    <Row>
+    <Row style={{ paddingLeft: '0px' }}>
       <Row style={{ height: '25vh', backgroundColor: '' }}>
         <div className="flex justify-content-center align-content-center">
           <Button style={{ height: '50px', borderRadius: '10px' }}>

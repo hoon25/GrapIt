@@ -10,7 +10,7 @@ function PlaneInputGroup(props) {
   const [planeTypeProps, resetPlaneType] = useInput('YZ');
   const [offsetProps, resetPosition] = useInput('0');
   // const [colorProps, resetColor] = useInput('#ffffff');
-  const [colorProps, setColorProps] = useState('#f44336');
+  const [colorProps, setColorProps] = useState('#9e9e9e');
 
   const figureList = useSelector(state => state.figure.figures);
   const dispatch = useDispatch();
@@ -49,7 +49,7 @@ function PlaneInputGroup(props) {
 
     resetPlaneType();
     resetPosition();
-    setColorProps('#f44336');
+    setColorProps('#9e9e9e');
 
     const copy = newFigure;
     //TODO 한개씩 추가로 나중에 바꾸기
@@ -59,13 +59,13 @@ function PlaneInputGroup(props) {
     <Form onSubmit={onSubmit}>
       <FormGroup>
         <Form.Label>평행한 평면</Form.Label>
-        <Form.Control as="select" {...planeTypeProps}>
+        <Form.Select as="select" {...planeTypeProps}>
           <option value="YZ" selected>
             YZ 평면
           </option>
           <option value="XZ">XZ 평면</option>
           <option value="XY">XY 평면</option>
-        </Form.Control>
+        </Form.Select>
       </FormGroup>
       <FormGroup>
         <Form.Label>좌표</Form.Label>

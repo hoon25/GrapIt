@@ -26,6 +26,19 @@ export default function CoordTypeSelector({ coordType, setCoordType }) {
         >
           &nbsp;3D&nbsp;
         </Button>
+        <div className="ms-4">
+          <Button
+            style={{ borderRadius: '10px', fontWeight: '800' }}
+            className="btn-danger"
+            onClick={() => {
+              if (window.confirm('방을 나가시겠습니까?')) {
+                window.location.href = '/room';
+              }
+            }}
+          >
+            나가기
+          </Button>
+        </div>
       </Stack>
     </Row>
   );

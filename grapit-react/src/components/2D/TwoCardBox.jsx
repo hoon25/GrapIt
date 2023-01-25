@@ -20,7 +20,7 @@ export default function TwoCardBox({ sendObjectInfo }) {
       gap={2}
       style={{
         padding: '0px',
-        backgroundColor: 'whitesmoke',
+        // backgroundColor: 'whitesmoke',
         height: '55vh',
         overflowY: 'scroll',
       }}
@@ -134,6 +134,9 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
     <Card
       key={i}
       style={{
+        border: '1px solid #afafaf',
+        borderWidth: '1px 1px 1px 1px',
+        boxShadow: '0px 0px 5px 0px #afafaf',
         borderRadius: '10px',
       }}
     >

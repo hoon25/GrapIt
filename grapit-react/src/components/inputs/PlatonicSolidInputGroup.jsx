@@ -11,7 +11,7 @@ function PlatonicSolidInputGroup(props) {
   const [positionProps, resetPosition] = useInput('0, 0, 0');
   const [lengthProps, resetLength] = useInput('');
   // const [colorProps, resetColor] = useInput('#ffffff');
-  const [colorProps, setColorProps] = useState('#f44336');
+  const [colorProps, setColorProps] = useState('#9e9e9e');
 
   const figureList = useSelector(state => state.figure.figures);
   const dispatch = useDispatch();
@@ -35,17 +35,17 @@ function PlatonicSolidInputGroup(props) {
     resetPosition();
     resetLength();
     // resetColor();
-    setColorProps('#f44336');
+    setColorProps('#9e9e9e');
 
     const copy = newFigure;
     //TODO 한개씩 추가로 나중에 바꾸기
     props.sendObjectInfo('FIGURE3D', 'ADD', JSON.stringify(copy));
   };
   return (
-    <Form onSubmit={onSubmit}>
+    <Form onSubmit={onSubmit} style={{ position: 'relative' }}>
       <FormGroup>
         <Form.Label>정다면체</Form.Label>
-        <Form.Control as="select" {...figureTypeProps}>
+        <Form.Select as="select" {...figureTypeProps}>
           <option value="tetrahedron" selected>
             정사면체
           </option>
@@ -53,7 +53,7 @@ function PlatonicSolidInputGroup(props) {
           <option value="octahedron">정팔면체</option>
           <option value="dodecahedron">정십이면체</option>
           <option value="icosahedron">정이십면체</option>
-        </Form.Control>
+        </Form.Select>
       </FormGroup>
       <FormGroup>
         <Form.Label>중심</Form.Label>
@@ -72,7 +72,19 @@ function PlatonicSolidInputGroup(props) {
         color={colorProps}
         setColorProps={setColorProps}
       />
-      <Button variant="primary" type="submit">
+      <Button
+        style={{
+          position: 'absolute',
+          display: 'inline-block',
+          float: 'right',
+          borderRadius: '10px',
+          fontWeight: '800',
+          bottom: '0',
+          right: '0',
+        }}
+        variant="primary"
+        type="submit"
+      >
         생성
       </Button>
     </Form>

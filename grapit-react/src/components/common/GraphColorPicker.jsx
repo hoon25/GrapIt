@@ -6,15 +6,15 @@ import { setTwoDInput } from '../../store/TwoDInputSlice';
 export default function GraphColorPicker({ type, color, setColorProps }) {
   const graphColor = [
     '#f44336',
-    '#9c27b0',
-    '#673ab7',
-    '#3f51b5',
-    '#2196f3',
-    '#009688',
-    '#8bc34a',
-    '#ffeb3b',
-    '#ff9800',
+    '#ff8f00',
+    '#ffff00',
+    '#64dd17',
+    '#2e7d32',
     '#9e9e9e',
+    '#2196f3',
+    '#304ffe',
+    '#8e24aa',
+    '#6200ea',
   ];
   const dispatch = useDispatch();
   function setColor2D(color) {

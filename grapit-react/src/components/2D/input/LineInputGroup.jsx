@@ -48,7 +48,7 @@ export default function LineInputGroup({ sendObjectInfo }) {
         {/*<div className="col-3">*/}
         <MathComponent tex="y = " />
         {/*</div>*/}
-        <div className="col-3 ps-2 pe-2">
+        <div className="col-2 ps-1 pe-1">
           <FormGroup>
             <Form.Control
               onChange={event => {
@@ -63,7 +63,7 @@ export default function LineInputGroup({ sendObjectInfo }) {
         {/*<div className="col-3">*/}
         <MathComponent tex="x + " />
         {/*</div>*/}
-        <div className="col-3 ps-2 pe-2">
+        <div className="col-2 ps-1 pe-1">
           <FormGroup>
             <Form.Control
               onChange={event => {
@@ -83,6 +83,7 @@ export default function LineInputGroup({ sendObjectInfo }) {
             display: 'inline-block',
             float: 'right',
             borderRadius: '10px',
+            fontWeight: '800',
           }}
           variant="primary"
           type="submit"

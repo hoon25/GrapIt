@@ -12,7 +12,7 @@ function LineInputGroup(props) {
   const [point1Props, resetPoint1] = useInput('0, 0, 0');
   const [point2Props, resetPoint2] = useInput('');
   // const [colorProps, resetColor, setColor] = useInput('#ffffff');
-  const [colorProps, setColorProps] = useState('#f44336');
+  const [colorProps, setColorProps] = useState('#9e9e9e');
 
   const figureList = useSelector(state => state.figure.figures);
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ function LineInputGroup(props) {
 
     resetPoint1();
     resetPoint2();
-    setColorProps('#f44336');
+    setColorProps('#9e9e9e');
     // resetColor();
 
     const copy = newFigure;
@@ -59,11 +59,17 @@ function LineInputGroup(props) {
         color={colorProps}
         setColorProps={setColorProps}
       />
-      {/*<FormGroup>*/}
-      {/*  <Form.Label>색상</Form.Label>*/}
-      {/*  <Form.Control {...colorProps} type="color" />*/}
-      {/*</FormGroup>*/}
-      <Button variant="primary" type="submit">
+
+      <Button
+        style={{
+          display: 'inline-block',
+          float: 'right',
+          borderRadius: '10px',
+          fontWeight: '800',
+        }}
+        variant="primary"
+        type="submit"
+      >
         생성
       </Button>
     </Form>

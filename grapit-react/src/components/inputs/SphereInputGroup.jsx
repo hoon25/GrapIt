@@ -11,7 +11,7 @@ function SphereInputGroup(props) {
   const [positionProps, resetPosition] = useInput('0, 0, 0');
   const [radiusProps, resetRadius] = useInput('');
   // const [colorProps, resetColor] = useInput('#ffffff');
-  const [colorProps, setColorProps] = useState('#f44336');
+  const [colorProps, setColorProps] = useState('#9e9e9e');
 
   const figureList = useSelector(state => state.figure.figures);
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ function SphereInputGroup(props) {
     resetPosition();
     resetRadius();
     // resetColor();
-    setColorProps('#f44336');
+    setColorProps('#9e9e9e');
 
     const copy = newFigure;
     //TODO 한개씩 추가로 나중에 바꾸기
@@ -61,7 +61,16 @@ function SphereInputGroup(props) {
         color={colorProps}
         setColorProps={setColorProps}
       />
-      <Button variant="primary" type="submit">
+      <Button
+        style={{
+          display: 'inline-block',
+          float: 'right',
+          borderRadius: '10px',
+          fontWeight: '800',
+        }}
+        variant="primary"
+        type="submit"
+      >
         생성
       </Button>
     </Form>

@@ -8,7 +8,7 @@ import { useInput } from '../../hooks';
 function SphereInputGroup(props) {
   const [positionProps, resetPosition] = useInput('0, 0, 0');
   const [radiusProps, resetRadius] = useInput('');
-  const [colorProps, resetColor] = useInput('#000000');
+  const [colorProps, resetColor] = useInput('#ffffff');
 
   const figureList = useSelector(state => state.figure.figures);
   const dispatch = useDispatch();

@@ -40,7 +40,7 @@ export default function ProblemSideBar({}) {
           <Button
             style={{ height: '50px', borderRadius: '10px', fontWeight: '800' }}
           >
-            문제 추가하기기
+            문제 추가하기
           </Button>
         </div>
       </Row>

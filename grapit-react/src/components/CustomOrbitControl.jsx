@@ -18,10 +18,11 @@ export function CameraControls(props) {
 
   // Ref to the controls, so that we can update them on every frame using useFrame
   const controls = useRef();
-  useFrame(state => {
-    if (props.isMouseDown) {
-      controls.current.update();
-    }
+  useFrame((state, delta, xrFrame) => {
+    camera.updateProjectionMatrix();
+    // if (props.isMouseDown) {
+    //   controls.current.update();
+    // }
   });
 
   useEffect(() => {

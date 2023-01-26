@@ -37,7 +37,7 @@ function ThreeDimensionCanvas(props) {
     };
 
     props.sendObjectInfo('CAMERA3D', '', JSON.stringify(camera));
-  }, 150);
+  }, 50);
 
   return (
     <div style={{ width: '100%', aspectRatio: 1.49 }}>

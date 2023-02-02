@@ -10,9 +10,11 @@
 
 ![3D_Introduction](./README/3D_Introduction.gif)
 
-
-
 ## 🚀 시연영상
+
+### YOUTUBE [링크클릭](https://youtu.be/uHictf4uHQQ)
+
+![Grapit-현장발표사진](./README/Grapit-announce_pic.png)
 
 
 

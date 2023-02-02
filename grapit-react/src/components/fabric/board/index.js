@@ -40,10 +40,11 @@ function Board(props) {
         const oImg = img
           .set({
             left: 0,
-            top: 650,
+            bottom: 0,
             angle: 0,
           })
           .scale(1);
+        oImg.set('objectType', 'image');
         fabricCanvas.current.add(oImg).renderAll();
       });
 
@@ -53,10 +54,11 @@ function Board(props) {
         const oImg = img
           .set({
             left: 0,
-            top: 630,
+            bottom: 0,
             angle: 0,
           })
-          .scale(0.6);
+          .scale(0.9);
+        oImg.set('objectType', 'image');
         fabricCanvas.current.add(oImg).renderAll();
       });
       dispatch(setLoad.setSecond());
@@ -65,10 +67,11 @@ function Board(props) {
         const oImg = img
           .set({
             left: 0,
-            top: 630,
+            bottom: '1px',
             angle: 0,
           })
-          .scale(0.6);
+          .scale(1.2);
+        oImg.set('objectType', 'image');
         fabricCanvas.current.add(oImg).renderAll();
       });
       dispatch(setLoad.setThird());
@@ -88,10 +91,6 @@ function Board(props) {
       if (props.mode !== 'eraser' && props.mode !== 'select') {
         console.log('sendObj', sendObj);
         if (sendObj.id !== undefined && sendObj.id !== null) {
-          // sendObj.set('width', (sendObj.width / props.width) * 1490);
-          // sendObj.set('height', (sendObj.height / props.height) * 1000);
-          // sendObj.set('left', (sendObj.left / props.width) * 1490);
-          // sendObj.set('top', (sendObj.top / props.height) * 1000);
           props.sendPaintInfo(
             'PAINT',
             '',
@@ -106,24 +105,44 @@ function Board(props) {
     }
   }, [sendObj, mouseUp, selectedCount]);
 
+  function objectResize(options) {
+    options.target.id = uuid.v4();
+    let copyObj = fabric.util.object.clone(options.target);
+    copyObj.set('scaleX', (copyObj.scaleX / props.width) * 1490);
+    copyObj.set('scaleY', (copyObj.scaleY / props.height) * 1000);
+    copyObj.set('strokeWidth', (copyObj.strokeWidth / props.width) * 1490);
+    copyObj.set('left', (copyObj.left / props.width) * 1490);
+    copyObj.set('top', (copyObj.top / props.height) * 1000);
+    copyObj.set('drawer', user.nickName);
+    return copyObj;
+  }
+
   function handleCanvasObjectsAdded(options) {
-    console.log('draw 시점');
-    console.log('options', options);
-    console.log(props.width);
-    console.log(props.height);
+    console.log('handleCanvasObjectsAdded', options);
     if (
-      props.mode === 'pen' &&
+      options.target.objectType === 'image' &&
+      options.target.action !== 'modify' &&
       (options.target.drawer === null || options.target.drawer === undefined)
     ) {
-      options.target.id = uuid.v4();
-      let copyObj = fabric.util.object.clone(options.target);
-      copyObj.set('scaleX', (copyObj.scaleX / props.width) * 1490);
-      copyObj.set('scaleY', (copyObj.scaleY / props.height) * 1000);
-      copyObj.set('strokeWidth', (copyObj.strokeWidth / props.width) * 1490);
-      // copyObj.set('height', (copyObj.height / props.height) * 1000);
-      copyObj.set('left', (copyObj.left / props.width) * 1490);
-      copyObj.set('top', (copyObj.top / props.height) * 1000);
-      copyObj.set('drawer', user.nickName);
+      let copyObj = objectResize(options);
+      props.sendPaintInfo(
+        'PAINT',
+        '',
+        JSON.stringify({
+          action: 'image',
+          drawer: user.nickName,
+          target: copyObj.toJSON(['id', 'drawer', 'objectType']),
+        }),
+      );
+      return;
+    }
+
+    if (
+      props.mode === 'pen' &&
+      options.target.action !== 'modify' &&
+      (options.target.drawer === null || options.target.drawer === undefined)
+    ) {
+      let copyObj = objectResize(options);
       props.sendPaintInfo(
         'PAINT',
         '',
@@ -134,7 +153,6 @@ function Board(props) {
         }),
       );
     }
-
     setSendObj(undefined);
   }
 
@@ -157,21 +175,9 @@ function Board(props) {
     fabricCanvas.current.on('selection:updated', handleCanvasSelectionUpdated);
     fabricCanvas.current.on('selection:cleared', handleCanvasSelectionCleared);
     fabricCanvas.current.on('object:modified', handleCanvasObjectsModified);
-
     fabricCanvas.current.on('object:moving', handleCanvasObjectsMoving);
     fabricCanvas.current.on('object:added', handleCanvasObjectsAdded);
-    // fabricCanvas.current.on('object:removed', handleCanvasObjectsRemoved);
-
     fabricCanvas.current.zoom = window.zoom ? window.zoom : 1;
-
-    // fabricCanvas.current.setDimensions(
-    //   {
-    //     width: 1920,
-    //     height: 1080,
-    //   },
-    //   { backstoreOnly: true },
-    // );
-
     props.setBoard(fabricCanvas.current);
   }, []);
 
@@ -282,50 +288,58 @@ function Board(props) {
       [props.drawInfo.target],
       function (enlivenedObjects) {
         enlivenedObjects.forEach(function (enlivenedObject) {
-          console.log('add 시전');
           console.log(props.width);
           console.log(props.height);
           console.log(enlivenedObject);
-          enlivenedObject.set('id', props.drawInfo.target.id);
-          enlivenedObject.set(
-            'top',
-            (enlivenedObject.top / 1000) * props.height,
-          );
-          enlivenedObject.set(
-            'left',
-            (enlivenedObject.left / 1490) * props.width,
-          );
-          enlivenedObject.set(
-            'scaleX',
-            (enlivenedObject.scaleX / 1490) * props.width,
-          );
-          enlivenedObject.set(
-            'scaleY',
-            (enlivenedObject.scaleY / 1000) * props.height,
-          );
 
-          if ((enlivenedObject.strokeWidth / 1490) * props.width > 10) {
-            enlivenedObject.set('strokeWidth', 10);
-          } else if ((enlivenedObject.strokeWidth / 1490) * props.width < 3) {
-            enlivenedObject.set('strokeWidth', 3);
-          } else {
+          if (
+            props.drawInfo.action === 'add' ||
+            props.drawInfo.action === 'pen' ||
+            props.drawInfo.action === 'modify' ||
+            props.drawInfo.action === 'image'
+          ) {
+            enlivenedObject.set('id', props.drawInfo.target.id);
             enlivenedObject.set(
-              'strokeWidth',
-              (enlivenedObject.strokeWidth / 1490) * props.width,
+              'top',
+              (enlivenedObject.top / 1000) * props.height,
             );
+            enlivenedObject.set(
+              'left',
+              (enlivenedObject.left / 1490) * props.width,
+            );
+            enlivenedObject.set(
+              'scaleX',
+              (enlivenedObject.scaleX / 1490) * props.width,
+            );
+            enlivenedObject.set(
+              'scaleY',
+              (enlivenedObject.scaleY / 1000) * props.height,
+            );
+
+            if ((enlivenedObject.strokeWidth / 1490) * props.width > 10) {
+              enlivenedObject.set('strokeWidth', 10);
+            } else if ((enlivenedObject.strokeWidth / 1490) * props.width < 3) {
+              enlivenedObject.set('strokeWidth', 3);
+            } else {
+              enlivenedObject.set(
+                'strokeWidth',
+                (enlivenedObject.strokeWidth / 1490) * props.width,
+              );
+            }
+
+            // enlivenedObject.set(
+            //   'width',
+            //   (enlivenedObject.width / 1490) * props.width,
+            // );
+            // enlivenedObject.set(
+            //   'height',
+            //   (enlivenedObject.height / 1000) * props.height,
+            // );
+
+            enlivenedObject.set('drawer', props.drawInfo.drawer);
+            // enlivenedObject.setCoords();
           }
-
-          // enlivenedObject.set(
-          //   'width',
-          //   (enlivenedObject.width / 1490) * props.width,
-          // );
-          // enlivenedObject.set(
-          //   'height',
-          //   (enlivenedObject.height / 1000) * props.height,
-          // );
-
-          enlivenedObject.set('drawer', props.drawInfo.drawer);
-          // enlivenedObject.setCoords();
+          enlivenedObject.set('action', props.drawInfo.action);
           fabricCanvas.current.add(enlivenedObject);
         });
       },
@@ -333,6 +347,7 @@ function Board(props) {
   }
 
   useEffect(() => {
+    console.log('useEffect');
     // const object = JSON.parse(props.drawInfo.target);
     if (props.drawInfo === undefined) return;
     let objectById;
@@ -344,18 +359,23 @@ function Board(props) {
     }
     if (props.drawInfo.action === 'add') {
       if (objectById === null) {
+        console.log('add');
         jsonToObject();
       }
-    } else if (props.drawInfo.action === 'modify') {
+    } else if (
+      props.drawInfo.action === 'modify' &&
+      props.drawInfo.target.drawer !== user.nickname
+    ) {
       if (objectById !== null) {
+        console.log('modify');
         fabricCanvas.current.remove(objectById);
         jsonToObject();
       }
     } else if (props.drawInfo.action === 'move') {
       if (objectById !== null) {
         objectById.set({
-          left: props.drawInfo.target.left,
-          top: props.drawInfo.target.top,
+          left: (props.drawInfo.target.left / 1490) * props.width,
+          top: (props.drawInfo.target.top / 1000) * props.height,
         });
         fabricCanvas.current.renderAll();
       }
@@ -372,6 +392,16 @@ function Board(props) {
     } else if (props.drawInfo.action === 'remove-all') {
       resetCanvas();
     } else if (props.drawInfo.action === 'pen') {
+      if (props.drawInfo.drawer !== user.nickName) {
+        if (objectById === null) {
+          jsonToObject();
+        }
+      }
+    } else if (
+      props.drawInfo.action === 'image' &&
+      props.drawInfo.action !== 'modify'
+    ) {
+      console.log('image');
       if (props.drawInfo.drawer !== user.nickName) {
         if (objectById === null) {
           jsonToObject();
@@ -600,12 +630,23 @@ function Board(props) {
     if (objects) {
       objects.forEach(obj => {
         if (obj.id !== undefined && obj.id !== null) {
+          let copyObj = fabric.util.object.clone(obj);
+          copyObj.set('scaleX', (copyObj.scaleX / props.width) * 1490);
+          copyObj.set('scaleY', (copyObj.scaleY / props.height) * 1000);
+          copyObj.set(
+            'strokeWidth',
+            (copyObj.strokeWidth / props.width) * 1490,
+          );
+          copyObj.set('left', (copyObj.left / props.width) * 1490);
+          copyObj.set('top', (copyObj.top / props.height) * 1000);
+          copyObj.set('drawer', user.nickName);
+
           props.sendPaintInfo(
             'PAINT',
             '',
             JSON.stringify({
               action: 'modify',
-              target: obj.toJSON(['id']),
+              target: copyObj.toJSON(['id', 'drawer', 'objectType']),
             }),
           );
         }
@@ -892,13 +933,18 @@ function Board(props) {
     //
     if (options.target)
       if (options.target.id !== undefined && options.target.id !== null) {
+        let copyObj = fabric.util.object.clone(options.target);
+        copyObj.set('id', options.target.id);
+        copyObj.set('left', (copyObj.left / props.width) * 1490);
+        copyObj.set('top', (copyObj.top / props.height) * 1000);
+
         props.sendPaintInfo(
           'PAINT',
           '',
           JSON.stringify({
             count: selectedCount,
             action: 'move',
-            target: options.target.toJSON(['id']),
+            target: copyObj.toJSON(['id', 'drawer', 'objectType']),
           }),
         );
       }
@@ -907,7 +953,11 @@ function Board(props) {
   function resetCanvas() {
     const allObjects = fabricCanvas.current.getObjects();
     allObjects.forEach(object => {
-      if (object.id !== undefined && object.id !== null) {
+      if (
+        object.id !== undefined &&
+        object.id !== null &&
+        object.objectType !== 'image'
+      ) {
         fabricCanvas.current.remove(object);
       }
     });

@@ -14,8 +14,9 @@ export default function ThreeCardBox(props) {
     <Stack
       gap={2}
       style={{
-        backgroundColor: 'whitesmoke',
-        height: '45vh',
+        padding: '0px',
+        // backgroundColor: 'whitesmoke',
+        height: '55vh',
         overflowY: 'scroll',
       }}
     >
@@ -100,7 +101,6 @@ function makeCard(
 
     // copy.splice(index, 1);
 
-
     sendObjectInfo('FIGURE3D', 'DELETE', JSON.stringify(copy[index]));
   };
 
@@ -118,7 +118,15 @@ function makeCard(
   };
 
   return (
-    <Card key={i}>
+    <Card
+      key={i}
+      style={{
+        border: '1px solid #afafaf',
+        borderWidth: '1px 1px 1px 1px',
+        boxShadow: '0px 0px 5px 0px #afafaf',
+        borderRadius: '10px',
+      }}
+    >
       <Card.Header
         className="d-flex justify-content-between"
         style={{
@@ -136,8 +144,9 @@ function makeCard(
         />
       </Card.Header>
       <Card.Body className="pl-1 pr-1">
-        <Row className="d-flex justify-content-between">
+        <Row className=" flex justify-content-between align-content-center">
           <Col
+            className="p-0"
             onMouseDown={emphasize}
             onMouseUp={deemphasize}
             onDoubleClick={applyFigure}
@@ -173,6 +182,8 @@ function resolveInfo(figure) {
     figure.type === 'icosahedron'
   ) {
     info = PlatonicSolidCardInfo(figure);
+  } else if (figure.type === 'plane') {
+    info = PlaneInfo(figure);
   }
 
   return <Card.Text>{info}</Card.Text>;
@@ -195,7 +206,7 @@ function SphereCardInfo(figure) {
 
   return (
     <Card.Text>
-      {`반지름 ${figure.radius}`}
+      {`반지름: ${figure.radius}`}
       <br />
       {`중심 x: ${x} y: ${y} z: ${z}`}
     </Card.Text>
@@ -217,9 +228,19 @@ function PlatonicSolidCardInfo(figure) {
 
   return (
     <Card.Text>
-      {`모서리의 길이 ${figure.length}`}
+      {`모서리의 길이: ${figure.length}`}
       <br />
       {`중심 x: ${x} y: ${y} z: ${z}`}
+    </Card.Text>
+  );
+}
+
+function PlaneInfo(figure) {
+  return (
+    <Card.Text>
+      {`원점까지의 거리: ${figure.position
+        .map(p => Number(p))
+        .reduce((a, b) => a + b, 0)}`}
     </Card.Text>
   );
 }

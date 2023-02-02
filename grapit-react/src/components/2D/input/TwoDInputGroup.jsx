@@ -6,8 +6,9 @@ import { generateUUID } from 'three/src/math/MathUtils';
 import { useInput } from '../../../hooks';
 import { setTwoDFigure } from '../../../store/TwoDfigureSlice';
 import { MathComponent } from 'mathjax-react';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { setTwoDInput } from '../../../store/TwoDInputSlice';
+import GraphColorPicker from '../../common/GraphColorPicker';
 
 export default function TwoDInputGroup({ sendObjectInfo }) {
   const TwoDInput = useSelector(state => state.TwoDInput);
@@ -33,7 +34,7 @@ export default function TwoDInputGroup({ sendObjectInfo }) {
       setTwoDInput.resetProps({
         firstProps: '',
         secondProps: '',
-        color: '#ffffff',
+        color: '#f44336',
       }),
     );
     // const copy = [...TwoDFigureList, newTwoD];
@@ -43,11 +44,11 @@ export default function TwoDInputGroup({ sendObjectInfo }) {
 
   return (
     <Form onSubmit={onSubmit}>
-      <div className="flex justify-content-between p-0">
-        <div className="col-1">
-          <MathComponent tex="y = " />
-        </div>
-        <div className="col-2">
+      <div className="flex justify-content-center TwoD pt-3 pb-3">
+        {/*<div className="col-1">*/}
+        <MathComponent tex="y = " />
+        {/*</div>*/}
+        <div className="col-2 ps-1 pe-1">
           <FormGroup>
             <Form.Control
               onChange={event => {
@@ -59,10 +60,10 @@ export default function TwoDInputGroup({ sendObjectInfo }) {
             />
           </FormGroup>
         </div>
-        <div className="col-1">
-          <MathComponent tex="x^2 + " />
-        </div>
-        <div className="col-2">
+        {/*<div className="col-1">*/}
+        <MathComponent tex="x^2 + " />
+        {/*</div>*/}
+        <div className="col-2 ps-1 pe-1">
           <FormGroup>
             <Form.Control
               onChange={event => {
@@ -74,10 +75,10 @@ export default function TwoDInputGroup({ sendObjectInfo }) {
             />
           </FormGroup>
         </div>
-        <div className="col-1">
-          <MathComponent tex="x + " />
-        </div>
-        <div className="col-2">
+        {/*<div className="col-1">*/}
+        <MathComponent tex="x + " />
+        {/*</div>*/}
+        <div className="col-2 ps-1 pe-1">
           <FormGroup>
             <Form.Control
               onChange={event => {
@@ -85,23 +86,20 @@ export default function TwoDInputGroup({ sendObjectInfo }) {
               }}
               value={TwoDInput.thirdProps}
               type="number"
-              placeholder="상수"
+              placeholder=""
             />
           </FormGroup>
         </div>
       </div>
       <FormGroup>
-        <Form.Label>색상</Form.Label>
-        <Form.Control
-          style={{ display: 'inline-block' }}
-          onChange={event => {
-            dispatch(setTwoDInput.setColor(event.target.value));
-          }}
-          value={TwoDInput.color}
-          type="color"
-        />
+        <GraphColorPicker color={TwoDInput.color} type={'2D'} />
         <Button
-          style={{ display: 'inline-block', float: 'right' }}
+          style={{
+            display: 'inline-block',
+            float: 'right',
+            borderRadius: '10px',
+            fontWeight: '800',
+          }}
           variant="primary"
           type="submit"
         >

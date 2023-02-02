@@ -3,10 +3,11 @@ import { Button, Card, Col, Row, Stack } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTwoDFigure } from '../../store/TwoDfigureSlice';
 import { MathComponent } from 'mathjax-react';
-import { Trash3Fill } from 'react-bootstrap-icons';
 import { setTwoDInput } from '../../store/TwoDInputSlice';
 import * as Icon from 'react-bootstrap-icons';
 import { translate } from '../translate';
+import './TwoCardBox.css';
+import FourButtons from '../common/FourButtons';
 
 export default function TwoCardBox({ sendObjectInfo }) {
   const TwoDfigures = useSelector(state => state.TwoDfigure.TwoDfigures);
@@ -18,8 +19,9 @@ export default function TwoCardBox({ sendObjectInfo }) {
     <Stack
       gap={2}
       style={{
-        backgroundColor: 'whitesmoke',
-        height: '50vh',
+        padding: '0px',
+        // backgroundColor: 'whitesmoke',
+        height: '55vh',
         overflowY: 'scroll',
       }}
     >
@@ -79,23 +81,65 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
     sendObjectInfo('GRAPH2D', 'DELETE', JSON.stringify(copy[index]));
   };
 
-  const onCardMouseLeave = () => {
-    dispatch(setTwoDFigure.resetThick(TwoDfigure.figureId));
-
-    // TODO 부채
+  const onArrowUp = () => {
+    console.log('onArrowUp');
     const copy = [...TwoDfigures];
     const index = copy.findIndex(x => x.figureId === TwoDfigure.figureId);
 
     const newTwoDFigure = { ...copy[index] };
 
-    newTwoDFigure.thick = 3;
-    // copy[index] = newTwoDFigure;
+    newTwoDFigure.secondProps += 1;
+
+    sendObjectInfo('GRAPH2D', 'UPDATE', JSON.stringify(newTwoDFigure));
+  };
+
+  const onArrowDown = () => {
+    const copy = [...TwoDfigures];
+    const index = copy.findIndex(x => x.figureId === TwoDfigure.figureId);
+
+    const newTwoDFigure = { ...copy[index] };
+
+    newTwoDFigure.secondProps -= 1;
+
+    sendObjectInfo('GRAPH2D', 'UPDATE', JSON.stringify(newTwoDFigure));
+  };
+
+  const onArrowLeft = () => {
+    const copy = [...TwoDfigures];
+    const index = copy.findIndex(x => x.figureId === TwoDfigure.figureId);
+
+    const newTwoDFigure = { ...copy[index] };
+
+    // newTwoDFigure.firstProps -= 1;
+    newTwoDFigure.secondProps =
+      newTwoDFigure.secondProps + newTwoDFigure.firstProps * +1;
+
+    sendObjectInfo('GRAPH2D', 'UPDATE', JSON.stringify(newTwoDFigure));
+  };
+
+  const onArrowRight = () => {
+    const copy = [...TwoDfigures];
+    const index = copy.findIndex(x => x.figureId === TwoDfigure.figureId);
+
+    const newTwoDFigure = { ...copy[index] };
+
+    // newTwoDFigure.firstProps += 1;
+    newTwoDFigure.secondProps =
+      newTwoDFigure.secondProps + newTwoDFigure.firstProps * -1;
 
     sendObjectInfo('GRAPH2D', 'UPDATE', JSON.stringify(newTwoDFigure));
   };
 
   return (
-    <Card key={i}>
+    <Card
+      key={i}
+      style={{
+        border: '1px solid #afafaf',
+        borderWidth: '1px 1px 1px 1px',
+        boxShadow: '0px 0px 5px 0px #afafaf',
+        borderRadius: '10px',
+      }}
+    >
       <Card.Header
         className="d-flex justify-content-between"
         style={{
@@ -112,14 +156,25 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
           onClick={onDelBtnClick}
         />
       </Card.Header>
-      <Card.Body
-        onMouseLeave={onCardMouseLeave}
-        onMouseDown={onCardMouseDown}
-        onMouseUp={onCardMouseUp}
-        onDoubleClick={onCardDoubleClick}
-      >
-        <Row className="flex justify-content-between align-content-center">
-          <Col lg={12}>{resolveInfo(TwoDfigure)}</Col>
+      <Card.Body>
+        <Row className="cardBox2d flex justify-content-between align-content-center">
+          <Col
+            className="p-0"
+            lg={8}
+            onMouseDown={onCardMouseDown}
+            onMouseUp={onCardMouseUp}
+            onDoubleClick={onCardDoubleClick}
+          >
+            {resolveInfo(TwoDfigure)}
+          </Col>
+          <Col className="flex justify-content-center" lg={4}>
+            <FourButtons
+              onArrowUp={onArrowUp}
+              onArrowDown={onArrowDown}
+              onArrowLeft={onArrowLeft}
+              onArrowRight={onArrowRight}
+            />
+          </Col>
         </Row>
       </Card.Body>
     </Card>
@@ -128,7 +183,7 @@ function makeCard([TwoDfigure, dispatch, sendObjectInfo, TwoDfigures], i) {
 
 function resolveInfo(TwoDfigure) {
   const info = makeInfo(TwoDfigure);
-  return <div>{info}</div>;
+  return <div className={TwoDfigure.type}>{info}</div>;
 }
 
 function contrastColor(colorText) {
@@ -141,6 +196,7 @@ function contrastColor(colorText) {
 
 function makeInfo(TwoDfigure) {
   const formula = makeFormulaFormat(TwoDfigure);
+
   return <MathComponent tex={formula} />;
 }
 

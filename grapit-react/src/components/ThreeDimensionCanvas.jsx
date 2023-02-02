@@ -1,5 +1,3 @@
-import { OrthographicCamera } from '@react-three/drei/core';
-import { OrbitControls } from '@react-three/drei/web';
 import { Canvas } from '@react-three/fiber';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -7,22 +5,21 @@ import Axis from './Axis';
 import { PointLights } from './PointLights';
 import { resolveFigures } from './resolveFigures';
 import { debounce, throttle } from 'lodash';
-import { data } from '../data.js';
-import { setCamera } from '../store/cameraSlice';
-import { useDispatch } from 'react-redux';
 import * as _ from 'lodash';
 import { Button, Stack } from 'react-bootstrap';
 import * as Icon from 'react-bootstrap-icons';
+import { threeJsCamera, resetCamera } from './threeJsCamera';
+import { CameraControls } from './CustomOrbitControl';
 
 function ThreeDimensionCanvas(props) {
-  const cameraRef = useRef();
   const [unit, setUnit] = useState(6);
   const [axesVisible, setAxesVisible] = useState(true);
+  const [isMouseDown, setIsMouseDown] = useState(false);
 
   const figureStore = useSelector(state => state.figure.figures);
 
   const adjustScale = debounce(() => {
-    const zoom = cameraRef.current.zoom;
+    const zoom = threeJsCamera.zoom;
     const newUnit = parseInt(360 / zoom);
     const upperLimit = 60;
 
@@ -31,59 +28,31 @@ function ThreeDimensionCanvas(props) {
     }
   }, 600);
 
-  // todo - redux 적용하기
-  useEffect(() => {
-    if (!_.isEmpty(props.threeCamera)) {
-      const { id, zoom, position, rotation } = props.threeCamera;
-
-      console.log('cameraRef.current.uuid', cameraRef?.current?.uuid);
-      console.log('id', id);
-      console.log('True', id === cameraRef?.current?.uuid);
-
-      if (
-        cameraRef?.current?.uuid !== undefined &&
-        cameraRef.current.uuid !== id
-      ) {
-        cameraRef.current.zoom = (zoom * window.innerWidth) / 1490;
-        cameraRef.current.position.set(...position);
-        cameraRef.current.rotation.set(...rotation);
-
-        cameraRef.current.updateProjectionMatrix();
-
-        adjustScale();
-      }
-    }
-  }, [props.threeCamera]);
-
-  useEffect(() => {}, [props.figureList]);
-
-  const updateCamera = debounce(() => {
+  const sendCameraInfo = throttle(() => {
     const camera = {
-      id: cameraRef.current.uuid,
-      zoom: (cameraRef.current.zoom * 1490) / window.innerWidth,
-      position: [...cameraRef.current.position],
-      rotation: [...cameraRef.current.rotation].slice(0, 3),
+      id: threeJsCamera.uuid,
+      zoom: (threeJsCamera.zoom * 1490) / window.innerWidth,
+      position: [...threeJsCamera.position],
+      rotation: [...threeJsCamera.rotation].slice(0, 3),
     };
 
     props.sendObjectInfo('CAMERA3D', '', JSON.stringify(camera));
-  }, 500);
+  }, 50);
 
   return (
-    <div style={{ width: '100%', aspectRatio: 1.49 }}>
-      <Canvas>
+    <div style={{ width: '100%', position: 'relative', aspectRatio: 1.49 }}>
+      <Canvas
+        camera={threeJsCamera}
+        onMouseDown={() => setIsMouseDown(true)}
+        onMouseUp={() => setIsMouseDown(false)}
+      >
         <color attach="background" args={['#000000']} />
-        <OrthographicCamera
-          position={[100, 50, 100]}
-          zoom={(60 * window.innerWidth) / 1490}
-          ref={cameraRef}
-          makeDefault
-        />
-        <OrbitControls
-          enableDamping={false}
+        <CameraControls
           onChange={() => {
-            updateCamera();
+            sendCameraInfo();
             adjustScale();
           }}
+          isMouseDown={isMouseDown}
         />
         <ambientLight />
         <directionalLight position={[0, 0, 10]} intensity={0.8} />
@@ -107,8 +76,8 @@ function ThreeDimensionCanvas(props) {
       >
         <Button
           onClick={() => {
-            cameraRef.current.position.set(100, 50, 100);
-            cameraRef.current.zoom = (60 * window.innerWidth) / 1490;
+            resetCamera();
+            sendCameraInfo();
           }}
         >
           <Icon.ArrowRepeat size={32} color="white" />
@@ -118,9 +87,9 @@ function ThreeDimensionCanvas(props) {
           onClick={() => setAxesVisible(!axesVisible)}
         >
           {axesVisible ? (
-            <Icon.EyeFill size={32} color="white" />
+            <Icon.Grid3x3 size={32} color="white" />
           ) : (
-            <Icon.EyeSlashFill size={32} color="black" />
+            <Icon.Grid3x3 size={32} color="black" />
           )}
         </Button>
       </Stack>

@@ -1,0 +1,31 @@
+.Line .MathJax {
+    margin: 0!important;
+    font-size: 1.3em;
+}
+
+.Line input{
+    padding: 6px 3px;
+    text-align: right;
+}
+
+.TwoD .MathJax{
+    margin-top: 0!important;
+    margin-bottom: 0!important;
+    font-size: 1.3em;
+}
+
+.TwoD input{
+    padding: 6px 3px;
+    text-align: right;
+}
+
+.Circle .MathJax{
+    margin-top: 0!important;
+    margin-bottom: 0!important;
+    font-size: 1.1em;
+}
+
+.Circle input{
+    padding: 6px 3px;
+    text-align: right;
+}

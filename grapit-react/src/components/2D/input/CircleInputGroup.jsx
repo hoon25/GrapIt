@@ -7,6 +7,8 @@ import { useInput } from '../../../hooks';
 import { setTwoDFigure } from '../../../store/TwoDfigureSlice';
 import { MathComponent } from 'mathjax-react';
 import { setTwoDInput } from '../../../store/TwoDInputSlice';
+import GraphColorPicker from '../../common/GraphColorPicker';
+import React from 'react';
 
 export default function CircleInputGroup({ sendObjectInfo }) {
   const TwoDInput = useSelector(state => state.TwoDInput);
@@ -32,7 +34,7 @@ export default function CircleInputGroup({ sendObjectInfo }) {
       setTwoDInput.resetProps({
         firstProps: '',
         secondProps: '',
-        color: '#ffffff',
+        color: '#f44336',
       }),
     );
 
@@ -43,11 +45,11 @@ export default function CircleInputGroup({ sendObjectInfo }) {
 
   return (
     <Form onSubmit={onSubmit}>
-      <div className="flex justify-content-between p-0">
-        <div className="col-1">
-          <MathComponent tex="(y-" />
-        </div>
-        <div className="col-2">
+      <div className="flex justify-content-center Circle pt-3 pb-3">
+        {/*<div className="col-1">*/}
+        <MathComponent tex="(y-" />
+        {/*</div>*/}
+        <div className="col-2 ps-1 pe-1">
           <FormGroup>
             <Form.Control
               onChange={event => {
@@ -59,10 +61,10 @@ export default function CircleInputGroup({ sendObjectInfo }) {
             />
           </FormGroup>
         </div>
-        <div className="col-3">
-          <MathComponent tex=")^2+(x-" />
-        </div>
-        <div className="col-2">
+        {/*<div className="col-3">*/}
+        <MathComponent tex=")^2+(x-" />
+        {/*</div>*/}
+        <div className="col-2 ps-1 pe-1">
           <FormGroup>
             <Form.Control
               onChange={event => {
@@ -74,10 +76,10 @@ export default function CircleInputGroup({ sendObjectInfo }) {
             />
           </FormGroup>
         </div>
-        <div className="col-1">
-          <MathComponent tex=")^2 = " />
-        </div>
-        <div className="col-2">
+        {/*<div className="col-1">*/}
+        <MathComponent tex=")^2 = " />
+        {/*</div>*/}
+        <div className="col-2 ps-1 pe-1">
           <FormGroup>
             <Form.Control
               onChange={event => {
@@ -89,22 +91,19 @@ export default function CircleInputGroup({ sendObjectInfo }) {
             />
           </FormGroup>
         </div>
-        <div className="col-1">
-          <MathComponent tex="^2" />
-        </div>
+        {/*<div className="col-1">*/}
+        <MathComponent tex="^2" />
+        {/*</div>*/}
       </div>
       <FormGroup>
-        <Form.Label>색상</Form.Label>
-        <Form.Control
-          style={{ display: 'inline-block' }}
-          onChange={event => {
-            dispatch(setTwoDInput.setColor(event.target.value));
-          }}
-          value={TwoDInput.color}
-          type="color"
-        />
+        <GraphColorPicker color={TwoDInput.color} type={'2D'} />
         <Button
-          style={{ display: 'inline-block', float: 'right' }}
+          style={{
+            display: 'inline-block',
+            float: 'right',
+            borderRadius: '10px',
+            fontWeight: '800',
+          }}
           variant="primary"
           type="submit"
         >

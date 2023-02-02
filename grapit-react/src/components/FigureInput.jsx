@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Form } from 'react-bootstrap';
 import LineInputGroup from './inputs/LineInputGroup';
+import PlaneInputGroup from './inputs/PlaneInputGroup';
 import PlatonicSolidInputGroup from './inputs/PlatonicSolidInputGroup';
 import SphereInputGroup from './inputs/SphereInputGroup';
 import { translate } from './translate';
@@ -12,10 +13,10 @@ function FigureInput(props) {
   };
 
   return (
-    <div>
+    <div style={{ padding: '0px' }}>
       <Form>
         <Form.Group>
-          <Form.Control
+          <Form.Select
             className="mb-2"
             as="select"
             style={{ height: '2.8rem', fontSize: '1.2rem', fontWeight: 'bold' }}
@@ -42,7 +43,7 @@ function FigureInput(props) {
             {['sphere', 'platonicSolid']
               .map(x => [x, x === props.figureType])
               .map(ResolveOptionRow)}
-          </Form.Control>
+          </Form.Select>
         </Form.Group>
       </Form>
       <ResolveInputGroup
@@ -74,6 +75,8 @@ function ResolveInputGroup({ figureType, sendObjectInfo }) {
       return <SphereInputGroup sendObjectInfo={sendObjectInfo} />;
     case 'platonicSolid':
       return <PlatonicSolidInputGroup sendObjectInfo={sendObjectInfo} />;
+    case 'plane':
+      return <PlaneInputGroup sendObjectInfo={sendObjectInfo} />;
     default:
       return <LineInputGroup sendObjectInfo={sendObjectInfo} />;
   }

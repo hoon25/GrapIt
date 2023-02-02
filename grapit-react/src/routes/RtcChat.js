@@ -18,6 +18,7 @@ import ProblemSideBar from '../components/problem/ProblemSideBar';
 import { changeIsWhiteBoard } from '../store/isWhiteBoardSlice';
 import { useLocation } from 'react-router-dom';
 import Loading from '../components/common/Loading';
+import { setCamera } from '../components/threeJsCamera';
 
 var stompClient = null;
 
@@ -109,15 +110,15 @@ function RtcChat({ chat }) {
           );
           setIsConnected(true);
           console.log('stompClient connect success');
-            stompClient.send(
-                '/sock/pub/chat/enterUser',
-                {},
-                JSON.stringify({
-                    roomId: chat.roomId,
-                    sender: user.nickName,
-                    type: 'ENTER',
-                }),
-            );
+          stompClient.send(
+            '/sock/pub/chat/enterUser',
+            {},
+            JSON.stringify({
+              roomId: location.pathname.replace(/\D/g, ''),
+              sender: user.nickName,
+              type: 'ENTER',
+            }),
+          );
         } else {
           console.log('Failed to connect, retrying...');
         }
@@ -151,7 +152,6 @@ function RtcChat({ chat }) {
   function rerenderGraph(payload) {
     const newMessage = JSON.parse(payload.body);
     console.log(newMessage);
-
     switch (newMessage.type) {
       case 'PAINT':
         if (newMessage.sender !== user.nickName) {
@@ -163,7 +163,8 @@ function RtcChat({ chat }) {
         break;
       case 'CAMERA3D':
         if (newMessage.sender !== user.nickName) {
-          setThreeCamera(JSON.parse(newMessage.data));
+          const newCamera = JSON.parse(newMessage.data);
+          setCamera(newCamera);
         }
         break;
       case 'GRAPH2D':
@@ -173,9 +174,12 @@ function RtcChat({ chat }) {
         if (newMessage.sender !== user.nickName) {
           setRatio(Number(newMessage.data));
         }
+        break;
       case 'ENTER':
         dispatch(setTwoDFigure.switchFigure(newMessage.data.graph2D));
         dispatch(setFigure.switchFigure(newMessage.data.figure3D));
+        break;
+      default:
         break;
     }
 
@@ -225,17 +229,12 @@ function RtcChat({ chat }) {
     console.log('스크롤링 ');
     console.log(event);
   };
-
   return (
     <>
-      <Container
-        fluid
-        style={{ height: '100%' }}
-        // ref={tempRef}
-      >
+      <Container fluid style={{ height: '100%' }}>
         {isConnected ? null : <Loading isConnected={isConnected} />}
         <Row style={{ height: '100%' }}>
-          <Col xs={9}>
+          <Col xs={9} style={{ paddingRight: '0px' }}>
             <div
               ref={mainParent}
               style={{ height: '100%', width: '100%', position: 'relative' }}
@@ -306,7 +305,7 @@ function RtcChat({ chat }) {
               coordType={coordType}
               setCoordType={setCoordType}
             />
-            <Row style={{ flexDirection: 'column' }}>
+            <Row style={{ flexDirection: 'column', paddingLeft: '0px' }}>
               {coordType === 'problem' ? (
                 <ProblemSideBar />
               ) : coordType === '2D' ? (

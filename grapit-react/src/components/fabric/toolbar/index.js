@@ -53,11 +53,25 @@ function Toolbar(props) {
       });
     });
     setToolButtons(toolButtons);
+    const keyDownHandler = event => {
+      console.log(event);
+      if (event.key === 'q' || event.key === 'ㅂ' || event.key === 'Q') {
+        event.preventDefault();
+        escFunction();
+      }
+    };
+    document.addEventListener('keypress', keyDownHandler);
 
     return () => {
       setIsEnabled(false);
+      document.removeEventListener('keypress', keyDownHandler);
     };
   }, []);
+
+  function escFunction() {
+    toggleState();
+    dispatch(changeIsWhiteBoard.toggleIsWhiteBoard());
+  }
 
   return (
     <div>

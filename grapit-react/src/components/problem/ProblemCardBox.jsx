@@ -25,8 +25,9 @@ export default function ProblemCardBox({ sendObjectInfo }) {
     <Stack
       gap={2}
       style={{
-        backgroundColor: 'whitesmoke',
-        height: '60vh',
+        padding: '0px',
+        // backgroundColor: 'whitesmoke',
+        height: '55vh',
         overflowY: 'scroll',
       }}
     >
@@ -49,21 +50,31 @@ function makeCard([problem, dispatch], i) {
   };
 
   return (
-    <Card key={i}>
+    <Card
+      key={i}
+      style={{
+        border: '1px solid #afafaf',
+        borderWidth: '1px 1px 1px 1px',
+        boxShadow: '0px 0px 5px 0px #afafaf',
+        borderRadius: '10px',
+      }}
+    >
       <Card.Header
         className="d-flex justify-content-between"
         style={{
           fontWeight: 'bold',
-          backgroundColor: headerColor,
-          color: contrastColor(headerColor),
+          backgroundColor: '#0d6efd',
+          color: 'white',
         }}
       >
         {i + 1 + '번째 문제'}
-        <Icon.X lg={2} color={contrastColor(headerColor)} size="25px" />
+        <Icon.X lg={2} color="white" size="25px" />
       </Card.Header>
       <Card.Body onClick={onCardClick}>
-        <Row className="flex justify-content-between align-content-center">
-          <Col lg={12}>{problem.title}</Col>
+        <Row className="cardBox2d flex justify-content-between align-content-center">
+          <Col className="p-0" lg={12}>
+            {problem.title}
+          </Col>
         </Row>
       </Card.Body>
     </Card>

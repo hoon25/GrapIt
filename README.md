@@ -1,30 +1,58 @@
 # GrapIt
 
->  중등 수학 교육 플랫폼
+>  그래프 및 도형 시각화를 제공하는 화상과외 서비스
 
-## 🚀프로젝트 사용기술
+## 🚀 프로젝트 소개
+
+선생님과 학생이 그래프,도형,화이트보드를 같이 상호작용할 수 있는 서비스
+
+![2D_Introduction](./README/2D_Introduction.gif)
+
+![3D_Introduction](./README/3D_Introduction.gif)
+
+
+
+## 🚀 시연영상
+
+
+
+## 🚀 사용기술
 
 ### BackEnd
 
-SpringBoot
+SpringBoot, WebSocket, JPA, MySQL, Redis, OpenVIDU
 
 ### FrontEnd
 
-React
+React, Redux, Three.js, React-Three-Fiber, Fabric, Mafs, WebSocket 
 
 ### Infra
 
-Docker
+AWS, Docker
 
-## 🚀프로젝트 구조
+## 🚀 주요기능
+
+- 선생님 찾기
+- 화상과외(OpenVIDU)
+- 2D 그래프
+  - 일차 함수, 이차 함수, 원 그래프 생성
+  - 그래프 이동(일차 함수)
+  - 그래프 하이라이팅
+- 3D 도형
+  - 선분, 평면, 구, 정다면체, 원뿔, 각기둥 etc..
+  - 도형 하이라이팅 및 투명효과
+  - 카메라 줌인아웃
+  - 카메라 시점 동기화
+- 화이트보드
+  - 선생님과 학생이 같이 쓰는 칠판
+  - 지우개
+  - 사진 업로드
 
 
 
-## 🚀프로젝트 주요 관심사
+## 🚀 포스터
 
-- 대용량 트래픽 상황에서 서버 성능개선을 위해 노력
-- 클린코드를 위한 꾸준한 코드 리팩토링
-- 객체지향적 개념을 이해하고 코드에 녹여내기 위한 의미있는 설계
+![GrapIt_Poster](./README/GrapIt_Poster.png)
 
 
 
